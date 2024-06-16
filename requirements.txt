@@ -1,0 +1,10 @@
+requests
+vertexai
+falkordb
+bs4
+argparse
+python-dotenv
+pyyaml
+langchain
+langchain-experimental
+langchain-google-genai
