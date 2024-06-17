@@ -1,0 +1,198 @@
+import logging
+from falkordb_gemini_kg.helpers import stringify_falkordb_response
+from falkordb_gemini_kg.classes.ontology import Ontology
+from falkordb import FalkorDB, Graph
+from falkordb_gemini_kg.classes.source import AbstractSource
+from falkordb_gemini_kg.classes.model_config import KnowledgeGraphModelConfig
+from falkordb_gemini_kg.steps.create_ontology_step import CreateOntologyStep
+from falkordb_gemini_kg.steps.extract_data_step import ExtractDataStep
+from falkordb_gemini_kg.steps.graph_query_step import GraphQueryGenerationStep
+from falkordb_gemini_kg.steps.qa_step import QAStep
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+
+
+class KnowledgeGraph:
+    """Knowledge Graph model data as a network of entities and relations
+    To create one it is best to provide a ontology which will define the graph's ontology
+    In addition to a set of sources from which entities and relations will be extracted.
+    """
+
+    def __init__(
+        self,
+        name: str,
+        model_config: KnowledgeGraphModelConfig,
+        host: str = "127.0.0.1",
+        port: int = 6379,
+        username: str | None = None,
+        password: str | None = None,
+        ontology: Ontology | None = None,
+        ontology_ratio: float = 0.2,
+    ):
+        """
+        Initialize Knowledge Graph
+
+        Parameters:
+            name (str): Knowledge graph name.
+            model (GenerativeModel): The Google GenerativeModel to use.
+            host (str): FalkorDB hostname.
+            port (int): FalkorDB port number.
+            username (str|None): FalkorDB username.
+            password (str|None): FalkorDB password.
+            ontology (Ontology|None): Ontology to use.
+        """
+
+        if not isinstance(name, str) or name == "":
+            raise Exception("name should be a non empty string")
+
+        # connect to database
+        self.db = FalkorDB(host=host, port=port, username=username, password=password)
+        self.graph = self.db.select_graph(name)
+
+        self._name = name
+        self._ontology = ontology
+        self._model_config = model_config
+        self.sources = set([])
+        self.ontology_ratio = (
+            ontology_ratio  # ratio of sources to use for ontology creation
+        )
+
+        self.ontology_graph = self.db.select_graph(self._ontology_name())
+        # in case ontology is None
+        # try to load ontology from FalkorDB
+        if ontology is None:
+            self._ontology = Ontology.from_graph(self.ontology_graph)
+
+    # Attributes
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, value):
+        raise AttributeError("Cannot modify the 'name' attribute")
+
+    @property
+    def ontology(self):
+        return self._ontology
+
+    @ontology.setter
+    def ontology(self, value):
+        self._ontology = value
+
+    def _ontology_name(self) -> str:
+        """
+        Generate a name for the ontology based on the Knowledge Graph name
+        """
+
+        return f"{self.name}_ontology"
+
+    def list_sources(self) -> list[AbstractSource]:
+        """
+        List of sources associated with knowledge graph
+
+        Returns:
+            list[AbstractSource]: sources
+        """
+
+        return [s.source for s in self.sources]
+
+    def process_sources(self, sources: list[AbstractSource]) -> None:
+        """
+        Add entities and relations found in sources into the knowledge-graph
+
+        Parameters:
+            sources (list[AbstractSource]): list of sources to extract knowledge from
+        """
+
+        # Make sure knowledge graph ontology is created.
+        if self.ontology is None or len(self.ontology.nodes) == 0:
+            self.create_ontology_with_sources(sources)
+
+        # Create graph with sources
+        self._create_graph_with_sources(sources)
+
+        # Add processed sources
+        for src in sources:
+            self.sources.add(src)
+
+    def create_ontology_with_sources(self, sources: list[AbstractSource]):
+        """
+        Create ontology based on sources
+        """
+        self.ontology = Ontology()
+
+        step = CreateOntologyStep(
+            sources=list(sources)[: round(self.ontology_ratio * len(sources))],
+            ontology=self.ontology,
+            model_config=self._model_config.create_ontology,
+        )
+
+        self.ontology = step.run()
+
+        # Save ontology to FalkorDB
+        self.ontology.save_to_graph(self.ontology_graph)
+
+    def _create_graph_with_sources(self, sources: list[AbstractSource] | None = None):
+
+        step = ExtractDataStep(
+            sources=list(sources),
+            ontology=self.ontology,
+            model_config=self._model_config.extract_data,
+            graph=self.graph,
+        )
+
+        step.run()
+
+    def ask(self, question: str) -> str:
+        """
+        Query the knowledge graph using natural language
+        if the query is asked as part of a longer conversation make sure to
+        include past history.
+
+        Returns:
+            str: answer
+
+         Example:
+            >>> ans = kg.ask("Which actor has the most oscars")
+            >>> ans = kg.ask("List a few movies in which that actored played in", history)
+        """
+
+        cypher_step = GraphQueryGenerationStep(
+            ontology=self.ontology,
+            model_config=self._model_config.cypher_generation,
+            graph=self.graph,
+        )
+
+        (context, cypher) = cypher_step.run(question)
+
+        qa_step = QAStep(
+            model_config=self._model_config.qa,
+        )
+
+        answer = qa_step.run(question, cypher, context)
+
+        return answer
+
+    def delete(self) -> None:
+        """
+        Deletes the knowledge graph and any other related resource
+        e.g. Ontology, data graphs
+        """
+        # List available graphs
+        available_graphs = self.db.list_graphs()
+
+        # Delete KnowledgeGraph
+        if self.name in available_graphs:
+            self.graph.delete()
+
+        # Delete schema graph
+        if self._ontology_name() in available_graphs:
+            schema_graph = self.db.select_graph(self._ontology_name())
+            schema_graph.delete()
+
+        # Nullify all attributes
+        for key in self.__dict__.keys():
+            setattr(self, key, None)

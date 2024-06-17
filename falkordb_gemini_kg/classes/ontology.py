@@ -1,11 +1,24 @@
 import json
-from falkordb import Graph
+from falkordb import Graph, Edge as GraphEdge, Node as GraphNode
+
+import logging
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
 
 class _AttributeType:
     STRING = "string"
     NUMBER = "number"
     BOOLEAN = "boolean"
+
+    @staticmethod
+    def fromString(txt: str):
+        if txt.isdigit():
+            return _AttributeType.NUMBER
+        elif txt.lower() in ["true", "false"]:
+            return _AttributeType.BOOLEAN
+        return _AttributeType.STRING
 
 
 class Attribute:
@@ -42,6 +55,21 @@ class Node:
         self.attributes = attributes
 
     @staticmethod
+    def from_graph(node: GraphNode):
+        logger.debug(f"Node.from_graph: {node}")
+        return Node(
+            node.labels[0],
+            [
+                Attribute(
+                    attr,
+                    _AttributeType.fromString(node.properties[attr]),
+                    "!" in node.properties[attr],
+                )
+                for attr in node.properties
+            ],
+        )
+
+    @staticmethod
     def from_json(txt: str):
         txt = txt if isinstance(txt, dict) else json.loads(txt)
         return Node(
@@ -62,7 +90,7 @@ class Node:
 
         for attr in node2.attributes:
             if attr.name not in [a.name for a in self.attributes]:
-                print(f"Adding attribute {attr.name} to node {self.label}")
+                logger.debug(f"Adding attribute {attr.name} to node {self.label}")
                 self.attributes.append(attr)
 
         return self
@@ -109,6 +137,23 @@ class Edge:
         self.attributes = attributes
 
     @staticmethod
+    def from_graph(edge: GraphEdge, nodes: list[GraphNode]):
+        logger.debug(f"Edge.from_graph: {edge}")
+        return Edge(
+            edge.relation,
+            _EdgeNode(next(n.labels[0] for n in nodes if n.id == edge.src_node)),
+            _EdgeNode(next(n.labels[0] for n in nodes if n.id == edge.dest_node)),
+            [
+                Attribute(
+                    attr,
+                    _AttributeType.fromString(edge.properties),
+                    "!" in edge.properties[attr],
+                )
+                for attr in edge.properties
+            ],
+        )
+
+    @staticmethod
     def from_json(txt: str):
         txt = txt if isinstance(txt, dict) else json.loads(txt)
         return Edge(
@@ -137,7 +182,7 @@ class Edge:
 
         for attr in edge2.attributes:
             if attr.name not in [a.name for a in self.attributes]:
-                print(f"Adding attribute {attr.name} to edge {self.label}")
+                logger.debug(f"Adding attribute {attr.name} to edge {self.label}")
                 self.attributes.append(attr)
 
         return self
@@ -153,6 +198,12 @@ class Ontology:
     def __init__(self, nodes: list[Node] = [], edges: list[Edge] = []):
         self.nodes = nodes
         self.edges = edges
+
+    def add_node(self, node: Node):
+        self.nodes.append(node)
+
+    def add_edge(self, edge: Edge):
+        self.edges.append(edge)
 
     @staticmethod
     def from_json(txt: str):
@@ -174,7 +225,7 @@ class Ontology:
             if node.label not in [n.label for n in self.nodes]:
                 # Node does not exist in self, add it
                 self.nodes.append(node)
-                print(f"Adding node {node.label}")
+                logger.debug(f"Adding node {node.label}")
             else:
                 # Node exists in self, merge attributes
                 node1 = next(n for n in self.nodes if n.label == node.label)
@@ -185,7 +236,7 @@ class Ontology:
             if edge.label not in [e.label for e in self.edges]:
                 # Edge does not exist in self, add it
                 self.edges.append(edge)
-                print(f"Adding edge {edge.label}")
+                logger.debug(f"Adding edge {edge.label}")
             else:
                 # Edge exists in self, merge attributes
                 edge1 = next(e for e in self.edges if e.label == edge.label)
@@ -214,7 +265,7 @@ class Ontology:
         ]
 
         if len(nodes_to_discard) > 0:
-            print(f"Discarded nodes: {', '.join(nodes_to_discard)}")
+            logger.info(f"Discarded nodes: {', '.join(nodes_to_discard)}")
 
         return self
 
@@ -229,7 +280,7 @@ class Ontology:
         self.edges = [edge for edge in self.edges if edge.label not in edges_to_discard]
 
         if len(edges_to_discard) > 0:
-            print(f"Discarded edges: {', '.join(edges_to_discard)}")
+            logger.info(f"Discarded edges: {', '.join(edges_to_discard)}")
 
         return self
 
@@ -239,7 +290,7 @@ class Ontology:
             node.label for node in self.nodes if len(node.get_unique_attributes()) == 0
         ]
         if len(nodes_without_unique_attributes) > 0:
-            print(
+            logger.warn(
                 f"""
 *** WARNING ***
 The following nodes do not have unique attributes:
@@ -267,13 +318,26 @@ The following nodes do not have unique attributes:
             edges="\n- ".join([str(edge) for edge in self.edges]),
         )
 
+    @staticmethod
+    def from_graph(graph: Graph):
+        ontology = Ontology()
+
+        nodes = graph.query("MATCH (n) RETURN n").result_set
+        for node in nodes:
+            ontology.add_node(Node.from_graph(node[0]))
+
+        for edge in graph.query("MATCH ()-[r]->() RETURN r").result_set:
+            ontology.add_edge(Edge.from_graph(edge[0], [x for xs in nodes for x in xs]))
+
+        return ontology
+
     def save_to_graph(self, graph: Graph):
         for node in self.nodes:
             query = node.to_graph_query()
-            print(f"Query: {query}")
+            logger.debug(f"Query: {query}")
             graph.query(query)
 
         for edge in self.edges:
             query = edge.to_graph_query()
-            print(f"Query: {query}")
+            logger.debug(f"Query: {query}")
             graph.query(query)

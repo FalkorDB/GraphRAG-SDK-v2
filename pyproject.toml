@@ -1,0 +1,30 @@
+[tool.poetry]
+name = "falkordb_gemini_kg"
+version = "0.1.2-beta"
+license = "MIT"
+description = ""
+authors = ["FalkorDB <info@falkordb.com>"]
+readme = "README.md"
+repository = "https://github.com/FalkorDB/falkordb-gemini-kg"
+homepage = "http://RAG-SDK.readthedocs.io"
+keywords = ['RAG', 'Graph-RAG', 'KnowledgeGraph']
+
+[tool.poetry.dependencies]
+python = "^3.11.4"
+falkordb = "^1.0.4"
+typing-extensions = "^4.12.1"
+bs4 = "^0.0.2"
+sqlalchemy = "^2.0.30"
+pypdf = "^4.2.0"
+vertexai = "^1.49.0"
+
+[tool.poetry.group.test.dependencies]
+pytest = "^8.2.1"
+
+[tool.poetry.group.dev.dependencies]
+sphinx = "^7.3.7"
+sphinx-rtd-theme = "^2.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

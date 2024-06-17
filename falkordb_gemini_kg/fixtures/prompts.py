@@ -27,10 +27,6 @@ Do not create more than one node-edge pair for the same entity or relationship. 
 ## 5. Format
 The ontology should be in JSON format and should follow the schema provided below.
 
-## 6. Boundaries
-Use the following instructions as boundaries for the ontology extraction process. 
-#BOUNDARIES
-
 Schema:
 ```json
 {
@@ -217,6 +213,9 @@ Make sure to connect all related entities in the ontology. For example, if a Per
 Do not create relationships without their corresponding nodes.
 Do not allow duplicated inverse relationships, for example, if you have a relationship "OWNS" from Person to House, do not create another relationship "OWNED_BY" from House to Person.
 
+Use the following instructions as boundaries for the ontology extraction process. 
+{boundaries}
+
 Raw text:
 {text}
 """
@@ -231,6 +230,9 @@ Make sure to connect all related entities in the ontology. For example, if a Per
 
 Do not create relationships without their corresponding nodes.
 Do not allow duplicated inverse relationships, for example, if you have a relationship "OWNS" from Person to House, do not create another relationship "OWNED_BY" from House to Person.
+
+Use the following instructions as boundaries for the ontology extraction process. 
+{boundaries}
 
 Ontology:
 {ontology}
@@ -395,7 +397,7 @@ For example:
 ```
 
 Ontology:
-
+#ONTOLOGY
 """
 
 EXTRACT_DATA_PROMPT = """
@@ -409,7 +411,6 @@ All formats should be consistent, for example, dates should be in the format "YY
 Raw Text:
 {text}
 """
-
 
 
 CYPHER_GEN_SYSTEM = """
@@ -443,7 +444,7 @@ Single-Pair minimal-weight paths: Find minimal-weight paths between a pair of en
 Single-Source minimal-weight paths: Find minimal-weight paths from a given source entity using algo.SSpaths().
 
 Ontology:
-{ontology}
+#ONTOLOGY
 
 
 For example, given the question "Which managers own Neo4j stocks?", the OpenCypher statement should look like this:
@@ -474,7 +475,6 @@ Do not include any text except the generated OpenCypher statement, enclosed in t
 
 Question: {question}
 """
-
 
 
 GRAPH_QA_SYSTEM = """
