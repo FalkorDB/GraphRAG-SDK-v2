@@ -2,7 +2,7 @@ from falkordb_gemini_kg.steps.Step import Step
 from falkordb_gemini_kg.classes.source import AbstractSource
 from concurrent.futures import Future, ThreadPoolExecutor, wait
 from falkordb_gemini_kg.classes.ontology import Ontology
-from falkordb_gemini_kg.classes.model_config import KnowledgeGraphModelStepConfig
+from falkordb_gemini_kg.classes.model_config import StepModelConfig
 from vertexai.generative_models import GenerativeModel, ChatSession
 from falkordb_gemini_kg.fixtures.prompts import EXTRACT_DATA_SYSTEM, EXTRACT_DATA_PROMPT
 import logging
@@ -23,7 +23,7 @@ class ExtractDataStep(Step):
         self,
         sources: list[AbstractSource],
         ontology: Ontology,
-        model_config: KnowledgeGraphModelStepConfig,
+        model_config: StepModelConfig,
         graph: Graph,
         config: dict = {
             "max_workers": 16,
@@ -37,7 +37,7 @@ class ExtractDataStep(Step):
         self.graph = graph
         self.chat_session = GenerativeModel(
             model_config.model,
-            generation_config=model_config.generation_config,
+            generation_config=model_config.generation_config.to_generation_config() if model_config.generation_config is not None else None,
             system_instruction=EXTRACT_DATA_SYSTEM.replace(
                 "#ONTOLOGY", str(ontology.to_json())
             ),

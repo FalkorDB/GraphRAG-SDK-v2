@@ -1,7 +1,7 @@
 from .classes.source import Source
 from .classes.ontology import Ontology
 from .kg import KnowledgeGraph
-from .classes.model_config import KnowledgeGraphModelConfig, KnowledgeGraphModelStepConfig
+from .classes.model_config import KnowledgeGraphModelConfig, StepModelConfig
 from .steps.create_ontology_step import CreateOntologyStep
 
 # Setup Null handler

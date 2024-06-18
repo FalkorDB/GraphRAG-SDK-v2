@@ -1,6 +1,6 @@
 from falkordb_gemini_kg.steps.Step import Step
 from falkordb_gemini_kg.classes.ontology import Ontology
-from falkordb_gemini_kg.classes.model_config import KnowledgeGraphModelStepConfig
+from falkordb_gemini_kg.classes.model_config import StepModelConfig
 from vertexai.generative_models import GenerativeModel
 from falkordb_gemini_kg.fixtures.prompts import (
     CYPHER_GEN_SYSTEM,
@@ -28,7 +28,7 @@ class GraphQueryGenerationStep(Step):
         self,
         graph: Graph,
         ontology: Ontology,
-        model_config: KnowledgeGraphModelStepConfig | None = None,
+        model_config: StepModelConfig | None = None,
         config: dict = {},
         chat_session: GenerativeModel | None = None,
     ) -> None:
@@ -42,7 +42,7 @@ class GraphQueryGenerationStep(Step):
             chat_session
             or GenerativeModel(
                 model_config.model,
-                generation_config=model_config.generation_config,
+            generation_config=model_config.generation_config.to_generation_config() if model_config.generation_config is not None else None,
                 system_instruction=CYPHER_GEN_SYSTEM.replace(
                     "#ONTOLOGY", str(ontology.to_json())
                 ),

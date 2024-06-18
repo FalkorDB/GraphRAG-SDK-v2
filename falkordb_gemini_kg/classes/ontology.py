@@ -1,7 +1,7 @@
 import json
 from falkordb import Graph, Edge as GraphEdge, Node as GraphNode
 from falkordb_gemini_kg.classes.source import AbstractSource
-from falkordb_gemini_kg.classes.model_config import KnowledgeGraphModelStepConfig
+from falkordb_gemini_kg.classes.model_config import StepModelConfig
 import falkordb_gemini_kg
 
 import logging
@@ -206,7 +206,7 @@ class Ontology:
     def from_sources(
         sources: list[AbstractSource],
         boundaries: str,
-        model_config: KnowledgeGraphModelStepConfig,
+        model_config: StepModelConfig,
     ) -> "Ontology":
         step = falkordb_gemini_kg.CreateOntologyStep(
             sources=sources,
