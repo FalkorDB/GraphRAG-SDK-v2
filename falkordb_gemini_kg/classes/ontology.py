@@ -1,5 +1,8 @@
 import json
 from falkordb import Graph, Edge as GraphEdge, Node as GraphNode
+from falkordb_gemini_kg.classes.source import AbstractSource
+from falkordb_gemini_kg.classes.model_config import KnowledgeGraphModelStepConfig
+import falkordb_gemini_kg
 
 import logging
 
@@ -199,11 +202,19 @@ class Ontology:
         self.nodes = nodes
         self.edges = edges
 
-    def add_node(self, node: Node):
-        self.nodes.append(node)
+    @staticmethod
+    def from_sources(
+        sources: list[AbstractSource],
+        boundaries: str,
+        model_config: KnowledgeGraphModelStepConfig,
+    ) -> "Ontology":
+        step = falkordb_gemini_kg.CreateOntologyStep(
+            sources=sources,
+            ontology=Ontology(),
+            model_config=model_config,
+        )
 
-    def add_edge(self, edge: Edge):
-        self.edges.append(edge)
+        return step.run(boundaries=boundaries)
 
     @staticmethod
     def from_json(txt: str):
@@ -212,6 +223,25 @@ class Ontology:
             [Node.from_json(node) for node in txt["nodes"]],
             [Edge.from_json(edge) for edge in txt["edges"]],
         )
+
+    @staticmethod
+    def from_graph(graph: Graph):
+        ontology = Ontology()
+
+        nodes = graph.query("MATCH (n) RETURN n").result_set
+        for node in nodes:
+            ontology.add_node(Node.from_graph(node[0]))
+
+        for edge in graph.query("MATCH ()-[r]->() RETURN r").result_set:
+            ontology.add_edge(Edge.from_graph(edge[0], [x for xs in nodes for x in xs]))
+
+        return ontology
+
+    def add_node(self, node: Node):
+        self.nodes.append(node)
+
+    def add_edge(self, edge: Edge):
+        self.edges.append(edge)
 
     def to_json(self):
         return {
@@ -317,19 +347,6 @@ The following nodes do not have unique attributes:
             nodes="\n- ".join([str(node) for node in self.nodes]),
             edges="\n- ".join([str(edge) for edge in self.edges]),
         )
-
-    @staticmethod
-    def from_graph(graph: Graph):
-        ontology = Ontology()
-
-        nodes = graph.query("MATCH (n) RETURN n").result_set
-        for node in nodes:
-            ontology.add_node(Node.from_graph(node[0]))
-
-        for edge in graph.query("MATCH ()-[r]->() RETURN r").result_set:
-            ontology.add_edge(Edge.from_graph(edge[0], [x for xs in nodes for x in xs]))
-
-        return ontology
 
     def save_to_graph(self, graph: Graph):
         for node in self.nodes:

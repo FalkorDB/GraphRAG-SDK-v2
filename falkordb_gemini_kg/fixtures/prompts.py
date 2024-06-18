@@ -249,9 +249,8 @@ Make sure each node contains at least one unique attribute. For example, a Perso
 Make sure all nodes have edges.
 Make sure all edges have 2 nodes (source and target).
 Make sure all node labels are titlecase.
-Do not allow duplicated inverse relationships, for example, if you have a relationship "OWNS" from Person to House, do not create another relationship "OWNED_BY" from House to Person.
-Remove duplicated nodes.
-Remove duplicated edges.
+Do not allow duplicated relationships, for example, if you have a relationship "OWNS" from Person to House, do not create another relationship "OWNS_HOUSE", or even "OWNED_BY" from House to Person.
+Relationship names must be timeless. For example "WROTE" and "WRITTEN" means the same thing, if the source and target nodes are the same. Remove similar scenarios.
 Do not create relationships without their corresponding nodes.
 
 Ontology:

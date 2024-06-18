@@ -41,10 +41,7 @@ class CreateOntologyStep(Step):
             system_instruction=CREATE_ONTOLOGY_SYSTEM,
         ).start_chat()
 
-    def run(self):
-        boundaries = input(
-            "Enter your boundaries instructions for the ontology extraction:\n"
-        )
+    def run(self, boundaries: str):
         tasks: list[Future[Ontology]] = []
         with ThreadPoolExecutor(max_workers=self.config["max_workers"]) as executor:
             # extract entities and relationships from each page
@@ -106,9 +103,11 @@ class CreateOntologyStep(Step):
 
         user_message = FIX_ONTOLOGY_PROMPT.format(ontology=o)
 
+        print(f"FIX ONTOLOGY: User message: {user_message}")
+
         model_response = chat_session.send_message(user_message)
 
-        # print(f"User message: {user_message}")
+        print(f"FIX ONTOLOGY: model response: {model_response.text}")
         logger.debug(f"Model response: {model_response}")
 
         if (

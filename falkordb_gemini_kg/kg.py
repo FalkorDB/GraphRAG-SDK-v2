@@ -8,9 +8,51 @@ from falkordb_gemini_kg.steps.create_ontology_step import CreateOntologyStep
 from falkordb_gemini_kg.steps.extract_data_step import ExtractDataStep
 from falkordb_gemini_kg.steps.graph_query_step import GraphQueryGenerationStep
 from falkordb_gemini_kg.steps.qa_step import QAStep
+from vertexai.generative_models import GenerativeModel
+from falkordb_gemini_kg.fixtures.prompts import GRAPH_QA_SYSTEM, CYPHER_GEN_SYSTEM
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
+
+
+class ChatSession:
+
+    def __init__(
+        self, model_config: KnowledgeGraphModelConfig, ontology: Ontology, graph: Graph
+    ):
+        self.model_config = model_config
+        self.graph = graph
+        self.ontology = ontology
+        self.cypher_chat_session = GenerativeModel(
+            model_config.cypher_generation.model,
+            generation_config=model_config.cypher_generation.generation_config,
+            system_instruction=CYPHER_GEN_SYSTEM.replace(
+                "#ONTOLOGY", str(ontology.to_json())
+            ),
+        ).start_chat()
+        self.qa_chat_session = GenerativeModel(
+            model_config.qa.model,
+            generation_config=model_config.qa.generation_config,
+            system_instruction=GRAPH_QA_SYSTEM,
+        ).start_chat()
+
+    def send_message(self, message: str):
+
+        cypher_step = GraphQueryGenerationStep(
+            graph=self.graph,
+            chat_session=self.cypher_chat_session,
+            ontology=self.ontology,
+        )
+
+        (context, cypher) = cypher_step.run(message)
+
+        qa_step = QAStep(
+            chat_session=self.qa_chat_session,
+        )
+
+        answer = qa_step.run(message, cypher, context)
+
+        return answer
 
 
 class KnowledgeGraph:
@@ -28,7 +70,6 @@ class KnowledgeGraph:
         username: str | None = None,
         password: str | None = None,
         ontology: Ontology | None = None,
-        ontology_ratio: float = 0.2,
     ):
         """
         Initialize Knowledge Graph
@@ -54,15 +95,13 @@ class KnowledgeGraph:
         self._ontology = ontology
         self._model_config = model_config
         self.sources = set([])
-        self.ontology_ratio = (
-            ontology_ratio  # ratio of sources to use for ontology creation
-        )
 
         self.ontology_graph = self.db.select_graph(self._ontology_name())
         # in case ontology is None
         # try to load ontology from FalkorDB
         if ontology is None:
-            self._ontology = Ontology.from_graph(self.ontology_graph)
+            if self._ontology_name() in self.db.list_graphs():
+                self._ontology = Ontology.from_graph(self.ontology_graph)
 
     # Attributes
 
@@ -107,9 +146,8 @@ class KnowledgeGraph:
             sources (list[AbstractSource]): list of sources to extract knowledge from
         """
 
-        # Make sure knowledge graph ontology is created.
-        if self.ontology is None or len(self.ontology.nodes) == 0:
-            self.create_ontology_with_sources(sources)
+        if self.ontology is None:
+            raise Exception("Ontology is not defined")
 
         # Create graph with sources
         self._create_graph_with_sources(sources)
@@ -117,23 +155,6 @@ class KnowledgeGraph:
         # Add processed sources
         for src in sources:
             self.sources.add(src)
-
-    def create_ontology_with_sources(self, sources: list[AbstractSource]):
-        """
-        Create ontology based on sources
-        """
-        self.ontology = Ontology()
-
-        step = CreateOntologyStep(
-            sources=list(sources)[: round(self.ontology_ratio * len(sources))],
-            ontology=self.ontology,
-            model_config=self._model_config.create_ontology,
-        )
-
-        self.ontology = step.run()
-
-        # Save ontology to FalkorDB
-        self.ontology.save_to_graph(self.ontology_graph)
 
     def _create_graph_with_sources(self, sources: list[AbstractSource] | None = None):
 
@@ -196,3 +217,6 @@ class KnowledgeGraph:
         # Nullify all attributes
         for key in self.__dict__.keys():
             setattr(self, key, None)
+
+    def chat_session(self) -> ChatSession:
+        return ChatSession(self._model_config, self.ontology, self.graph)

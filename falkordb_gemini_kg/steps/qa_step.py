@@ -17,15 +17,22 @@ class QAStep(Step):
 
     def __init__(
         self,
-        model_config: KnowledgeGraphModelStepConfig,
+        model_config: KnowledgeGraphModelStepConfig | None = None,
         config: dict = {},
+        chat_session: ChatSession | None = None,
     ) -> None:
+        assert chat_session is not None or (
+            model_config is not None
+        ), "Must provide either a chat session or model config"
         self.config = config
-        self.chat_session = GenerativeModel(
-            model_config.model,
-            generation_config=model_config.generation_config,
-            system_instruction=GRAPH_QA_SYSTEM,
-        ).start_chat()
+        self.chat_session = (
+            chat_session
+            or GenerativeModel(
+                model_config.model,
+                generation_config=model_config.generation_config,
+                system_instruction=GRAPH_QA_SYSTEM,
+            ).start_chat()
+        )
 
     def run(self, question: str, cypher: str, context: str):
 

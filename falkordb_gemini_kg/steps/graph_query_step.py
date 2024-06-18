@@ -26,21 +26,28 @@ class GraphQueryGenerationStep(Step):
 
     def __init__(
         self,
-        ontology: Ontology,
-        model_config: KnowledgeGraphModelStepConfig,
         graph: Graph,
+        ontology: Ontology,
+        model_config: KnowledgeGraphModelStepConfig | None = None,
         config: dict = {},
+        chat_session: GenerativeModel | None = None,
     ) -> None:
+        assert chat_session is not None or (
+            model_config is not None
+        ), "Must provide either a chat session or model config"
         self.ontology = ontology
         self.config = config
         self.graph = graph
-        self.chat_session = GenerativeModel(
-            model_config.model,
-            generation_config=model_config.generation_config,
-            system_instruction=CYPHER_GEN_SYSTEM.replace(
-                "#ONTOLOGY", str(ontology.to_json())
-            ),
-        ).start_chat()
+        self.chat_session = (
+            chat_session
+            or GenerativeModel(
+                model_config.model,
+                generation_config=model_config.generation_config,
+                system_instruction=CYPHER_GEN_SYSTEM.replace(
+                    "#ONTOLOGY", str(ontology.to_json())
+                ),
+            ).start_chat()
+        )
 
     def run(self, question: str, retries: int = 5):
         error = False
