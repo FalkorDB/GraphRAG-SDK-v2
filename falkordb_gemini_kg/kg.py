@@ -22,11 +22,11 @@ class KnowledgeGraph:
         self,
         name: str,
         model_config: KnowledgeGraphModelConfig,
+        ontology: Ontology,
         host: str = "127.0.0.1",
         port: int = 6379,
         username: str | None = None,
         password: str | None = None,
-        ontology: Ontology | None = None,
     ):
         """
         Initialize Knowledge Graph
@@ -53,13 +53,6 @@ class KnowledgeGraph:
         self._model_config = model_config
         self.sources = set([])
 
-        self.ontology_graph = self.db.select_graph(self._ontology_name())
-        # in case ontology is None
-        # try to load ontology from FalkorDB
-        if ontology is None:
-            if self._ontology_name() in self.db.list_graphs():
-                self._ontology = Ontology.from_graph(self.ontology_graph)
-
     # Attributes
 
     @property
@@ -77,13 +70,6 @@ class KnowledgeGraph:
     @ontology.setter
     def ontology(self, value):
         self._ontology = value
-
-    def _ontology_name(self) -> str:
-        """
-        Generate a name for the ontology based on the Knowledge Graph name
-        """
-
-        return f"{self.name}_ontology"
 
     def list_sources(self) -> list[AbstractSource]:
         """
@@ -165,11 +151,6 @@ class KnowledgeGraph:
         # Delete KnowledgeGraph
         if self.name in available_graphs:
             self.graph.delete()
-
-        # Delete schema graph
-        if self._ontology_name() in available_graphs:
-            schema_graph = self.db.select_graph(self._ontology_name())
-            schema_graph.delete()
 
         # Nullify all attributes
         for key in self.__dict__.keys():

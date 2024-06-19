@@ -103,11 +103,8 @@ class CreateOntologyStep(Step):
 
         user_message = FIX_ONTOLOGY_PROMPT.format(ontology=o)
 
-        print(f"FIX ONTOLOGY: User message: {user_message}")
-
         model_response = chat_session.send_message(user_message)
 
-        print(f"FIX ONTOLOGY: model response: {model_response.text}")
         logger.debug(f"Model response: {model_response}")
 
         if (

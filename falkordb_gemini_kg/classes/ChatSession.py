@@ -19,7 +19,7 @@ class ChatSession:
             model_config.cypher_generation.model,
             generation_config=(
                 model_config.cypher_generation.generation_config.to_generation_config()
-                if model_config.generation_config is not None
+                if model_config.cypher_generation.generation_config is not None
                 else None
             ),
             system_instruction=CYPHER_GEN_SYSTEM.replace(
@@ -30,7 +30,7 @@ class ChatSession:
             model_config.qa.model,
             generation_config=(
                 model_config.qa.generation_config.to_generation_config()
-                if model_config.generation_config is not None
+                if model_config.qa.generation_config is not None
                 else None
             ),
             system_instruction=GRAPH_QA_SYSTEM,
