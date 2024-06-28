@@ -29,7 +29,11 @@ class QAStep(Step):
             chat_session
             or GenerativeModel(
                 model_config.model,
-            generation_config=model_config.generation_config.to_generation_config() if model_config.generation_config is not None else None,
+                generation_config=(
+                    model_config.generation_config.to_generation_config()
+                    if model_config.generation_config is not None
+                    else None
+                ),
                 system_instruction=GRAPH_QA_SYSTEM,
             ).start_chat()
         )
@@ -39,6 +43,8 @@ class QAStep(Step):
         qa_prompt = GRAPH_QA_PROMPT.format(
             context=context, cypher=cypher, question=question
         )
+
+        # logger.debug(f"QA Prompt: {qa_prompt}")
         qa_response = self.chat_session.send_message(qa_prompt)
 
         return qa_response.text

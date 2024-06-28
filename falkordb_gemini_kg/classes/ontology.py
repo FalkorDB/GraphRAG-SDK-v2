@@ -25,10 +25,11 @@ class _AttributeType:
 
 
 class Attribute:
-    def __init__(self, name: str, attr_type: _AttributeType, unique: bool):
+    def __init__(self, name: str, attr_type: _AttributeType, unique: bool, required: bool = False):
         self.name = name
         self.type = attr_type
         self.unique = unique
+        self.required = required
 
     @staticmethod
     def from_json(txt: str):
@@ -39,17 +40,34 @@ class Attribute:
             _AttributeType.BOOLEAN,
         ]:
             raise Exception(f"Invalid attribute type: {txt['type']}")
-        return Attribute(txt["name"], txt["type"], txt["unique"])
+        return Attribute(txt["name"], txt["type"], txt["unique"], txt["required"] if "required" in txt else False)
+
+    @staticmethod
+    def from_string(txt: str):
+        name = txt.split(":")[0].strip()
+        attr_type = txt.split(":")[1].split("!")[0].split("*")[0].strip()
+        unique = "!" in txt
+        required = "*" in txt
+
+        if attr_type not in [
+            _AttributeType.STRING,
+            _AttributeType.NUMBER,
+            _AttributeType.BOOLEAN,
+        ]:
+            raise Exception(f"Invalid attribute type: {attr_type}")
+        
+        return Attribute(name, attr_type, unique, required)
 
     def to_json(self):
         return {
             "name": self.name,
             "type": self.type,
             "unique": self.unique,
+            "required": self.required,
         }
 
     def __str__(self) -> str:
-        return f"{self.name}: \"{self.type}{'!' if self.unique else ''}\""
+        return f"{self.name}: \"{self.type}{'!' if self.unique else ''}{'*' if self.required else ''}\""
 
 
 class Node:
@@ -73,10 +91,10 @@ class Node:
         )
 
     @staticmethod
-    def from_json(txt: str):
+    def from_json(txt: dict | str):
         txt = txt if isinstance(txt, dict) else json.loads(txt)
         return Node(
-            txt["label"].title().replace(" ", ""),
+            txt["label"].replace(" ", ""),
             [Attribute.from_json(attr) for attr in txt["attributes"]],
         )
 
@@ -151,13 +169,14 @@ class Edge:
                     attr,
                     _AttributeType.fromString(edge.properties),
                     "!" in edge.properties[attr],
+                    "*" in edge.properties[attr],
                 )
                 for attr in edge.properties
             ],
         )
 
     @staticmethod
-    def from_json(txt: str):
+    def from_json(txt: dict | str):
         txt = txt if isinstance(txt, dict) else json.loads(txt)
         return Edge(
             txt["label"],
@@ -168,6 +187,20 @@ class Edge:
                 if "attributes" in txt
                 else []
             ),
+        )
+
+    @staticmethod
+    def from_string(txt: str):
+        label = txt.split(":")[0].strip()
+        source = txt.split(":")[1].split("->")[0].strip()
+        target = txt.split("->")[1].split("{")[0].strip()
+        attributes = txt.split("{")[1].split("}")[0].strip().split(",") if "{" in txt else []
+
+        return Edge(
+            label,
+            _EdgeNode(source),
+            _EdgeNode(target),
+            [Attribute.from_string(attr) for attr in attributes],
         )
 
     def to_json(self):
@@ -217,7 +250,7 @@ class Ontology:
         return step.run(boundaries=boundaries)
 
     @staticmethod
-    def from_json(txt: str):
+    def from_json(txt: dict | str):
         txt = txt if isinstance(txt, dict) else json.loads(txt)
         return Ontology(
             [Node.from_json(node) for node in txt["nodes"]],

@@ -3,7 +3,8 @@ from abc import ABC, abstractmethod
 from falkordb_gemini_kg.classes.Document import Document
 from falkordb_gemini_kg.document_loaders import *
 
-def Source(path:str, instruction:str|None=None) ->'AbstractSource':
+
+def Source(path: str, instruction: str | None = None) -> "AbstractSource":
     """
     Creates a source object
 
@@ -22,8 +23,12 @@ def Source(path:str, instruction:str|None=None) ->'AbstractSource':
 
     if ".pdf" in path.lower():
         s = PDF(path)
-    elif ".html" in path.lower() or "http" in path.lower():
+    elif ".html" in path.lower():
         s = HTML(path)
+    elif "http" in path.lower():
+        s = URL(path)
+    elif ".csv" in path.lower():
+        s = CSV(path)
     else:
         s = TEXT(path)
 
@@ -32,12 +37,13 @@ def Source(path:str, instruction:str|None=None) ->'AbstractSource':
 
     return s
 
+
 class AbstractSource(ABC):
     """
     Abstract class representing a source file
     """
 
-    def __init__(self, path:str):
+    def __init__(self, path: str):
         self.path = path
         self.loader = None
 
@@ -53,6 +59,7 @@ class AbstractSource(ABC):
     def __hash__(self):
         return hash(self.path)
 
+
 class PDF(AbstractSource):
     """
     PDF resource
@@ -61,6 +68,7 @@ class PDF(AbstractSource):
     def __init__(self, path):
         super().__init__(path)
         self.loader = PDFLoader(self.path)
+
 
 class TEXT(AbstractSource):
     """
@@ -71,6 +79,18 @@ class TEXT(AbstractSource):
         super().__init__(path)
         self.loader = TextLoader(self.path)
 
+
+class URL(AbstractSource):
+    """
+    URL resource
+    """
+
+    def __init__(self, path):
+        super().__init__(path)
+        self.loader = URLLoader(self.path)
+
+
+
 class HTML(AbstractSource):
     """
     HTML resource
@@ -79,3 +99,13 @@ class HTML(AbstractSource):
     def __init__(self, path):
         super().__init__(path)
         self.loader = HTMLLoader(self.path)
+
+
+class CSV(AbstractSource):
+    """
+    CSV resource
+    """
+
+    def __init__(self, path, rows_per_document: int = 50):
+        super().__init__(path)
+        self.loader = CSVLoader(self.path, rows_per_document)

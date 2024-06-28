@@ -4,48 +4,48 @@ from typing import Iterator
 from bs4 import BeautifulSoup
 from falkordb_gemini_kg.classes.Document import Document
 
-
-class HTMLLoader:
+class URLLoader():
     """
-    Load HTML
+    Load URL
     """
 
-    def __init__(self, path: str) -> None:
+    def __init__(self, url: str) -> None:
         """
         Initialize loader
 
         Parameters:
-            path (str): path to HTML.
+            url (str): url.
         """
 
-        self.path = path
+        self.url = url
 
-    def _get_file(self) -> str:
+    def _download(self) -> str:
         try:
-            with open(self.path, "r") as f:
-                return f.read()
+            response = requests.get(self.url)
+            response.raise_for_status()  # Raise an HTTPError for bad responses (4xx and 5xx)
+            return response.text
         except requests.exceptions.RequestException as e:
             print(f"An error occurred: {e}")
 
     def load(self) -> Iterator[Document]:
         """
-        Load HTML
+        Load URL
 
         Returns:
             Iterator[Document]: document iterator
         """
 
         # Download URL
-        content = self._get_file()
+        content = self._download()
 
         # extract text from HTML, populate content
-        soup = BeautifulSoup(content, "html.parser")
+        soup = BeautifulSoup(content, 'html.parser')
 
         # Extract text from the HTML
         content = soup.get_text()
 
         # Remove extra newlines
-        content = re.sub(r"\n{2,}", "\n", content)
+        content = re.sub(r'\n{2,}', '\n', content)
 
         yield Document(content)
-        # return f"{self.source}\n{self.content}"
+        #return f"{self.source}\n{self.content}"

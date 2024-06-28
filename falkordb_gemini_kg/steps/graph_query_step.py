@@ -10,7 +10,7 @@ from falkordb_gemini_kg.fixtures.prompts import (
 import logging
 from falkordb_gemini_kg.helpers import (
     extract_cypher,
-    verify_cypher_labels,
+    validate_cypher,
     stringify_falkordb_response,
 )
 from falkordb import Graph
@@ -67,10 +67,10 @@ class GraphQueryGenerationStep(Step):
                 )
                 cypher = extract_cypher(cypher_statement_response.text)
                 logger.debug(f"Cypher: {cypher}")
-                is_valid = verify_cypher_labels(cypher, self.ontology)
+                validation_errors = validate_cypher(cypher, self.ontology)
                 # print(f"Is valid: {is_valid}")
-                if is_valid is not True:
-                    raise Exception(is_valid)
+                if validation_errors is not None:
+                    raise Exception(validation_errors)
 
                 if cypher is not None:
                     context = self.graph.query(cypher).result_set

@@ -8,6 +8,7 @@ The aim is to achieve simplicity and clarity in the knowledge graph, making it a
 Use the `attributes` field to capture additional information about nodes and edges. 
 Add as many attributes to nodes and edges as necessary to fully describe the entities and relationships in the text.
 Prefer to convert edges into nodes when they have attributes. For example, if an edge represents a relationship with attributes, convert it into a node with the attributes as properties.
+Create a very concise and clear ontology. Avoid unnecessary complexity and ambiguity in the ontology.
 
 ## 2. Labeling Nodes
 - **Consistency**: Ensure you use available types for node labels. Ensure you use basic or elementary types for node labels. For example, when you identify an entity representing a person, always label it as **'person'**. Avoid using more specific terms "like 'mathematician' or 'scientist'"
@@ -26,6 +27,8 @@ Do not create more than one node-edge pair for the same entity or relationship. 
 
 ## 5. Format
 The ontology should be in JSON format and should follow the schema provided below.
+Do not return the schema as a response, but use it only for reference.
+Make sure the output JSON is returned inline and with no spaces, so to save in the output tokens count.
 
 Schema:
 ```json
@@ -55,7 +58,7 @@ Schema:
             "items": {
               "type": "object",
               "title": "A Schema",
-              "required": ["name", "type", "unique"],
+              "required": ["name", "type", "unique", "required"],
               "properties": {
                 "name": {
                   "type": "string",
@@ -70,6 +73,10 @@ Schema:
                 "unique": {
                   "type": "boolean",
                   "title": "The unique Schema. Must have at least one unique attribute"
+                },
+                "required": {
+                  "type": "boolean",
+                  "title": "The required Schema. If the attribute is required, it cannot be null or empty"
                 }
               }
             }
@@ -124,17 +131,21 @@ Schema:
               "properties": {
                 "name": {
                   "type": "string",
-                  "title": "The name Schema",
+                  "title": "The name of the attribute",
                   "format": "snakecase"
                 },
                 "type": {
                   "type": "string",
                   "enum": ["string", "number", "boolean"],
-                  "title": "The type Schema"
+                  "title": "The type of the attribute"
                 },
                 "unique": {
                   "type": "boolean",
-                  "title": "The unique Schema"
+                  "title": "If the attribute is unique or not between different edges of the same label"
+                },
+                "required": {
+                  "type": "boolean",
+                  "title": "If the attribute is required or not"
                 }
               }
             }
@@ -147,59 +158,12 @@ Schema:
 ```
 
 For example:
-```json
-{
-  "nodes": [
-    {
-      "label": "Person",
-      "attributes": [
-        {
-          "name": "name",
-          "type": "string",
-          "unique": true
-        },
-        {
-          "name": "age",
-          "type": "number",
-          "unique": false
-        }
-      ]
-    },
-    {
-      "label": "Movie",
-      "attributes": [
-        {
-          "name": "title",
-          "type": "string",
-          "unique": true
-        },
-        {
-          "name": "releaseYear",
-          "type": "number",
-          "unique": false
-        }
-      ]
-    }
-  ],
-  "edges": [
-    {
-      "label": "ACTED_IN",
-      "source": {
-        "label": "Person"
-      },
-      "target": {
-        "label": "Movie"
-      },
-      "attributes": [
-        {
-          "name": "role",
-          "type": "string",
-          "unique": false
-        }
-      ]
-    }
-}
 ```
+{"nodes":[{"label":"Person","attributes":[{"name":"name","type":"string","unique":true,"required":true},{"name":"age","type":"number","unique":false,"unique":false}]},{"label":"Movie","attributes":[{"name":"title","type":"string","unique":true,"required":true},{"name":"releaseYear","type":"number","unique":false,"required":false}]}],"edges":[{"label":"ACTED_IN","source":{"label":"Person"},"target":{"label":"Movie"},"attributes":[{"name":"role","type":"string","unique":false,"required":true}]}}
+```
+
+Do not use the example Movie context to assume the ontology. The ontology should be created based on the provided text only.
+
 """
 
 CREATE_ONTOLOGY_PROMPT = """
@@ -212,6 +176,7 @@ Make sure to connect all related entities in the ontology. For example, if a Per
 
 Do not create relationships without their corresponding nodes.
 Do not allow duplicated inverse relationships, for example, if you have a relationship "OWNS" from Person to House, do not create another relationship "OWNED_BY" from House to Person.
+Do not use the example Movie context to assume the ontology. The ontology should be created based on the provided text only.
 
 Use the following instructions as boundaries for the ontology extraction process. 
 {boundaries}
@@ -230,6 +195,7 @@ Make sure to connect all related entities in the ontology. For example, if a Per
 
 Do not create relationships without their corresponding nodes.
 Do not allow duplicated inverse relationships, for example, if you have a relationship "OWNS" from Person to House, do not create another relationship "OWNED_BY" from House to Person.
+Do not use the example Movie context to assume the ontology. The ontology should be created based on the provided text only.
 
 Use the following instructions as boundaries for the ontology extraction process. 
 {boundaries}
@@ -252,6 +218,7 @@ Make sure all node labels are titlecase.
 Do not allow duplicated relationships, for example, if you have a relationship "OWNS" from Person to House, do not create another relationship "OWNS_HOUSE", or even "OWNED_BY" from House to Person.
 Relationship names must be timeless. For example "WROTE" and "WRITTEN" means the same thing, if the source and target nodes are the same. Remove similar scenarios.
 Do not create relationships without their corresponding nodes.
+Do not use the example Movie context to assume the ontology. The ontology should be created based on the provided text only.
 
 Ontology:
 {ontology}
@@ -262,11 +229,13 @@ EXTRACT_DATA_SYSTEM = """
 You are a top-tier assistant with the goal of extracting nodes and edges from text for a graph database, using the provided ontology.
 Use only the provided nodes, edge, and attributes in the ontology.
 Maintain Entity Consistency: When extracting entities, it's vital to ensure consistency. If an entity, such as "John Doe", is mentioned multiple times in the text but is referred to by different names or pronouns (e.g., "Joe", "he"), always use the most complete identifier for that entity throughout the knowledge graph. In this example, use "John Doe" as the entity ID. Remember, the knowledge graph should be coherent and easily understandable, so maintaining consistency in entity references is crucial.
+Maintain format consistency: Ensure that the format of the extracted data is consistent with the provided ontology and context, to facilitate queries. For example, dates should always be in the format "YYYY-MM-DD", names should be consistently spaced, and so on.
 Do not use any other nodes, edges, or attributes that are not provided in the ontology.
 Do not include any explanations or apologies in your responses.
 Do not respond to any questions that might ask anything else than data extraction.
 
 Your response should be in JSON format and should follow the schema provided below.
+Make sure the output JSON is returned inline and with no spaces, so to save in the output tokens count.
 
 Schema:
 ```json
@@ -354,46 +323,7 @@ Schema:
 ```
 
 For example:
-```json
-{
-  "nodes": [
-    {
-      "label": "Person",
-      "attributes": {
-        "name": "John Doe",
-        "age": 30
-      }
-    },
-    {
-      "label": "Movie",
-      "attributes": {
-        "title": "Inception",
-        "releaseYear": 2010
-      }
-    }
-  ],
-  "edges": [
-    {
-      "label": "ACTED_IN",
-      "source": {
-        "label": "Person",
-        "attributes": {
-          "name": "John Doe"
-        }
-      },
-      "target": {
-        "label": "Movie",
-        "attributes": {
-          "title": "Inception"
-        }
-      },
-      "attributes": {
-        "role": "Cobb"
-      }
-    }
-  ]
-}
-```
+```{"nodes":[{"label":"Person","attributes":{"name":"John Doe","age":30}},{"label":"Movie","attributes":{"title":"Inception","releaseYear":2010}}],"edges":[{"label":"ACTED_IN","source":{"label":"Person","attributes":{"name":"JohnDoe"}},"target":{"label":"Movie","attributes":{"title":"Inception"}},"attributes":{"role":"Cobb"}}]}```
 
 Ontology:
 #ONTOLOGY
@@ -406,11 +336,21 @@ Assign textual IDs whenever required.
 Use double quotes for string values.
 It's imperative that string values are properly escaped.
 All formats should be consistent, for example, dates should be in the format "YYYY-MM-DD".
+If needed, add the correct spacing for text fields, where the text is not properly formatted.
 
 Raw Text:
 {text}
 """
 
+FIX_JSON_PROMPT = """
+Given the following JSON, correct any mistakes or missing information in the JSON.
+
+The error when parsing the JSON is:
+{error}
+
+JSON:
+{json}
+"""
 
 CYPHER_GEN_SYSTEM = """
 Task: Generate OpenCypher statement to query a graph database.
