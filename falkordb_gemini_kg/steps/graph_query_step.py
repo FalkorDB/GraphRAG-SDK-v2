@@ -73,8 +73,10 @@ class GraphQueryGenerationStep(Step):
                     raise Exception(validation_errors)
 
                 if cypher is not None:
-                    context = self.graph.query(cypher).result_set
-                    context = stringify_falkordb_response(context)
+                    result_set = self.graph.query(cypher).result_set
+                    context = stringify_falkordb_response(result_set)
+                    logger.debug(f"Context size: {len(result_set)}")
+                    logger.debug(f"Context characters: {len(str(context))}")
 
                 return (context, cypher)
             except Exception as e:
