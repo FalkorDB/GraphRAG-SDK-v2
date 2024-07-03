@@ -1,6 +1,8 @@
 import re
 from falkordb_gemini_kg.classes.ontology import Ontology
+import logging
 
+logger = logging.getLogger(__name__)
 
 def extract_json(text: str):
     regex = r"(?:```)?(?:json)?([^`]*)(?:\\n)?(?:```)?"
@@ -67,7 +69,7 @@ def extract_cypher(text: str):
     return "".join(matches)
 
 
-def validate_cypher(cypher: str, ontology: Ontology) -> str | None:
+def validate_cypher(cypher: str, ontology: Ontology) -> list[str] | None:
     try:
         if not cypher or len(cypher) == 0:
             return "Cypher statement is empty"
@@ -84,7 +86,7 @@ def validate_cypher(cypher: str, ontology: Ontology) -> str | None:
         errors.extend(validate_cypher_edge_directions(cypher, ontology))
 
         if len(errors) > 0:
-            return "\n".join(errors)
+            return errors
 
         return None
     except Exception as e:
@@ -163,6 +165,9 @@ def validate_cypher_edge_directions(cypher: str, ontology: Ontology):
             if ontology_edge is None:
                 errors.append(f"Edge {edge_label} not found in ontology")
 
+            logger.debug(
+                f"ontology_edge: {ontology_edge}"
+            )
             if (
                 not ontology_edge.source.label == source_label
                 or not ontology_edge.target.label == target_label

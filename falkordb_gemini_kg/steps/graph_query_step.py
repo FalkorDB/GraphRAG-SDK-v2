@@ -42,7 +42,11 @@ class GraphQueryGenerationStep(Step):
             chat_session
             or GenerativeModel(
                 model_config.model,
-            generation_config=model_config.generation_config.to_generation_config() if model_config.generation_config is not None else None,
+                generation_config=(
+                    model_config.generation_config.to_generation_config()
+                    if model_config.generation_config is not None
+                    else None
+                ),
                 system_instruction=CYPHER_GEN_SYSTEM.replace(
                     "#ONTOLOGY", str(ontology.to_json())
                 ),
@@ -70,7 +74,7 @@ class GraphQueryGenerationStep(Step):
                 validation_errors = validate_cypher(cypher, self.ontology)
                 # print(f"Is valid: {is_valid}")
                 if validation_errors is not None:
-                    raise Exception(validation_errors)
+                    raise Exception("\n".join(validation_errors))
 
                 if cypher is not None:
                     result_set = self.graph.query(cypher).result_set
