@@ -5,7 +5,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-class _AttributeType:
+class AttributeType:
     STRING = "string"
     NUMBER = "number"
     BOOLEAN = "boolean"
@@ -13,15 +13,15 @@ class _AttributeType:
     @staticmethod
     def fromString(txt: str):
         if txt.isdigit():
-            return _AttributeType.NUMBER
+            return AttributeType.NUMBER
         elif txt.lower() in ["true", "false"]:
-            return _AttributeType.BOOLEAN
-        return _AttributeType.STRING
+            return AttributeType.BOOLEAN
+        return AttributeType.STRING
 
 
 class Attribute:
     def __init__(
-        self, name: str, attr_type: _AttributeType, unique: bool, required: bool = False
+        self, name: str, attr_type: AttributeType, unique: bool, required: bool = False
     ):
         self.name = name
         self.type = attr_type
@@ -32,9 +32,9 @@ class Attribute:
     def from_json(txt: str):
         txt = txt if isinstance(txt, dict) else json.loads(txt)
         if txt["type"] not in [
-            _AttributeType.STRING,
-            _AttributeType.NUMBER,
-            _AttributeType.BOOLEAN,
+            AttributeType.STRING,
+            AttributeType.NUMBER,
+            AttributeType.BOOLEAN,
         ]:
             raise Exception(f"Invalid attribute type: {txt['type']}")
         return Attribute(
@@ -52,9 +52,9 @@ class Attribute:
         required = "*" in txt
 
         if attr_type not in [
-            _AttributeType.STRING,
-            _AttributeType.NUMBER,
-            _AttributeType.BOOLEAN,
+            AttributeType.STRING,
+            AttributeType.NUMBER,
+            AttributeType.BOOLEAN,
         ]:
             raise Exception(f"Invalid attribute type: {attr_type}")
 

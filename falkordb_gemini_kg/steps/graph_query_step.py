@@ -1,7 +1,8 @@
 from falkordb_gemini_kg.steps.Step import Step
 from falkordb_gemini_kg.classes.ontology import Ontology
-from falkordb_gemini_kg.classes.model_config import StepModelConfig
-from vertexai.generative_models import GenerativeModel
+from falkordb_gemini_kg.models import (
+    GenerativeModelChatSession,
+)
 from falkordb_gemini_kg.fixtures.prompts import (
     CYPHER_GEN_SYSTEM,
     CYPHER_GEN_PROMPT,
@@ -28,30 +29,13 @@ class GraphQueryGenerationStep(Step):
         self,
         graph: Graph,
         ontology: Ontology,
-        model_config: StepModelConfig | None = None,
+        chat_session: GenerativeModelChatSession,
         config: dict = {},
-        chat_session: GenerativeModel | None = None,
     ) -> None:
-        assert chat_session is not None or (
-            model_config is not None
-        ), "Must provide either a chat session or model config"
         self.ontology = ontology
         self.config = config
         self.graph = graph
-        self.chat_session = (
-            chat_session
-            or GenerativeModel(
-                model_config.model,
-                generation_config=(
-                    model_config.generation_config.to_generation_config()
-                    if model_config.generation_config is not None
-                    else None
-                ),
-                system_instruction=CYPHER_GEN_SYSTEM.replace(
-                    "#ONTOLOGY", str(ontology.to_json())
-                ),
-            ).start_chat()
-        )
+        self.chat_session = chat_session
 
     def run(self, question: str, retries: int = 5):
         error = False
@@ -66,6 +50,7 @@ class GraphQueryGenerationStep(Step):
                         question=question, error=error
                     )
                 )
+                logger.debug(f"Cypher Prompt: {cypher_prompt}")
                 cypher_statement_response = self.chat_session.send_message(
                     cypher_prompt,
                 )
@@ -79,6 +64,7 @@ class GraphQueryGenerationStep(Step):
                 if cypher is not None:
                     result_set = self.graph.query(cypher).result_set
                     context = stringify_falkordb_response(result_set)
+                    logger.debug(f"Context: {context}")
                     logger.debug(f"Context size: {len(result_set)}")
                     logger.debug(f"Context characters: {len(str(context))}")
 
@@ -87,3 +73,5 @@ class GraphQueryGenerationStep(Step):
                 logger.debug(f"Error: {e}")
                 error = e
                 retries -= 1
+
+        raise Exception("Failed to generate Cypher query: " + str(error))

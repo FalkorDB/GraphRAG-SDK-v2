@@ -18,6 +18,7 @@ sqlalchemy = "^2.0.30"
 pypdf = "^4.2.0"
 vertexai = "^1.49.0"
 backoff = "^2.2.1"
+python-abc = "^0.2.0"
 
 [tool.poetry.group.test.dependencies]
 pytest = "^8.2.1"

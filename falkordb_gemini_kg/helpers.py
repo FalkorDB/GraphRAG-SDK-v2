@@ -165,9 +165,6 @@ def validate_cypher_edge_directions(cypher: str, ontology: Ontology):
             if ontology_edge is None:
                 errors.append(f"Edge {edge_label} not found in ontology")
 
-            logger.debug(
-                f"ontology_edge: {ontology_edge}"
-            )
             if (
                 not ontology_edge.source.label == source_label
                 or not ontology_edge.target.label == target_label

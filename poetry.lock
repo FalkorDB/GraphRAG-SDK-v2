@@ -1206,6 +1206,16 @@ pluggy = ">=1.5,<2.0"
 dev = ["argcomplete", "attrs (>=19.2)", "hypothesis (>=3.56)", "mock", "pygments (>=2.7.2)", "requests", "setuptools", "xmlschema"]
 
 [[package]]
+name = "python-abc"
+version = "0.2.0"
+description = "A python implementation of the ABC Software metric"
+optional = false
+python-versions = "*"
+files = [
+    {file = "python-abc-0.2.0.tar.gz", hash = "sha256:90017d09fbac7bde4b64b2c7e1b5d22da9055b64b821d1a2b4dc805b450b251a"},
+]
+
+[[package]]
 name = "python-dateutil"
 version = "2.9.0.post0"
 description = "Extensions to the standard Python datetime module"
@@ -1697,4 +1707,4 @@ xai = ["tensorflow (>=2.3.0,<3.0.0dev)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11.4"
-content-hash = "942341bb3e408c5eacf030255f70888c1f26c7f7e1f644b8dbefbd60cf5e2164"
+content-hash = "a1dcd3dbcbb28d2da127d142e40a500f46c3a06600b584c81e349f2c67a18cc5"

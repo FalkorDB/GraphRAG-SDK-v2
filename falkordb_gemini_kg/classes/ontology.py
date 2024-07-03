@@ -1,7 +1,7 @@
 import json
 from falkordb import Graph
 from falkordb_gemini_kg.classes.source import AbstractSource
-from falkordb_gemini_kg.classes.model_config import StepModelConfig
+from falkordb_gemini_kg.models import GenerativeModel
 import falkordb_gemini_kg
 import logging
 from .edge import Edge
@@ -19,12 +19,12 @@ class Ontology(object):
     def from_sources(
         sources: list[AbstractSource],
         boundaries: str,
-        model_config: StepModelConfig,
+        model: GenerativeModel,
     ) -> "Ontology":
         step = falkordb_gemini_kg.CreateOntologyStep(
             sources=sources,
             ontology=Ontology(),
-            model_config=model_config,
+            model=model,
         )
 
         return step.run(boundaries=boundaries)

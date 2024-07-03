@@ -2,14 +2,14 @@ from falkordb_gemini_kg.steps.Step import Step
 from falkordb_gemini_kg.classes.source import AbstractSource
 from concurrent.futures import Future, ThreadPoolExecutor, wait
 from falkordb_gemini_kg.classes.ontology import Ontology
-from falkordb_gemini_kg.classes.model_config import StepModelConfig
-from vertexai.generative_models import (
+from falkordb_gemini_kg.models import (
     GenerativeModel,
-    ChatSession,
-    ResponseValidationError,
+    GenerativeModelChatSession,
+    GenerativeModelConfig,
     GenerationResponse,
     FinishReason,
 )
+
 from falkordb_gemini_kg.fixtures.prompts import (
     EXTRACT_DATA_SYSTEM,
     EXTRACT_DATA_PROMPT,
@@ -38,7 +38,7 @@ class ExtractDataStep(Step):
         self,
         sources: list[AbstractSource],
         ontology: Ontology,
-        model_config: StepModelConfig,
+        model: GenerativeModel,
         graph: Graph,
         config: dict = {
             "max_workers": 16,
@@ -49,24 +49,16 @@ class ExtractDataStep(Step):
         self.sources = sources
         self.ontology = ontology
         self.config = config
-        self.model_config = model_config
+        self.model = model.with_system_instruction(
+            EXTRACT_DATA_SYSTEM.replace("#ONTOLOGY", str(self.ontology.to_json()))
+        )
         self.graph = graph
 
         if not os.path.exists("logs"):
             os.makedirs("logs")
 
     def _create_chat(self):
-        return GenerativeModel(
-            self.model_config.model,
-            generation_config=(
-                self.model_config.generation_config.to_generation_config()
-                if self.model_config.generation_config is not None
-                else None
-            ),
-            system_instruction=EXTRACT_DATA_SYSTEM.replace(
-                "#ONTOLOGY", str(self.ontology.to_json())
-            ),
-        ).start_chat(response_validation=False)
+        return self.model.start_chat({"response_validation": False})
 
     def run(self):
 
@@ -100,7 +92,7 @@ class ExtractDataStep(Step):
     def _process_source(
         self,
         task_id: str,
-        chat_session: ChatSession,
+        chat_session: GenerativeModelChatSession,
         document: Document,
         ontology: Ontology,
         graph: Graph,
@@ -135,7 +127,7 @@ class ExtractDataStep(Step):
             _task_logger.debug(f"Model response: {responses[response_idx]}")
 
             while (
-                responses[response_idx].candidates[0].finish_reason
+                responses[response_idx].finish_reason
                 == FinishReason.MAX_TOKENS
             ):
                 _task_logger.debug("Asking model to continue")
@@ -145,12 +137,12 @@ class ExtractDataStep(Step):
                     f"Model response after continue: {responses[response_idx].text}"
                 )
 
-            if responses[response_idx].candidates[0].finish_reason != FinishReason.STOP:
+            if responses[response_idx].finish_reason != FinishReason.STOP:
                 _task_logger.debug(
-                    f"Model stopped unexpectedly: {responses[response_idx].candidates[0].finish_reason}"
+                    f"Model stopped unexpectedly: {responses[response_idx].finish_reason}"
                 )
                 raise Exception(
-                    f"Model stopped unexpectedly: {responses[response_idx].candidates[0].finish_reason}"
+                    f"Model stopped unexpectedly: {responses[response_idx].finish_reason}"
                 )
 
             combined_text = " ".join([r.text for r in responses])
@@ -268,7 +260,7 @@ class ExtractDataStep(Step):
     @limits(calls=15, period=60)
     def _call_model(
         self,
-        chat_session: ChatSession,
+        chat_session: GenerativeModelChatSession,
         prompt: str,
         retry=6,
     ):

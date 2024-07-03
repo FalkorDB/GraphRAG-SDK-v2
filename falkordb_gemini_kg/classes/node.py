@@ -1,6 +1,6 @@
 import json
 import logging
-from .attribute import Attribute, _AttributeType
+from .attribute import Attribute, AttributeType
 from falkordb import Node as GraphNode
 
 logger = logging.getLogger(__name__)
@@ -18,7 +18,7 @@ class Node:
             [
                 Attribute(
                     attr,
-                    _AttributeType.fromString(node.properties[attr]),
+                    AttributeType.fromString(node.properties[attr]),
                     "!" in node.properties[attr],
                 )
                 for attr in node.properties

@@ -104,7 +104,7 @@ class KnowledgeGraph:
         step = ExtractDataStep(
             sources=list(sources),
             ontology=self.ontology,
-            model_config=self._model_config.extract_data,
+            model=self._model_config.extract_data,
             graph=self.graph,
         )
 
@@ -124,16 +124,18 @@ class KnowledgeGraph:
             >>> ans = kg.ask("List a few movies in which that actored played in", history)
         """
 
+        cypher_chat_session = self._model_config.cypher_generation.start_chat()
         cypher_step = GraphQueryGenerationStep(
             ontology=self.ontology,
-            model_config=self._model_config.cypher_generation,
+            chat_session=cypher_chat_session,
             graph=self.graph,
         )
 
         (context, cypher) = cypher_step.run(question)
 
+        qa_chat_session = self._model_config.qa.start_chat()
         qa_step = QAStep(
-            model_config=self._model_config.qa,
+            chat_session=qa_chat_session,
         )
 
         answer = qa_step.run(question, cypher, context)

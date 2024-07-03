@@ -1,7 +1,7 @@
 import json
 import re
 import logging
-from .attribute import Attribute, _AttributeType
+from .attribute import Attribute, AttributeType
 from falkordb import Node as GraphNode, Edge as GraphEdge
 from falkordb_gemini_kg.fixtures.regex import *
 
@@ -58,7 +58,7 @@ class Edge:
             [
                 Attribute(
                     attr,
-                    _AttributeType.fromString(edge.properties),
+                    AttributeType.fromString(edge.properties),
                     "!" in edge.properties[attr],
                     "*" in edge.properties[attr],
                 )
