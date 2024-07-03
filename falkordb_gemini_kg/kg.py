@@ -5,6 +5,7 @@ from falkordb_gemini_kg.classes.source import AbstractSource
 from falkordb_gemini_kg.classes.model_config import KnowledgeGraphModelConfig
 from falkordb_gemini_kg.steps.extract_data_step import ExtractDataStep
 from falkordb_gemini_kg.steps.graph_query_step import GraphQueryGenerationStep
+from falkordb_gemini_kg.fixtures.prompts import GRAPH_QA_SYSTEM, CYPHER_GEN_SYSTEM
 from falkordb_gemini_kg.steps.qa_step import QAStep
 from falkordb_gemini_kg.classes.ChatSession import ChatSession
 
@@ -124,7 +125,11 @@ class KnowledgeGraph:
             >>> ans = kg.ask("List a few movies in which that actored played in", history)
         """
 
-        cypher_chat_session = self._model_config.cypher_generation.start_chat()
+        cypher_chat_session = (
+            self._model_config.cypher_generation.with_system_instruction(
+                CYPHER_GEN_SYSTEM.replace("#ONTOLOGY", str(self.ontology.to_json())),
+            ).start_chat()
+        )
         cypher_step = GraphQueryGenerationStep(
             ontology=self.ontology,
             chat_session=cypher_chat_session,
@@ -133,7 +138,9 @@ class KnowledgeGraph:
 
         (context, cypher) = cypher_step.run(question)
 
-        qa_chat_session = self._model_config.qa.start_chat()
+        qa_chat_session = self._model_config.qa.with_system_instruction(
+            GRAPH_QA_SYSTEM
+        ).start_chat()
         qa_step = QAStep(
             chat_session=qa_chat_session,
         )

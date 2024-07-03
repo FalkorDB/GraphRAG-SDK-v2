@@ -7,7 +7,7 @@ from falkordb_gemini_kg.classes.edge import Edge
 from falkordb_gemini_kg.classes.attribute import Attribute, AttributeType
 import unittest
 from falkordb_gemini_kg.classes.source import Source
-from falkordb_gemini_kg.models.gemini import GeminiGenerativeModel
+from falkordb_gemini_kg.models.openai import OpenAiGenerativeModel
 from falkordb_gemini_kg import KnowledgeGraph, KnowledgeGraphModelConfig
 import vertexai
 import os
@@ -17,10 +17,8 @@ from falkordb import FalkorDB
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
-vertexai.init(project=os.getenv("PROJECT_ID"), location=os.getenv("REGION"))
 
-
-class TestKG(unittest.TestCase):
+class TestKGOpenAI(unittest.TestCase):
     """
     Test Knowledge Graph
     """
@@ -72,7 +70,7 @@ class TestKG(unittest.TestCase):
             )
         )
 
-        model = GeminiGenerativeModel(model_name="gemini-1.5-flash-001")
+        model = OpenAiGenerativeModel(model_name="gpt-3.5-turbo-0125")
         cls.kg = KnowledgeGraph(
             name="IMDB",
             ontology=cls.ontology,

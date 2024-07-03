@@ -21,6 +21,7 @@ backoff = "^2.2.1"
 python-abc = "^0.2.0"
 ratelimit = "^2.2.1"
 python-dotenv = "^1.0.1"
+openai = "^1.35.9"
 
 [tool.poetry.group.test.dependencies]
 pytest = "^8.2.1"
