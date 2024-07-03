@@ -1230,6 +1230,20 @@ files = [
 six = ">=1.5"
 
 [[package]]
+name = "python-dotenv"
+version = "1.0.1"
+description = "Read key-value pairs from a .env file and set them as environment variables"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "python-dotenv-1.0.1.tar.gz", hash = "sha256:e324ee90a023d808f1959c46bcbc04446a10ced277783dc6ee09987c37ec10ca"},
+    {file = "python_dotenv-1.0.1-py3-none-any.whl", hash = "sha256:f7b63ef50f1b690dddf550d03497b66d609393b40b564ed0d674909a68ebf16a"},
+]
+
+[package.extras]
+cli = ["click (>=5.0)"]
+
+[[package]]
 name = "pytz"
 version = "2024.1"
 description = "World timezone definitions, modern and historical"
@@ -1238,6 +1252,16 @@ python-versions = "*"
 files = [
     {file = "pytz-2024.1-py2.py3-none-any.whl", hash = "sha256:328171f4e3623139da4983451950b28e95ac706e13f3f2630a879749e7a8b319"},
     {file = "pytz-2024.1.tar.gz", hash = "sha256:2a29735ea9c18baf14b448846bde5a48030ed267578472d8955cd0e7443a9812"},
+]
+
+[[package]]
+name = "ratelimit"
+version = "2.2.1"
+description = "API rate limit decorator"
+optional = false
+python-versions = "*"
+files = [
+    {file = "ratelimit-2.2.1.tar.gz", hash = "sha256:af8a9b64b821529aca09ebaf6d8d279100d766f19e90b5059ac6a718ca6dee42"},
 ]
 
 [[package]]
@@ -1707,4 +1731,4 @@ xai = ["tensorflow (>=2.3.0,<3.0.0dev)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11.4"
-content-hash = "a1dcd3dbcbb28d2da127d142e40a500f46c3a06600b584c81e349f2c67a18cc5"
+content-hash = "ce0d4be4a2614e6cda568a2af1f0068532528e20f01163963cccb7f0f63851b4"
