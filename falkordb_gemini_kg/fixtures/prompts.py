@@ -441,3 +441,96 @@ Context: {context}
 Question: {question}
 
 Helpful Answer:"""
+
+
+
+ORCHESTRATOR_SYSTEM = """
+You are an orchestrator agent that manages the flow of information between different agent, in order to provide a complete and accurate answer to the user's question.
+You will receive a question that requires information from different agent to answer.
+You will need to interact with different agents to get the necessary information to answer the question.
+For that to happen in the most efficient way, you create an execution plan that will be performed by each agent.
+Once all the steps are completed, you will receive a summary of the execution plan to generate the final answer to the user's question.
+Do not include any explanations or apologies in your responses.
+Do not respond to any questions that might ask anything else than orchestrating the information flow.
+
+#AGENTS
+"""
+
+ORCHESTRATOR_EXECUTION_PLAN_PROMPT = """
+Considering the provided list of agents, create an execution plan to answer the following question:
+
+#QUESTION
+
+The execution plan should be valid in the following JSON schema.
+Do not include any explanations or apologies in your responses.
+Do not respond to any questions that might ask anything else than orchestrating the information flow.
+Only return the execution plan, enclosed in triple backticks.
+Do not skip lines in order to save tokens.
+
+```json
+{
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "string",
+      },
+      "block": {
+        "type": "string",
+        "enum": ["parallel", "prompt_agent", "summary"]
+      },
+      "properties": {
+        "type": "object",
+        "properties": {
+          "steps": {
+            "type": "array",
+            "description": "Steps to execute in parallel. Required if block is 'parallel'",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "Agent ID to execute"
+                },
+                "block": {
+                  "type": "string",
+                  "enum": ["prompt_agent"]
+                },
+                "agent": {
+                  "type": "string",
+                  "description": "Agent ID to prompt"
+                },
+                "prompt": {
+                  "type": "string",
+                  "description": "Text to prompt the agent"
+                }
+              },
+              "required": ["id", "block", "agent", "prompt"]
+            }
+          },
+          "agent": {
+            "type": "string",
+            "description": "Agent ID to prompt. Required if block is 'prompt_agent'"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Text to prompt the agent. Required if block is 'prompt_agent'"
+          }
+        }
+      }
+    },
+    "required": ["id", "block"]
+  }
+}
+```
+
+"""
+
+
+ORCHESTRATOR_SUMMARY_PROMPT = """
+Given the following execution plan and responses, generate the final answer to the user's question.
+
+#EXECUTION_PLAN
+
+"""
