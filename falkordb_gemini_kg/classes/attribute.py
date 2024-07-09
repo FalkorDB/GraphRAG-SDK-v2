@@ -1,6 +1,7 @@
 import json
 from falkordb_gemini_kg.fixtures.regex import *
 import logging
+import re
 
 logger = logging.getLogger(__name__)
 
@@ -23,7 +24,7 @@ class Attribute:
     def __init__(
         self, name: str, attr_type: AttributeType, unique: bool, required: bool = False
     ):
-        self.name = name
+        self.name = re.sub(r"([^a-zA-Z0-9_])", "_", name)
         self.type = attr_type
         self.unique = unique
         self.required = required
@@ -70,4 +71,3 @@ class Attribute:
 
     def __str__(self) -> str:
         return f"{self.name}: \"{self.type}{'!' if self.unique else ''}{'*' if self.required else ''}\""
-

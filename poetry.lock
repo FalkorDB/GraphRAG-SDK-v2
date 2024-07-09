@@ -281,6 +281,17 @@ files = [
 redis = ">=5.0.1,<6.0.0"
 
 [[package]]
+name = "fix-busted-json"
+version = "0.0.18"
+description = "Fixes broken JSON string objects"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "fix-busted-json-0.0.18.tar.gz", hash = "sha256:93c5dab7cae3b5d0b055f2c7043f9fe727a88a80d0be753c5f2c20bb9b69672f"},
+    {file = "fix_busted_json-0.0.18-py3-none-any.whl", hash = "sha256:fdce0e02c9a810b3aa28e1c3c32c24b21b44e89f6315ec25d2b963bd52a6ef03"},
+]
+
+[[package]]
 name = "google-api-core"
 version = "2.19.0"
 description = "Google API client core library"
@@ -1872,4 +1883,4 @@ xai = ["tensorflow (>=2.3.0,<3.0.0dev)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11.4"
-content-hash = "f4afb02d8a5f1042e2c2c170e4de0e4a25303a52e60b8396ca7dd87be1588a48"
+content-hash = "36e08a4df78f4d028fd6959b6a953096d9470c3f9b68d70b79b2b16c56c5aa5a"

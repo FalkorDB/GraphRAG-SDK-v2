@@ -60,13 +60,13 @@ class ExtractDataStep(Step):
     def _create_chat(self):
         return self.model.start_chat({"response_validation": False})
 
-    def run(self):
+    def run(self, instructions: str = None):
 
         tasks: list[Future[Ontology]] = []
         with ThreadPoolExecutor(max_workers=self.config["max_workers"]) as executor:
             # extract entities and relationships from each page
             documents = [
-                document
+                (document, source.instruction)
                 for source in self.sources
                 for document in source.load()
                 if document is not None
@@ -74,7 +74,7 @@ class ExtractDataStep(Step):
                 and len(document.content) > 0
             ]
             logger.debug(f"Processing {len(documents)} documents")
-            for document in documents:
+            for document, source_instructions in documents:
                 task_id = "extract_data_step_" + str(uuid4())
                 task = executor.submit(
                     self._process_source,
@@ -83,6 +83,8 @@ class ExtractDataStep(Step):
                     document,
                     self.ontology,
                     self.graph,
+                    source_instructions,
+                    instructions,
                 )
                 tasks.append(task)
 
@@ -96,6 +98,8 @@ class ExtractDataStep(Step):
         document: Document,
         ontology: Ontology,
         graph: Graph,
+        source_instructions: str = "",
+        instructions: str = "",
     ):
         try:
             _task_logger = logging.getLogger(task_id)
@@ -114,7 +118,15 @@ class ExtractDataStep(Step):
             logger.debug(f"Processing task: {task_id}")
             _task_logger.debug(f"Processing task: {task_id}")
             text = document.content[: self.config["max_input_tokens"]]
-            user_message = EXTRACT_DATA_PROMPT.format(text=text)
+            user_message = EXTRACT_DATA_PROMPT.format(
+                text=text,
+                instructions="\n".join(
+                    [
+                        source_instructions if source_instructions is not None else "",
+                        instructions if instructions is not None else "",
+                    ]
+                ),
+            )
 
             # logger.debug(f"User message: {user_message}")
             _task_logger.debug("User message: " + user_message.replace("\n", " "))
@@ -124,12 +136,9 @@ class ExtractDataStep(Step):
 
             responses.append(self._call_model(chat_session, user_message))
 
-            _task_logger.debug(f"Model response: {responses[response_idx]}")
+            _task_logger.debug(f"Model response: {responses[response_idx].text}")
 
-            while (
-                responses[response_idx].finish_reason
-                == FinishReason.MAX_TOKENS
-            ):
+            while responses[response_idx].finish_reason == FinishReason.MAX_TOKENS:
                 _task_logger.debug("Asking model to continue")
                 response_idx += 1
                 responses.append(self._call_model(chat_session, "continue"))
@@ -149,7 +158,7 @@ class ExtractDataStep(Step):
 
             try:
                 data = json.loads(extract_json(combined_text))
-            except json.decoder.JSONDecodeError as e:
+            except Exception as e:
                 _task_logger.debug(f"Error extracting JSON: {e}")
                 _task_logger.debug(f"Prompting model to fix JSON")
                 json_fix_response = self._call_model(
@@ -160,22 +169,26 @@ class ExtractDataStep(Step):
                 _task_logger.debug(f"Fixed JSON: {data}")
 
             if not "nodes" in data or not "edges" in data:
-                _task_logger.debug(f"Invalid data format: {data}")
-                raise Exception(f"Invalid data format: {data}")
-
+                _task_logger.debug(
+                    f"Invalid data format. Missing nodes or edges. {data}"
+                )
+                raise Exception(
+                    f"Invalid data format. Missing 'nodes' or 'edges' in JSON."
+                )
             for node in data["nodes"]:
                 try:
                     self._create_node(graph, node, ontology)
                 except Exception as e:
-                    logger.exception(e)
+                    _task_logger.error(f"Error creating node: {e}")
                     continue
 
             for edge in data["edges"]:
                 try:
                     self._create_edge(graph, edge, ontology)
                 except Exception as e:
-                    logger.exception(e)
+                    _task_logger.error(f"Error creating edge: {e}")
                     continue
+                
         except Exception as e:
             logger.exception(e)
             raise e
@@ -213,9 +226,9 @@ class ExtractDataStep(Step):
         return result
 
     def _create_edge(self, graph: Graph, args: dict, ontology: Ontology):
-        edge = ontology.get_edge_with_label(args["label"])
-        if edge is None:
-            print(f"Edge with label {args['label']} not found in ontology")
+        edges = ontology.get_edges_with_label(args["label"])
+        if len(edges) == 0:
+            print(f"Edges with label {args['label']} not found in ontology")
             return None
         source_unique_attributes = (
             args["source"]["attributes"]

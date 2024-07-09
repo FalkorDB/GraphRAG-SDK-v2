@@ -37,7 +37,7 @@ class OpenAiGenerativeModel(GenerativeModel):
             model=self.model_name,
             messages=[
                 {"role": "system", "content": self.system_instruction},
-                {"role": "user", "content": message},
+                {"role": "user", "content": message[:14385]},
             ],
             max_tokens=self.generation_config.max_output_tokens,
             temperature=self.generation_config.temperature,
@@ -78,7 +78,7 @@ class OpenAiChatSession(GenerativeModelChatSession):
     def send_message(self, message: str) -> GenerationResponse:
         prompt = []
         prompt.extend(self._history)
-        prompt.append({"role": "user", "content": message})
+        prompt.append({"role": "user", "content": message[:14385]})
         response = self._model.client.chat.completions.create(
             model=self._model.model_name,
             messages=prompt,

@@ -82,7 +82,7 @@ class KnowledgeGraph:
 
         return [s.source for s in self.sources]
 
-    def process_sources(self, sources: list[AbstractSource]) -> None:
+    def process_sources(self, sources: list[AbstractSource], instructions: str = None) -> None:
         """
         Add entities and relations found in sources into the knowledge-graph
 
@@ -94,13 +94,13 @@ class KnowledgeGraph:
             raise Exception("Ontology is not defined")
 
         # Create graph with sources
-        self._create_graph_with_sources(sources)
+        self._create_graph_with_sources(sources, instructions)
 
         # Add processed sources
         for src in sources:
             self.sources.add(src)
 
-    def _create_graph_with_sources(self, sources: list[AbstractSource] | None = None):
+    def _create_graph_with_sources(self, sources: list[AbstractSource] | None = None, instructions: str = None):
 
         step = ExtractDataStep(
             sources=list(sources),
@@ -109,7 +109,7 @@ class KnowledgeGraph:
             graph=self.graph,
         )
 
-        step.run()
+        step.run(instructions)
 
     def ask(self, question: str) -> str:
         """
@@ -137,6 +137,9 @@ class KnowledgeGraph:
         )
 
         (context, cypher) = cypher_step.run(question)
+
+        if not cypher or len(cypher) == 0:
+            return "I am sorry, I could not find the answer to your question"
 
         qa_chat_session = self._model_config.qa.with_system_instruction(
             GRAPH_QA_SYSTEM

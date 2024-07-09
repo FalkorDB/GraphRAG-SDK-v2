@@ -72,9 +72,11 @@ class TestKGGemini(unittest.TestCase):
             )
         )
 
+        cls.graph_name = "IMDB_gemini"
+
         model = GeminiGenerativeModel(model_name="gemini-1.5-flash-001")
         cls.kg = KnowledgeGraph(
-            name="IMDB",
+            name=cls.graph_name,
             ontology=cls.ontology,
             model_config=KnowledgeGraphModelConfig.with_model(model),
         )
@@ -99,4 +101,4 @@ class TestKGGemini(unittest.TestCase):
 
         db = FalkorDB()
         graphs = db.list_graphs()
-        self.assertNotIn("IMDB", graphs)
+        self.assertNotIn(self.graph_name, graphs)

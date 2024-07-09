@@ -54,8 +54,13 @@ class GraphQueryGenerationStep(Step):
                 cypher_statement_response = self.chat_session.send_message(
                     cypher_prompt,
                 )
+                logger.debug(f"Cypher Statement Response: {cypher_statement_response}")
                 cypher = extract_cypher(cypher_statement_response.text)
                 logger.debug(f"Cypher: {cypher}")
+
+                if not cypher or len(cypher) == 0:
+                    return (None, None)
+
                 validation_errors = validate_cypher(cypher, self.ontology)
                 # print(f"Is valid: {is_valid}")
                 if validation_errors is not None:

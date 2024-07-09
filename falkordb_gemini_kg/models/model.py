@@ -29,6 +29,9 @@ class GenerationResponse:
         self.text = text
         self.finish_reason = finish_reason
 
+    def __str__(self) -> str:
+        return f"GenerationResponse(text={self.text}, finish_reason={self.finish_reason})"
+
 
 class GenerativeModelChatSession(ABC):
 
