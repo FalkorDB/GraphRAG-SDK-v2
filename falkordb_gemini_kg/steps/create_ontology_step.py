@@ -74,7 +74,7 @@ class CreateOntologyStep(Step):
         for task in tasks:
             self.ontology = self.ontology.merge_with(task.result())
 
-        if len(self.ontology.nodes) == 0:
+        if len(self.ontology.entities) == 0:
             raise Exception("Failed to create ontology")
 
         self.ontology = self._fix_ontology(self._create_chat(), self.ontology)

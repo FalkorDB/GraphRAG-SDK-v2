@@ -7,32 +7,32 @@ logger = logging.getLogger(__name__)
 
 descriptionKey = "__description__"
 
-class Node:
+class Entity:
     def __init__(self, label: str, attributes: list[Attribute], description: str = ""):
         self.label = re.sub(r"([^a-zA-Z0-9_])", "", label)
         self.attributes = attributes
         self.description = description
 
     @staticmethod
-    def from_graph(node: GraphNode):
-        logger.debug(f"Node.from_graph: {node}")
-        return Node(
-            node.labels[0],
+    def from_graph(entity: GraphNode):
+        logger.debug(f"Entity.from_graph: {entity}")
+        return Entity(
+            entity.labels[0],
             [
                 Attribute(
                     attr,
-                    AttributeType.fromString(node.properties[attr]),
-                    "!" in node.properties[attr],
+                    AttributeType.fromString(entity.properties[attr]),
+                    "!" in entity.properties[attr],
                 )
-                for attr in node.properties if attr != descriptionKey
+                for attr in entity.properties if attr != descriptionKey
             ],
-            node.properties[descriptionKey] if descriptionKey in node.properties else "",
+            entity.properties[descriptionKey] if descriptionKey in entity.properties else "",
         )
 
     @staticmethod
     def from_json(txt: dict | str):
         txt = txt if isinstance(txt, dict) else json.loads(txt)
-        return Node(
+        return Entity(
             txt["label"],
             [
                 Attribute.from_json(attr)
@@ -48,14 +48,14 @@ class Node:
             "description": self.description,
         }
 
-    def combine(self, node2: "Node"):
-        """Overwrite attributes of self with attributes of node2."""
-        if self.label != node2.label:
-            raise Exception("Nodes must have the same label to be combined")
+    def combine(self, entity2: "Entity"):
+        """Overwrite attributes of self with attributes of entity2."""
+        if self.label != entity2.label:
+            raise Exception("Entities must have the same label to be combined")
 
-        for attr in node2.attributes:
+        for attr in entity2.attributes:
             if attr.name not in [a.name for a in self.attributes]:
-                logger.debug(f"Adding attribute {attr.name} to node {self.label}")
+                logger.debug(f"Adding attribute {attr.name} to entity {self.label}")
                 self.attributes.append(attr)
 
         return self

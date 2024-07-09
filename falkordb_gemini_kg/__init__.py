@@ -13,8 +13,8 @@ from .models.model import (
     GenerativeModelConfig,
     FinishReason,
 )
-from .classes.node import Node
-from .classes.edge import Edge
+from .classes.entity import Entity
+from .classes.relation import Relation
 from .classes.attribute import Attribute, AttributeType
 
 # Setup Null handler

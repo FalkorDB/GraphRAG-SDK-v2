@@ -168,38 +168,38 @@ class ExtractDataStep(Step):
                 data = json.loads(extract_json(json_fix_response.text))
                 _task_logger.debug(f"Fixed JSON: {data}")
 
-            if not "nodes" in data or not "edges" in data:
+            if not "entities" in data or not "relations" in data:
                 _task_logger.debug(
-                    f"Invalid data format. Missing nodes or edges. {data}"
+                    f"Invalid data format. Missing entities or relations. {data}"
                 )
                 raise Exception(
-                    f"Invalid data format. Missing 'nodes' or 'edges' in JSON."
+                    f"Invalid data format. Missing 'entities' or 'relations' in JSON."
                 )
-            for node in data["nodes"]:
+            for entity in data["entities"]:
                 try:
-                    self._create_node(graph, node, ontology)
+                    self._create_entity(graph, entity, ontology)
                 except Exception as e:
-                    _task_logger.error(f"Error creating node: {e}")
+                    _task_logger.error(f"Error creating entity: {e}")
                     continue
 
-            for edge in data["edges"]:
+            for relation in data["relations"]:
                 try:
-                    self._create_edge(graph, edge, ontology)
+                    self._create_relation(graph, relation, ontology)
                 except Exception as e:
-                    _task_logger.error(f"Error creating edge: {e}")
+                    _task_logger.error(f"Error creating relation: {e}")
                     continue
                 
         except Exception as e:
             logger.exception(e)
             raise e
 
-    def _create_node(self, graph: Graph, args: dict, ontology: Ontology):
-        # Get unique attributes from node
-        node = ontology.get_node_with_label(args["label"])
-        if node is None:
-            print(f"Node with label {args['label']} not found in ontology")
+    def _create_entity(self, graph: Graph, args: dict, ontology: Ontology):
+        # Get unique attributes from entity
+        entity = ontology.get_entity_with_label(args["label"])
+        if entity is None:
+            print(f"Entity with label {args['label']} not found in ontology")
             return None
-        unique_attributes_schema = [attr for attr in node.attributes if attr.unique]
+        unique_attributes_schema = [attr for attr in entity.attributes if attr.unique]
         unique_attributes = {
             attr.name: (
                 args["attributes"][attr.name] if attr.name in args["attributes"] else ""
@@ -209,7 +209,7 @@ class ExtractDataStep(Step):
         unique_attributes_text = map_dict_to_cypher_properties(unique_attributes)
         non_unique_attributes = {
             attr.name: args["attributes"][attr.name]
-            for attr in node.attributes
+            for attr in entity.attributes
             if not attr.unique and attr.name in args["attributes"]
         }
         non_unique_attributes_text = map_dict_to_cypher_properties(
@@ -225,10 +225,10 @@ class ExtractDataStep(Step):
         result = graph.query(query)
         return result
 
-    def _create_edge(self, graph: Graph, args: dict, ontology: Ontology):
-        edges = ontology.get_edges_with_label(args["label"])
-        if len(edges) == 0:
-            print(f"Edges with label {args['label']} not found in ontology")
+    def _create_relation(self, graph: Graph, args: dict, ontology: Ontology):
+        relations = ontology.get_relations_with_label(args["label"])
+        if len(relations) == 0:
+            print(f"Relations with label {args['label']} not found in ontology")
             return None
         source_unique_attributes = (
             args["source"]["attributes"]
@@ -248,13 +248,13 @@ class ExtractDataStep(Step):
             target_unique_attributes
         )
 
-        edge_attributes = (
+        relation_attributes = (
             map_dict_to_cypher_properties(args["attributes"])
             if "attributes" in args
             else {}
         )
         set_statement = (
-            f"SET r += {edge_attributes}"
+            f"SET r += {relation_attributes}"
             if "attributes" in args
             and len(
                 args["attributes"]

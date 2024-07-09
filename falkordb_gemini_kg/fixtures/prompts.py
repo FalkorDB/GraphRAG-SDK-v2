@@ -2,19 +2,19 @@ CREATE_ONTOLOGY_SYSTEM = """
 ## 1. Overview\n"
 You are a top-tier algorithm designed for extracting ontologies in structured formats to build a knowledge graph from raw texts.
 Capture as many entities, relationships, and attributes information from the text as possible. 
-- **Nodes** represent entities and concepts. Must have at least one unique attribute.
-- **Edges** represent relationships between entities and concepts.
+- **Entities** represent entities and concepts. Must have at least one unique attribute.
+- **Relations** represent relationships between entities and concepts.
 The aim is to achieve simplicity and clarity in the knowledge graph, making it accessible for a vast audience.
-Use the `attributes` field to capture additional information about nodes and edges. 
-Add as many attributes to nodes and edges as necessary to fully describe the entities and relationships in the text.
-Prefer to convert edges into nodes when they have attributes. For example, if an edge represents a relationship with attributes, convert it into a node with the attributes as properties.
+Use the `attributes` field to capture additional information about entities and relations. 
+Add as many attributes to entities and relations as necessary to fully describe the entities and relationships in the text.
+Prefer to convert relations into entities when they have attributes. For example, if an relation represents a relationship with attributes, convert it into a entity with the attributes as properties.
 Create a very concise and clear ontology. Avoid unnecessary complexity and ambiguity in the ontology.
-Node and edge labels cannot start with numbers or special characters.
+Entity and relation labels cannot start with numbers or special characters.
 
-## 2. Labeling Nodes
-- **Consistency**: Ensure you use available types for node labels. Ensure you use basic or elementary types for node labels. For example, when you identify an entity representing a person, always label it as **'person'**. Avoid using more specific terms "like 'mathematician' or 'scientist'"
-- **Node IDs**: Never utilize integers as node IDs. Node IDs should be names or human-readable identifiers found in the text.
-- **Edges** represent connections between entities or concepts. Ensure consistency and generality in relationship types when constructing knowledge graphs. Instead of using specific and momentary types such as 'BECAME_PROFESSOR', use more general and timeless relationship types like 'PROFESSOR'. Make sure to use general and timeless relationship types!
+## 2. Labeling Entities
+- **Consistency**: Ensure you use available types for entity labels. Ensure you use basic or elementary types for entity labels. For example, when you identify an entity representing a person, always label it as **'person'**. Avoid using more specific terms "like 'mathematician' or 'scientist'"
+- **Entity IDs**: Never utilize integers as entity IDs. Entity IDs should be names or human-readable identifiers found in the text.
+- **Relations** represent connections between entities or concepts. Ensure consistency and generality in relationship types when constructing knowledge graphs. Instead of using specific and momentary types such as 'BECAME_PROFESSOR', use more general and timeless relationship types like 'PROFESSOR'. Make sure to use general and timeless relationship types!
 
 ## 3. Coreference Resolution
 - **Maintain Entity Consistency**: When extracting entities, it's vital to ensure consistency. If an entity, such as "John Doe", is mentioned multiple times in the text but is referred to by different names or pronouns (e.g., "Joe", "he"), always use the most complete identifier for that entity throughout the knowledge graph. In this example, use "John Doe" as the entity ID. Remember, the knowledge graph should be coherent and easily understandable, so maintaining consistency in entity references is crucial.
@@ -24,7 +24,7 @@ Adhere to the rules strictly. Non-compliance will result in termination.
 Do not include any explanations or apologies in your responses.
 Do not respond to any questions that might ask anything else than ontology creation.
 Do not include any text except ontology.
-Do not create more than one node-edge pair for the same entity or relationship. For example: If we have the relationship (:Movie)-[:HAS]->(:Review), do not create another relationship such as (:Person)-[:REVIEWED]->(:Movie). Always prefer the most general and timeless relationship types, with the most attributes.
+Do not create more than one entity-relation pair for the same entity or relationship. For example: If we have the relationship (:Movie)-[:HAS]->(:Review), do not create another relationship such as (:Person)-[:REVIEWED]->(:Movie). Always prefer the most general and timeless relationship types, with the most attributes.
 
 ## 5. Format
 The ontology should be in JSON format and should follow the schema provided below.
@@ -38,11 +38,11 @@ Schema:
   "$id": "http://example.com/example.json",
   "type": "object",
   "title": "Graph Schema",
-  "required": ["nodes", "edges"],
+  "required": ["entities", "relations"],
   "properties": {
-    "nodes": {
+    "entities": {
       "type": "array",
-      "title": "The nodes Schema",
+      "title": "The entities Schema",
       "items": {
         "type": "object",
         "title": "A Schema",
@@ -85,9 +85,9 @@ Schema:
         }
       }
     },
-    "edges": {
+    "relations": {
       "type": "array",
-      "title": "The edges Schema",
+      "title": "The relations Schema",
       "items": {
         "type": "object",
         "title": "A Schema",
@@ -142,7 +142,7 @@ Schema:
                 },
                 "unique": {
                   "type": "boolean",
-                  "title": "If the attribute is unique or not between different edges of the same label"
+                  "title": "If the attribute is unique or not between different relations of the same label"
                 },
                 "required": {
                   "type": "boolean",
@@ -160,7 +160,7 @@ Schema:
 
 For example:
 ```
-{"nodes":[{"label":"Person","attributes":[{"name":"name","type":"string","unique":true,"required":true},{"name":"age","type":"number","unique":false,"unique":false}]},{"label":"Movie","attributes":[{"name":"title","type":"string","unique":true,"required":true},{"name":"releaseYear","type":"number","unique":false,"required":false}]}],"edges":[{"label":"ACTED_IN","source":{"label":"Person"},"target":{"label":"Movie"},"attributes":[{"name":"role","type":"string","unique":false,"required":true}]}}
+{"entities":[{"label":"Person","attributes":[{"name":"name","type":"string","unique":true,"required":true},{"name":"age","type":"number","unique":false,"unique":false}]},{"label":"Movie","attributes":[{"name":"title","type":"string","unique":true,"required":true},{"name":"releaseYear","type":"number","unique":false,"required":false}]}],"relations":[{"label":"ACTED_IN","source":{"label":"Person"},"target":{"label":"Movie"},"attributes":[{"name":"role","type":"string","unique":false,"required":true}]}}
 ```
 
 Do not use the example Movie context to assume the ontology. The ontology should be created based on the provided text only.
@@ -169,13 +169,13 @@ Do not use the example Movie context to assume the ontology. The ontology should
 
 CREATE_ONTOLOGY_PROMPT = """
 Given the following text, create the ontology that represents the entities and relationships in the data.
-Extract as many nodes and edges as possible to fully describe the data.
+Extract as many entities and relations as possible to fully describe the data.
 Extract as attributes as possible to fully describe the entities and relationships in the text.
-Attributes should be extracted as nodes or edges whenever possible. For example, when describing a Movie entity, the "director" attribute can be extracted as a node "Person" and connected to the "Movie" node with an edge labeled "DIRECTED".
+Attributes should be extracted as entities or relations whenever possible. For example, when describing a Movie entity, the "director" attribute can be extracted as a entity "Person" and connected to the "Movie" entity with an relation labeled "DIRECTED".
 For example, when describing a Movie entity, you can extract attributes like title, release year, genre, and more.
 Make sure to connect all related entities in the ontology. For example, if a Person PLAYED a Character in a Movie, make sure to connect the Character back to the Movie, otherwise we won't be able to say which Movie the Character is from.
 
-Do not create relationships without their corresponding nodes.
+Do not create relationships without their corresponding entities.
 Do not allow duplicated inverse relationships, for example, if you have a relationship "OWNS" from Person to House, do not create another relationship "OWNED_BY" from House to Person.
 Do not use the example Movie context to assume the ontology. The ontology should be created based on the provided text only.
 
@@ -188,13 +188,13 @@ Raw text:
 
 UPDATE_ONTOLOGY_PROMPT = """
 Given the following text and ontology update the ontology that represents the entities and relationships in the data.
-Extract as many nodes and edges as possible to fully describe the data.
+Extract as many entities and relations as possible to fully describe the data.
 Extract as many attributes as possible to fully describe the entities and relationships in the text.
-Attributes should be extracted as nodes or edges whenever possible. For example, when describing a Movie entity, the "director" attribute can be extracted as a node "Person" and connected to the "Movie" node with an edge labeled "DIRECTED".
+Attributes should be extracted as entities or relations whenever possible. For example, when describing a Movie entity, the "director" attribute can be extracted as a entity "Person" and connected to the "Movie" entity with an relation labeled "DIRECTED".
 For example, when describing a Movie entity, you can extract attributes like title, release year, genre, and more.
 Make sure to connect all related entities in the ontology. For example, if a Person PLAYED a Character in a Movie, make sure to connect the Character back to the Movie, otherwise we won't be able to say which Movie the Character is from.
 
-Do not create relationships without their corresponding nodes.
+Do not create relationships without their corresponding entities.
 Do not allow duplicated inverse relationships, for example, if you have a relationship "OWNS" from Person to House, do not create another relationship "OWNED_BY" from House to Person.
 Do not use the example Movie context to assume the ontology. The ontology should be created based on the provided text only.
 
@@ -210,15 +210,15 @@ Raw text:
 
 FIX_ONTOLOGY_PROMPT = """
 Given the following ontology, correct any mistakes or missing information in the ontology.
-Add any missing nodes, edges, or attributes to the ontology.
+Add any missing entities, relations, or attributes to the ontology.
 Make sure to connect all related entities in the ontology. For example, if a Person PLAYED a Character in a Movie, make sure to connect the Character back to the Movie, otherwise we won't be able to say which Movie the Character is from.
-Make sure each node contains at least one unique attribute. For example, a Person node should have a unique attribute like "name".
-Make sure all nodes have edges.
-Make sure all edges have 2 nodes (source and target).
-Make sure all node labels are titlecase.
+Make sure each entity contains at least one unique attribute. For example, a Person entity should have a unique attribute like "name".
+Make sure all entities have relations.
+Make sure all relations have 2 entities (source and target).
+Make sure all entity labels are titlecase.
 Do not allow duplicated relationships, for example, if you have a relationship "OWNS" from Person to House, do not create another relationship "OWNS_HOUSE", or even "OWNED_BY" from House to Person.
-Relationship names must be timeless. For example "WROTE" and "WRITTEN" means the same thing, if the source and target nodes are the same. Remove similar scenarios.
-Do not create relationships without their corresponding nodes.
+Relationship names must be timeless. For example "WROTE" and "WRITTEN" means the same thing, if the source and target entities are the same. Remove similar scenarios.
+Do not create relationships without their corresponding entities.
 Do not use the example Movie context to assume the ontology. The ontology should be created based on the provided text only.
 
 Ontology:
@@ -227,11 +227,11 @@ Ontology:
 
 
 EXTRACT_DATA_SYSTEM = """
-You are a top-tier assistant with the goal of extracting nodes and edges from text for a graph database, using the provided ontology.
-Use only the provided nodes, edge, and attributes in the ontology.
+You are a top-tier assistant with the goal of extracting entities and relations from text for a graph database, using the provided ontology.
+Use only the provided entities, relation, and attributes in the ontology.
 Maintain Entity Consistency: When extracting entities, it's vital to ensure consistency. If an entity, such as "John Doe", is mentioned multiple times in the text but is referred to by different names or pronouns (e.g., "Joe", "he"), always use the most complete identifier for that entity throughout the knowledge graph. In this example, use "John Doe" as the entity ID. Remember, the knowledge graph should be coherent and easily understandable, so maintaining consistency in entity references is crucial.
 Maintain format consistency: Ensure that the format of the extracted data is consistent with the provided ontology and context, to facilitate queries. For example, dates should always be in the format "YYYY-MM-DD", names should be consistently spaced, and so on.
-Do not use any other nodes, edges, or attributes that are not provided in the ontology.
+Do not use any other entities, relations, or attributes that are not provided in the ontology.
 Do not include any explanations or apologies in your responses.
 Do not respond to any questions that might ask anything else than data extraction.
 
@@ -245,11 +245,11 @@ Schema:
   "$id": "http://example.com/example.json",
   "type": "object",
   "title": "Graph Schema",
-  "required": ["nodes", "edges"],
+  "required": ["entities", "relations"],
   "properties": {
-    "nodes": {
+    "entities": {
       "type": "array",
-      "title": "The nodes Schema",
+      "title": "The entities Schema",
       "items": {
         "type": "object",
         "title": "A Schema",
@@ -267,9 +267,9 @@ Schema:
         }
       }
     },
-    "edges": {
+    "relations": {
       "type": "array",
-      "title": "The edges Schema",
+      "title": "The relations Schema",
       "items": {
         "type": "object",
         "title": "A Schema",
@@ -324,7 +324,7 @@ Schema:
 ```
 
 For example:
-```{"nodes":[{"label":"Person","attributes":{"name":"John Doe","age":30}},{"label":"Movie","attributes":{"title":"Inception","releaseYear":2010}}],"edges":[{"label":"ACTED_IN","source":{"label":"Person","attributes":{"name":"JohnDoe"}},"target":{"label":"Movie","attributes":{"title":"Inception"}},"attributes":{"role":"Cobb"}}]}```
+```{"entities":[{"label":"Person","attributes":{"name":"John Doe","age":30}},{"label":"Movie","attributes":{"title":"Inception","releaseYear":2010}}],"relations":[{"label":"ACTED_IN","source":{"label":"Person","attributes":{"name":"JohnDoe"}},"target":{"label":"Movie","attributes":{"title":"Inception"}},"attributes":{"role":"Cobb"}}]}```
 
 Ontology:
 #ONTOLOGY
@@ -360,26 +360,26 @@ CYPHER_GEN_SYSTEM = """
 Task: Generate OpenCypher statement to query a graph database.
 
 Instructions:
-Use only the provided nodes, relationships types and properties in the ontology.
+Use only the provided entities, relationships types and properties in the ontology.
 The output must be only a valid OpenCypher statement.
 Respect the order of the relationships, the arrows should always point from the "start" to the "end".
-Respect the types of nodes of every relationship, according to the ontology.
-The OpenCypher statement must return all the relevant nodes, not just the attributes requested.
-The output of the OpenCypher statement will be passed to another model to answer the question, hence, make sure the OpenCypher statement returns all relevant nodes, relationships, and attributes.
-If the answer required multiple nodes, return all the nodes, edges, relationships, and their attributes.
+Respect the types of entities of every relationship, according to the ontology.
+The OpenCypher statement must return all the relevant entities, not just the attributes requested.
+The output of the OpenCypher statement will be passed to another model to answer the question, hence, make sure the OpenCypher statement returns all relevant entities, relationships, and attributes.
+If the answer required multiple entities, return all the entities, relations, relationships, and their attributes.
 If you cannot generate a OpenCypher statement based on the provided ontology, explain the reason to the user.
 For String comparison, use the `CONTAINS` operator.
 Do not use any other relationship types or properties that are not provided.
 Do not respond to any questions that might ask anything else than for you to construct a OpenCypher statement.
 Do not include any text except the generated OpenCypher statement, enclosed in triple backticks.
 Do not include any explanations or apologies in your responses.
-Do not return just the attributes requested in the question, but all related nodes, edges, relationships, and attributes.
+Do not return just the attributes requested in the question, but all related entities, relations, relationships, and attributes.
 Do not change the order of the relationships, the arrows should always point from the "start" to the "end".
 
 The following instructions describe extra functions that can be used in the OpenCypher statement:
 
-Match: Describes relationships between entities using ASCII art patterns. Nodes are represented by parentheses and relationships by brackets. Both can have aliases and labels.
-Variable length relationships: Find nodes a variable number of hops away using -[:TYPE*minHops..maxHops]->.
+Match: Describes relationships between entities using ASCII art patterns. Entities are represented by parentheses and relationships by brackets. Both can have aliases and labels.
+Variable length relationships: Find entities a variable number of hops away using -[:TYPE*minHops..maxHops]->.
 Bidirectional path traversal: Specify relationship direction or omit it for either direction.
 Named paths: Assign a path in a MATCH clause to a single alias for future use.
 Shortest paths: Find all shortest paths between two entities using allShortestPaths().
@@ -399,7 +399,7 @@ RETURN m, s
 """
 
 CYPHER_GEN_PROMPT = """
-Using the ontology provided, generate an OpenCypher statement to query the graph database returning all relevant nodes, relationships, and attributes to answer the question below:
+Using the ontology provided, generate an OpenCypher statement to query the graph database returning all relevant entities, relationships, and attributes to answer the question below:
 If you cannot generate a OpenCypher statement for any reason, return an empty string.
 Respect the order of the relationships, the arrows should always point from the "source" to the "target".
 
@@ -412,7 +412,7 @@ The Cypher statement above failed with the following error:
 "{error}"
 
 Try to generate a new valid OpenCypher statement.
-Use only the provided nodes, relationships types and properties in the ontology.
+Use only the provided entities, relationships types and properties in the ontology.
 The output must be only a valid OpenCypher statement.
 Do not include any apologies or other texts, except the generated OpenCypher statement, enclosed in triple backticks.
 
