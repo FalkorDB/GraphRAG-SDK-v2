@@ -1,14 +1,16 @@
 import re
-from falkordb_gemini_kg.classes.ontology import Ontology
+import falkordb_gemini_kg
 import logging
+from fix_busted_json import repair_json
 
 logger = logging.getLogger(__name__)
+
 
 def extract_json(text: str):
     regex = r"(?:```)?(?:json)?([^`]*)(?:\\n)?(?:```)?"
     matches = re.findall(regex, text, re.DOTALL)
 
-    return "".join(matches)
+    return repair_json("".join(matches))
 
 
 def map_dict_to_cypher_properties(d: dict):
@@ -69,10 +71,12 @@ def extract_cypher(text: str):
     return "".join(matches)
 
 
-def validate_cypher(cypher: str, ontology: Ontology) -> list[str] | None:
+def validate_cypher(
+    cypher: str, ontology: falkordb_gemini_kg.Ontology
+) -> list[str] | None:
     try:
         if not cypher or len(cypher) == 0:
-            return "Cypher statement is empty"
+            return ["Cypher statement is empty"]
 
         errors = []
 
@@ -94,7 +98,7 @@ def validate_cypher(cypher: str, ontology: Ontology) -> list[str] | None:
         return None
 
 
-def validate_cypher_nodes_exist(cypher: str, ontology: Ontology):
+def validate_cypher_nodes_exist(cypher: str, ontology: falkordb_gemini_kg.Ontology):
     # Check if nodes exist in ontology
     not_found_node_labels = []
     node_labels = re.findall(r"\(:(.*?)\)", cypher)
@@ -107,7 +111,7 @@ def validate_cypher_nodes_exist(cypher: str, ontology: Ontology):
     return [f"Node {label} not found in ontology" for label in not_found_node_labels]
 
 
-def validate_cypher_edges_exist(cypher: str, ontology: Ontology):
+def validate_cypher_edges_exist(cypher: str, ontology: falkordb_gemini_kg.Ontology):
     # Check if edges exist in ontology
     not_found_edge_labels = []
     edge_labels = re.findall(r"\[:(.*?)\]", cypher)
@@ -120,7 +124,7 @@ def validate_cypher_edges_exist(cypher: str, ontology: Ontology):
     return [f"Edge {label} not found in ontology" for label in not_found_edge_labels]
 
 
-def validate_cypher_edge_directions(cypher: str, ontology: Ontology):
+def validate_cypher_edge_directions(cypher: str, ontology: falkordb_gemini_kg.Ontology):
 
     errors = []
     edges = list(re.finditer(r"\[.*?\]", cypher))
@@ -160,22 +164,37 @@ def validate_cypher_edge_directions(cypher: str, ontology: Ontology):
             source_label = re.search(r"(?:\:)([^\)\{]+)", source).group(1).strip()
             target_label = re.search(r"(?:\:)([^\)\{]+)", target).group(1).strip()
 
-            ontology_edge = ontology.get_edge_with_label(edge_label)
+            ontology_edges = ontology.get_edges_with_label(edge_label)
 
-            if ontology_edge is None:
+            if len(ontology_edges) == 0:
                 errors.append(f"Edge {edge_label} not found in ontology")
 
-            if (
-                not ontology_edge.source.label == source_label
-                or not ontology_edge.target.label == target_label
-            ):
+            found_edge = False
+            for ontology_edge in ontology_edges:
+                if (
+                    ontology_edge.source.label == source_label
+                    and ontology_edge.target.label == target_label
+                ):
+                    found_edge = True
+                    break
+
+            if not found_edge:
                 errors.append(
-                    f"Edge {edge_label} has a mismatched source or target. Make sure the edge direction is correct. The edge should connect {ontology_edge.source.label} to {ontology_edge.target.label}."
+                    """
+                    Edge {edge_label} does not connect {source_label} to {target_label}. Make sure the edge direction is correct. 
+                    Valid edges: 
+                    {valid_edges}
+""".format(
+                        edge_label=edge_label,
+                        source_label=source_label,
+                        target_label=target_label,
+                        valid_edges="\n".join([str(e) for e in ontology_edges]),
+                    )
                 )
 
             i += 1
         except Exception as e:
-            errors.append(str(e))
+            # errors.append(str(e))
             continue
 
     return errors

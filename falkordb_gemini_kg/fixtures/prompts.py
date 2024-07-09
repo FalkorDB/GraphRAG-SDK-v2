@@ -9,6 +9,7 @@ Use the `attributes` field to capture additional information about nodes and edg
 Add as many attributes to nodes and edges as necessary to fully describe the entities and relationships in the text.
 Prefer to convert edges into nodes when they have attributes. For example, if an edge represents a relationship with attributes, convert it into a node with the attributes as properties.
 Create a very concise and clear ontology. Avoid unnecessary complexity and ambiguity in the ontology.
+Node and edge labels cannot start with numbers or special characters.
 
 ## 2. Labeling Nodes
 - **Consistency**: Ensure you use available types for node labels. Ensure you use basic or elementary types for node labels. For example, when you identify an entity representing a person, always label it as **'person'**. Avoid using more specific terms "like 'mathematician' or 'scientist'"
@@ -338,6 +339,9 @@ It's imperative that string values are properly escaped.
 All formats should be consistent, for example, dates should be in the format "YYYY-MM-DD".
 If needed, add the correct spacing for text fields, where the text is not properly formatted.
 
+User instructions:
+{instructions}
+
 Raw Text:
 {text}
 """
@@ -410,7 +414,7 @@ The Cypher statement above failed with the following error:
 Try to generate a new valid OpenCypher statement.
 Use only the provided nodes, relationships types and properties in the ontology.
 The output must be only a valid OpenCypher statement.
-Do not include any text except the generated OpenCypher statement, enclosed in triple backticks.
+Do not include any apologies or other texts, except the generated OpenCypher statement, enclosed in triple backticks.
 
 Question: {question}
 """

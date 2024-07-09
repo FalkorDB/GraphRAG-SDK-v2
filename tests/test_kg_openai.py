@@ -69,10 +69,10 @@ class TestKGOpenAI(unittest.TestCase):
                 ],
             )
         )
-
+        cls.graph_name = "IMDB_openai"
         model = OpenAiGenerativeModel(model_name="gpt-3.5-turbo-0125")
         cls.kg = KnowledgeGraph(
-            name="IMDB",
+            name=cls.graph_name,
             ontology=cls.ontology,
             model_config=KnowledgeGraphModelConfig.with_model(model),
         )
@@ -97,4 +97,4 @@ class TestKGOpenAI(unittest.TestCase):
 
         db = FalkorDB()
         graphs = db.list_graphs()
-        self.assertNotIn("IMDB", graphs)
+        self.assertNotIn(self.graph_name, graphs)

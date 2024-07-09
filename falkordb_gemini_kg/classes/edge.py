@@ -7,14 +7,15 @@ from falkordb_gemini_kg.fixtures.regex import *
 
 logger = logging.getLogger(__name__)
 
+
 class _EdgeNode:
     def __init__(self, label: str):
-        self.label = label
+        self.label = re.sub(r"([^a-zA-Z0-9_])", "", label)
 
     @staticmethod
     def from_json(txt: str):
         txt = txt if isinstance(txt, dict) else json.loads(txt)
-        return _EdgeNode(txt["label"])
+        return _EdgeNode(txt["label"] if "label" in txt else txt)
 
     def to_json(self):
         return {"label": self.label}
@@ -28,22 +29,21 @@ class Edge:
         self,
         label: str,
         source: _EdgeNode | str,
-        target: _EdgeNode | str, 
+        target: _EdgeNode | str,
         attributes: list[Attribute],
     ):
-        
+
         if isinstance(source, str):
             source = _EdgeNode(source)
         if isinstance(target, str):
             target = _EdgeNode(target)
-        
+
         assert isinstance(label, str), "Label must be a string"
         assert isinstance(source, _EdgeNode), "Source must be an EdgeNode"
         assert isinstance(target, _EdgeNode), "Target must be an EdgeNode"
         assert isinstance(attributes, list), "Attributes must be a list"
 
-
-        self.label = label
+        self.label = re.sub(r"([^a-zA-Z0-9_])", "", label.upper())
         self.source = source
         self.target = target
         self.attributes = attributes

@@ -146,8 +146,8 @@ The following nodes do not have unique attributes:
     def get_node_with_label(self, label: str):
         return next((n for n in self.nodes if n.label == label), None)
 
-    def get_edge_with_label(self, label: str):
-        return next((e for e in self.edges if e.label == label), None)
+    def get_edges_with_label(self, label: str):
+        return [e for e in self.edges if e.label == label]
 
     def has_node_with_label(self, label: str):
         return any(n.label == label for n in self.nodes)

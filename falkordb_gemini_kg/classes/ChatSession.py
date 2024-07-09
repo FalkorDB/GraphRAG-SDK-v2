@@ -46,6 +46,9 @@ class ChatSession:
 
         (context, cypher) = cypher_step.run(message)
 
+        if not cypher or len(cypher) == 0:
+            return "I am sorry, I could not find the answer to your question"
+
         qa_step = QAStep(
             chat_session=self.qa_chat_session,
         )
