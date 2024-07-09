@@ -8,6 +8,8 @@ from falkordb_gemini_kg.steps.graph_query_step import GraphQueryGenerationStep
 from falkordb_gemini_kg.fixtures.prompts import GRAPH_QA_SYSTEM, CYPHER_GEN_SYSTEM
 from falkordb_gemini_kg.steps.qa_step import QAStep
 from falkordb_gemini_kg.classes.ChatSession import ChatSession
+from falkordb_gemini_kg.helpers import map_dict_to_cypher_properties
+from falkordb_gemini_kg.classes.attribute import AttributeType, Attribute
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -82,7 +84,9 @@ class KnowledgeGraph:
 
         return [s.source for s in self.sources]
 
-    def process_sources(self, sources: list[AbstractSource], instructions: str = None) -> None:
+    def process_sources(
+        self, sources: list[AbstractSource], instructions: str = None
+    ) -> None:
         """
         Add entities and relations found in sources into the knowledge-graph
 
@@ -100,7 +104,9 @@ class KnowledgeGraph:
         for src in sources:
             self.sources.add(src)
 
-    def _create_graph_with_sources(self, sources: list[AbstractSource] | None = None, instructions: str = None):
+    def _create_graph_with_sources(
+        self, sources: list[AbstractSource] | None = None, instructions: str = None
+    ):
 
         step = ExtractDataStep(
             sources=list(sources),
@@ -170,3 +176,107 @@ class KnowledgeGraph:
 
     def chat_session(self) -> ChatSession:
         return ChatSession(self._model_config, self.ontology, self.graph)
+
+    def add_node(self, entity: str, attributes: dict):
+        """
+        Add a node to the knowledge graph, checking if it matches the ontology
+
+        Parameters:
+            label (str): label of the node
+            attributes (dict): node attributes
+        """
+
+        self._validate_entity(entity, attributes)
+
+        # Add node to graph
+        self.graph.query(
+            f"CREATE (n:{entity} {map_dict_to_cypher_properties(attributes)})"
+        )
+
+    def add_edge(
+        self,
+        relation: str,
+        source: str,
+        target: str,
+        source_attr: dict = {},
+        target_attr: dict = {},
+        attributes: dict = {},
+    ):
+        """
+        Add an edge to the knowledge graph, checking if it matches the ontology
+
+        Parameters:
+            relation (str): relation label
+            source (str): source entity label
+            target (str): target entity label
+            source_attr (dict): source entity attributes
+            target_attr (dict): target entity attributes
+            attributes (dict): relation attributes
+        """
+        self._validate_relation(
+            relation, source, target, source_attr, target_attr, attributes
+        )
+
+        # Add relation to graph
+        self.graph.query(
+            f"CREATE (n:{source} {map_dict_to_cypher_properties(source_attr)})-[r:{relation} {map_dict_to_cypher_properties(attributes)}]->(m:{target} {map_dict_to_cypher_properties(target_attr)})"
+        )
+
+    def _validate_entity(self, entity: str, attributes: str):
+        ontology_entity = self.ontology.get_entity_with_label(entity)
+
+        if ontology_entity is None:
+            raise Exception(f"Entity {entity} not found in ontology")
+
+        self._validate_attributes_dict(attributes, ontology_entity.attributes)
+
+    def _validate_relation(
+        self,
+        relation: str,
+        source: str,
+        target: str,
+        source_attr: dict,
+        target_attr: dict,
+        attributes: dict,
+    ):
+        ontology_relations = self.ontology.get_relations_with_label(relation)
+
+        found_relation = [
+            relation
+            for relation in ontology_relations
+            if relation.source.label == source and relation.target.label == target
+        ]
+        if len(ontology_relations) == 0 or len(found_relation) == 0:
+            raise Exception(f"Relation {relation} not found in ontology")
+
+        self._validate_attributes_dict(attributes, found_relation[0].attributes)
+
+        self._validate_entity(source, source_attr)
+        self._validate_entity(target, target_attr)
+
+    def _validate_attributes_dict(
+        self, attr_dict: dict, attributes_list: list[Attribute]
+    ):
+        # validate attributes
+        for attr in attributes_list:
+            if attr.name not in attr_dict:
+                if attr.required:
+                    raise Exception(f"Attribute {attr.name} is required")
+
+        for attr in attr_dict.keys():
+            valid_attr = [a for a in attributes_list if a.name == attr]
+            if len(valid_attr) == 0:
+                raise Exception(f"Invalid attribute {attr}")
+            valid_attr = valid_attr[0]
+
+            if valid_attr.type == AttributeType.STRING:
+                if not isinstance(attr_dict[attr], str):
+                    raise Exception(f"Attribute {attr} should be a string")
+            elif valid_attr.type == AttributeType.NUMBER:
+                if not isinstance(attr_dict[attr], int) and not isinstance(
+                    attr_dict[attr], float
+                ):
+                    raise Exception(f"Attribute {attr} should be an number")
+            elif valid_attr.type == AttributeType.BOOLEAN:
+                if not isinstance(attr_dict[attr], bool):
+                    raise Exception(f"Attribute {attr} should be a boolean")
