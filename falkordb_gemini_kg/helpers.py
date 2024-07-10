@@ -6,11 +6,17 @@ from fix_busted_json import repair_json
 logger = logging.getLogger(__name__)
 
 
-def extract_json(text: str):
+def extract_json(text: str | dict) -> str:
+    if not isinstance(text, str):
+        text = str(text)
     regex = r"(?:```)?(?:json)?([^`]*)(?:\\n)?(?:```)?"
     matches = re.findall(regex, text, re.DOTALL)
 
-    return repair_json("".join(matches))
+    try:
+        return repair_json("".join(matches))
+    except Exception as e:
+        logger.error(f"Failed to repair JSON: {e}")
+        return "".join(matches)
 
 
 def map_dict_to_cypher_properties(d: dict):
@@ -143,15 +149,17 @@ def validate_cypher_edge_directions(cypher: str, ontology: falkordb_gemini_kg.On
                 if prev_edge
                 else cypher[: edge.start()]
             )
-            rel_before = re.search(r"([^\)\]]+)", before[::-1]).group(0)[::-1]
+            if "," in before:
+                before = before.split(",")[-1]
+            rel_before = re.search(r"([^\)\],]+)", before[::-1]).group(0)[::-1]
             after = (
                 cypher[edge.end() : next_edge.start()]
                 if next_edge
                 else cypher[edge.end() :]
             )
-            rel_after = re.search(r"([^\(\[]+)", after).group(0)
+            rel_after = re.search(r"([^\(\[,]+)", after).group(0)
             node_before = re.search(r"\(.+:(.*?)\)", before).group(0)
-            node_after = re.search(r"\(([^\)]+)(\)?)", after).group(0)
+            node_after = re.search(r"\(([^\),]+)(\)?)", after).group(0)
             if rel_before == "-" and rel_after == "->":
                 source = node_before
                 target = node_after

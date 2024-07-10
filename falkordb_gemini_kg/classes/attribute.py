@@ -30,7 +30,7 @@ class Attribute:
         self.required = required
 
     @staticmethod
-    def from_json(txt: str):
+    def from_json(txt: str | dict):
         txt = txt if isinstance(txt, dict) else json.loads(txt)
         if txt["type"] not in [
             AttributeType.STRING,
