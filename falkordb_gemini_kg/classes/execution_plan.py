@@ -17,19 +17,24 @@ class StepBlockType:
 
 
 class PromptAgentProperties:
-    agent_id: str
+    agent: str
     prompt: str
     response: str | None = None
+
+    def __init__(self, agent: str, prompt: str, response: str | None = None):
+        self.agent = agent
+        self.prompt = prompt
+        self.response = response
 
     @staticmethod
     def from_json(json: dict) -> "PromptAgentProperties":
         return PromptAgentProperties(
-            json["agent_id"], json["prompt"], json.get("response", None)
+            json["agent"], json["prompt"], json.get("response", None)
         )
 
     def to_json(self) -> dict:
         return {
-            "agent_id": self.agent_id,
+            "agent": self.agent,
             "prompt": self.prompt,
             "response": self.response,
         }
@@ -37,6 +42,9 @@ class PromptAgentProperties:
 
 class ParallelProperties:
     steps: list["PlanStep"]
+
+    def __init__(self, steps: list["PlanStep"]):
+        self.steps = steps
 
     @staticmethod
     def from_json(json: dict) -> "ParallelProperties":
@@ -51,6 +59,16 @@ class PlanStep:
     block: StepBlockType
     properties: PromptAgentProperties | ParallelProperties
 
+    def __init__(
+        self,
+        id: str,
+        block: StepBlockType,
+        properties: PromptAgentProperties | ParallelProperties,
+    ):
+        self.id = id
+        self.block = block
+        self.properties = properties
+
     @staticmethod
     def from_json(json: dict) -> "PlanStep":
         block = StepBlockType.from_str(json["block"])
@@ -58,6 +76,8 @@ class PlanStep:
             properties = PromptAgentProperties.from_json(json["properties"])
         elif block == StepBlockType.PARALLEL:
             properties = ParallelProperties.from_json(json["properties"])
+        elif block == StepBlockType.SUMMARY:
+            properties = None
         else:
             raise ValueError(f"Unknown block type: {block}")
         return PlanStep(json["id"], block, properties)
@@ -66,22 +86,25 @@ class PlanStep:
         return {
             "id": self.id,
             "block": self.block,
-            "properties": self.properties.to_json(),
+            "properties": self.properties.to_json() if self.properties else None,
         }
 
 
 class ExecutionPlan:
 
-    _steps = []
+    steps = []
+
+    def __init__(self, steps: list[PlanStep]):
+        self.steps = steps
 
     @staticmethod
     def from_json(json: str | dict) -> "ExecutionPlan":
         if isinstance(json, str):
             json = loads(json)
-        return ExecutionPlan([PlanStep.from_json(step) for step in json["steps"]])
+        return ExecutionPlan([PlanStep.from_json(step) for step in json])
 
     def find_step(self, step_id: str) -> PlanStep:
-        for step in self._steps:
+        for step in self.steps:
             if step.id == step_id:
                 return step
             if step.block == StepBlockType.PARALLEL:
@@ -91,4 +114,7 @@ class ExecutionPlan:
         raise ValueError(f"Step with id {step_id} not found")
 
     def to_json(self) -> dict:
-        return {"steps": [step.to_json() for step in self._steps]}
+        return {"steps": [step.to_json() for step in self.steps]}
+
+    def __str__(self) -> str:
+        return f"ExecutionPlan(steps={self.to_json()})"

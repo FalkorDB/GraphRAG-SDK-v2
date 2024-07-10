@@ -1,5 +1,5 @@
 from falkordb_gemini_kg.models import GenerativeModel
-from falkordb_gemini_kg.classes.agent import Agent
+from falkordb_gemini_kg.agents import Agent
 from falkordb_gemini_kg.classes.orchestrator_runner import OrchestratorRunner
 from falkordb_gemini_kg.fixtures.prompts import (
     ORCHESTRATOR_SYSTEM,
@@ -11,6 +11,9 @@ from falkordb_gemini_kg.classes.execution_plan import (
     PlanStep,
     StepBlockType,
 )
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class Orchestrator:
@@ -43,6 +46,10 @@ class Orchestrator:
             ORCHESTRATOR_EXECUTION_PLAN_PROMPT.replace("#QUESTION", question)
         )
 
-        plan = ExecutionPlan.from_json(extract_json(response))
+        logger.debug(f"Execution plan response: {response.text}")
+
+        plan = ExecutionPlan.from_json(extract_json(response.text))
+
+        logger.debug(f"Execution plan: {plan}")
 
         return plan

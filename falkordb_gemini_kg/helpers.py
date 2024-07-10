@@ -10,8 +10,10 @@ def extract_json(text: str):
     regex = r"(?:```)?(?:json)?([^`]*)(?:\\n)?(?:```)?"
     matches = re.findall(regex, text, re.DOTALL)
 
-    return repair_json("".join(matches))
-
+    try:
+        return repair_json("".join(matches))
+    except Exception as e:
+        return "".join(matches)
 
 def map_dict_to_cypher_properties(d: dict):
     cypher = "{"

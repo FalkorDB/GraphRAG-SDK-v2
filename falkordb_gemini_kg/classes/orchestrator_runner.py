@@ -1,12 +1,16 @@
-from falkordb_gemini_kg.classes.agent import Agent
+from falkordb_gemini_kg.agents import Agent
 from falkordb_gemini_kg.models import GenerativeModelChatSession
 from falkordb_gemini_kg.classes.execution_plan import (
     ExecutionPlan,
     PlanStep,
     StepBlockType,
 )
+from falkordb_gemini_kg.models.model import GenerationResponse
 from concurrent.futures import ThreadPoolExecutor, wait
 from falkordb_gemini_kg.fixtures.prompts import ORCHESTRATOR_SUMMARY_PROMPT
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class OrchestratorRunner:
@@ -25,31 +29,38 @@ class OrchestratorRunner:
         self._plan = plan
         self._config = config
 
-    def _run(self):
-        for step in self._plan.steps:
+    def run(self) -> GenerationResponse:
+        for step in self._plan.steps[:-1]:
             self._run_step(step)
 
-        return self._run_summary()
+        return self._run_step(self._plan.steps[-1])
 
     def _run_summary(self):
+        logger.debug(f"Execution plan summary: {self._plan.to_json()}")
         return self._chat.send_message(
-            ORCHESTRATOR_SUMMARY_PROMPT.replace("#EXECUTION_PLAN", self._plan.to_json())
+            ORCHESTRATOR_SUMMARY_PROMPT.replace(
+                "#EXECUTION_PLAN", str(self._plan.to_json())
+            )
         )
 
-    def _run_step(self, step: PlanStep):
+    def _run_step(self, step: PlanStep) -> GenerationResponse:
         if step.block == StepBlockType.PROMPT_AGENT:
             return self._run_prompt_agent(step)
         elif step.block == StepBlockType.PARALLEL:
-            return self._run_parallel(step)
+            self._run_parallel(step)
+            return None
+        elif step.block == StepBlockType.SUMMARY:
+            return self._run_summary()
         else:
             raise ValueError(f"Unknown block type: {step.block}")
 
     def _run_prompt_agent(self, step: PlanStep):
         agent = next(
-            agent for agent in self._agents if agent.id == step.properties.agent_id
+            agent for agent in self._agents if agent.agent_id == step.properties.agent
         )
-        response = agent.ask(step.properties.prompt)
+        response = agent.run(step.properties.to_json())
         step.properties.response = response
+        return response
 
     def _run_parallel(self, step: PlanStep):
         tasks = []

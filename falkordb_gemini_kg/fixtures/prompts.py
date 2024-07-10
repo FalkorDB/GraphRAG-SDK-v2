@@ -470,6 +470,7 @@ Do not include any explanations or apologies in your responses.
 Do not respond to any questions that might ask anything else than orchestrating the information flow.
 Only return the execution plan, enclosed in triple backticks.
 Do not skip lines in order to save tokens.
+Make sure to use the parallel block whenever possible to execute the agents in parallel.
 
 ```json
 {
@@ -501,16 +502,22 @@ Do not skip lines in order to save tokens.
                   "type": "string",
                   "enum": ["prompt_agent"]
                 },
-                "agent": {
-                  "type": "string",
-                  "description": "Agent ID to prompt"
-                },
-                "prompt": {
-                  "type": "string",
-                  "description": "Text to prompt the agent"
+                "properties": {
+                  "type": "object",
+                  "properties": {
+                    "agent": {
+                      "type": "string",
+                      "description": "Agent ID to prompt"
+                    },
+                    "prompt": {
+                      "type": "string",
+                      "description": "Text to prompt the agent"
+                    }
+                  },
+                  "required": ["agent", "prompt"]
                 }
               },
-              "required": ["id", "block", "agent", "prompt"]
+              "required": ["id", "block", "properties"]
             }
           },
           "agent": {

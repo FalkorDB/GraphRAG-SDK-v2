@@ -190,7 +190,7 @@ class KnowledgeGraph:
 
         # Add node to graph
         self.graph.query(
-            f"CREATE (n:{entity} {map_dict_to_cypher_properties(attributes)})"
+            f"MERGE (n:{entity} {map_dict_to_cypher_properties(attributes)})"
         )
 
     def add_edge(
@@ -219,7 +219,7 @@ class KnowledgeGraph:
 
         # Add relation to graph
         self.graph.query(
-            f"CREATE (n:{source} {map_dict_to_cypher_properties(source_attr)})-[r:{relation} {map_dict_to_cypher_properties(attributes)}]->(m:{target} {map_dict_to_cypher_properties(target_attr)})"
+            f"MATCH (s:{source} {map_dict_to_cypher_properties(source_attr)}) MATCH (t:{target} {map_dict_to_cypher_properties(target_attr)}) MERGE (s)-[r:{relation} {map_dict_to_cypher_properties(attributes)}]->(t)"
         )
 
     def _validate_entity(self, entity: str, attributes: str):
@@ -260,7 +260,7 @@ class KnowledgeGraph:
         # validate attributes
         for attr in attributes_list:
             if attr.name not in attr_dict:
-                if attr.required:
+                if attr.required or attr.unique:
                     raise Exception(f"Attribute {attr.name} is required")
 
         for attr in attr_dict.keys():

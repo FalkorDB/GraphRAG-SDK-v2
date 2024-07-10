@@ -30,7 +30,7 @@ class Relation:
         label: str,
         source: _RelationEntity | str,
         target: _RelationEntity | str,
-        attributes: list[Attribute],
+        attributes: list[Attribute] = [],
     ):
 
         if isinstance(source, str):
