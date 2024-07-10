@@ -6,14 +6,18 @@ from fix_busted_json import repair_json
 logger = logging.getLogger(__name__)
 
 
-def extract_json(text: str):
+def extract_json(text: str | dict) -> str:
+    if not isinstance(text, str):
+        text = str(text)
     regex = r"(?:```)?(?:json)?([^`]*)(?:\\n)?(?:```)?"
     matches = re.findall(regex, text, re.DOTALL)
 
     try:
         return repair_json("".join(matches))
     except Exception as e:
+        logger.error(f"Failed to repair JSON: {e}")
         return "".join(matches)
+
 
 def map_dict_to_cypher_properties(d: dict):
     cypher = "{"
@@ -145,15 +149,17 @@ def validate_cypher_relation_directions(cypher: str, ontology: falkordb_gemini_k
                 if prev_relation
                 else cypher[: relation.start()]
             )
-            rel_before = re.search(r"([^\)\]]+)", before[::-1]).group(0)[::-1]
+            if "," in before:
+                before = before.split(",")[-1]
+            rel_before = re.search(r"([^\)\],]+)", before[::-1]).group(0)[::-1]
             after = (
                 cypher[relation.end() : next_relation.start()]
                 if next_relation
                 else cypher[relation.end() :]
             )
-            rel_after = re.search(r"([^\(\[]+)", after).group(0)
+            rel_after = re.search(r"([^\(\[,]+)", after).group(0)
             entity_before = re.search(r"\(.+:(.*?)\)", before).group(0)
-            entity_after = re.search(r"\(([^\)]+)(\)?)", after).group(0)
+            entity_after = re.search(r"\(([^\),]+)(\)?)", after).group(0)
             if rel_before == "-" and rel_after == "->":
                 source = entity_before
                 target = entity_after
