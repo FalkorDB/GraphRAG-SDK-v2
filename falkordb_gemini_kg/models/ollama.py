@@ -1,24 +1,26 @@
 from .model import *
-from openai import OpenAI, completions
+from ollama import Client, Options
 
 
-class OpenAiGenerativeModel(GenerativeModel):
+class OllamaGenerativeModel(GenerativeModel):
 
-    client: OpenAI = None
+    client: Client = None
 
     def __init__(
         self,
         model_name: str,
         generation_config: GenerativeModelConfig | None = None,
         system_instruction: str | None = None,
+        host: str = None,
     ):
         self.model_name = model_name
         self.generation_config = generation_config
         self.system_instruction = system_instruction
+        self._host = host
 
-    def _get_model(self) -> OpenAI:
+    def _get_model(self) -> Client:
         if self.client is None:
-            self.client = OpenAI()
+            self.client = Client(host=self._host)
 
         return self.client
 
@@ -30,43 +32,36 @@ class OpenAiGenerativeModel(GenerativeModel):
         return self
 
     def start_chat(self, args: dict | None = None) -> GenerativeModelChatSession:
-        return OpenAiChatSession(self, args)
+        return OllamaChatSession(self, args)
 
     def ask(self, message: str) -> GenerationResponse:
-        response = self.client.chat.completions.create(
+        response = self.client.chat(
             model=self.model_name,
             messages=[
                 {"role": "system", "content": self.system_instruction},
                 {"role": "user", "content": message[:14385]},
             ],
-            max_tokens=self.generation_config.max_output_tokens,
-            temperature=self.generation_config.temperature,
-            top_p=self.generation_config.top_p,
-            top_k=self.generation_config.top_k,
-            stop=self.generation_config.stop_sequences,
+            options=Options(
+                temperature=self.generation_config.temperature,
+                top_p=self.generation_config.top_p,
+                top_k=self.generation_config.top_k,
+                stop=self.generation_config.stop_sequences,
+            ),
         )
         return self.parse_generate_content_response(response)
 
     def parse_generate_content_response(self, response: any) -> GenerationResponse:
+        print(response)
         return GenerationResponse(
-            text=response.choices[0].message.content,
-            finish_reason=(
-                FinishReason.STOP
-                if response.choices[0].finish_reason == "stop"
-                else (
-                    FinishReason.MAX_TOKENS
-                    if response.choices[0].finish_reason == "length"
-                    else FinishReason.OTHER
-                )
-            ),
+            text=response["message"]["content"], finish_reason=FinishReason.STOP
         )
 
 
-class OpenAiChatSession(GenerativeModelChatSession):
+class OllamaChatSession(GenerativeModelChatSession):
 
     _history = []
 
-    def __init__(self, model: OpenAiGenerativeModel, args: dict | None = None):
+    def __init__(self, model: OllamaGenerativeModel, args: dict | None = None):
         self._model = model
         self._args = args
         self._history = (
@@ -79,28 +74,26 @@ class OpenAiChatSession(GenerativeModelChatSession):
         prompt = []
         prompt.extend(self._history)
         prompt.append({"role": "user", "content": message[:14385]})
-        response = self._model.client.chat.completions.create(
+        print("OLLAMA chat prompt: " + str(prompt))
+        response = self._model.client.chat(
             model=self._model.model_name,
             messages=prompt,
-            max_tokens=(
-                self._model.generation_config.max_output_tokens
-                if self._model.generation_config is not None
-                else None
-            ),
-            temperature=(
-                self._model.generation_config.temperature
-                if self._model.generation_config is not None
-                else None
-            ),
-            top_p=(
-                self._model.generation_config.top_p
-                if self._model.generation_config is not None
-                else None
-            ),
-            stop=(
-                self._model.generation_config.stop_sequences
-                if self._model.generation_config is not None
-                else None
+            options=Options(
+                temperature=(
+                    self._model.generation_config.temperature
+                    if self._model.generation_config is not None
+                    else None
+                ),
+                top_p=(
+                    self._model.generation_config.top_p
+                    if self._model.generation_config is not None
+                    else None
+                ),
+                stop=(
+                    self._model.generation_config.stop_sequences
+                    if self._model.generation_config is not None
+                    else None
+                ),
             ),
         )
         content = self._model.parse_generate_content_response(response)

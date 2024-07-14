@@ -7,7 +7,7 @@ from falkordb_gemini_kg.classes.edge import Edge
 from falkordb_gemini_kg.classes.attribute import Attribute, AttributeType
 import unittest
 from falkordb_gemini_kg.classes.source import Source
-from falkordb_gemini_kg.models.openai import OpenAiGenerativeModel
+from falkordb_gemini_kg.models.ollama import OllamaGenerativeModel
 from falkordb_gemini_kg import KnowledgeGraph, KnowledgeGraphModelConfig
 import os
 import logging
@@ -16,8 +16,7 @@ from falkordb import FalkorDB
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
-
-class TestKGOpenAI(unittest.TestCase):
+class TestKGOllama(unittest.TestCase):
     """
     Test Knowledge Graph
     """
@@ -68,8 +67,10 @@ class TestKGOpenAI(unittest.TestCase):
                 ],
             )
         )
-        cls.graph_name = "IMDB_openai"
-        model = OpenAiGenerativeModel(model_name="gpt-3.5-turbo-0125")
+
+        cls.graph_name = "IMDB_ollama"
+
+        model = OllamaGenerativeModel(model_name="llama3")
         cls.kg = KnowledgeGraph(
             name=cls.graph_name,
             ontology=cls.ontology,
