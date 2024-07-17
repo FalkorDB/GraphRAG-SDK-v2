@@ -29,6 +29,8 @@ def Source(path: str, instruction: str | None = None) -> "AbstractSource":
         s = URL(path)
     elif ".csv" in path.lower():
         s = CSV(path)
+    elif ".jsonl" in path.lower():
+        s = JSONL(path)
     else:
         s = TEXT(path)
 
@@ -109,3 +111,12 @@ class CSV(AbstractSource):
     def __init__(self, path, rows_per_document: int = 50):
         super().__init__(path)
         self.loader = CSVLoader(self.path, rows_per_document)
+
+class JSONL(AbstractSource):
+    """
+    JSONL resource
+    """
+
+    def __init__(self, path, rows_per_document: int = 50):
+        super().__init__(path)
+        self.loader = JSONLLoader(self.path, rows_per_document)

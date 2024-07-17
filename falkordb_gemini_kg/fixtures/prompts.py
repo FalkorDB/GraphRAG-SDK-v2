@@ -25,6 +25,7 @@ Do not include any explanations or apologies in your responses.
 Do not respond to any questions that might ask anything else than ontology creation.
 Do not include any text except ontology.
 Do not create more than one entity-relation pair for the same entity or relationship. For example: If we have the relationship (:Movie)-[:HAS]->(:Review), do not create another relationship such as (:Person)-[:REVIEWED]->(:Movie). Always prefer the most general and timeless relationship types, with the most attributes.
+Do not create an entity without an unique attribute. Each entity should have at least one unique attribute.
 
 ## 5. Format
 The ontology should be in JSON format and should follow the schema provided below.
@@ -178,6 +179,7 @@ Make sure to connect all related entities in the ontology. For example, if a Per
 Do not create relationships without their corresponding entities.
 Do not allow duplicated inverse relationships, for example, if you have a relationship "OWNS" from Person to House, do not create another relationship "OWNED_BY" from House to Person.
 Do not use the example Movie context to assume the ontology. The ontology should be created based on the provided text only.
+Do not create an entity without an unique attribute. Each entity should have at least one unique attribute.
 
 Use the following instructions as boundaries for the ontology extraction process. 
 {boundaries}
@@ -212,7 +214,7 @@ FIX_ONTOLOGY_PROMPT = """
 Given the following ontology, correct any mistakes or missing information in the ontology.
 Add any missing entities, relations, or attributes to the ontology.
 Make sure to connect all related entities in the ontology. For example, if a Person PLAYED a Character in a Movie, make sure to connect the Character back to the Movie, otherwise we won't be able to say which Movie the Character is from.
-Make sure each entity contains at least one unique attribute. For example, a Person entity should have a unique attribute like "name".
+Make sure each entity contains at least one unique attribute.
 Make sure all entities have relations.
 Make sure all relations have 2 entities (source and target).
 Make sure all entity labels are titlecase.
@@ -220,6 +222,7 @@ Do not allow duplicated relationships, for example, if you have a relationship "
 Relationship names must be timeless. For example "WROTE" and "WRITTEN" means the same thing, if the source and target entities are the same. Remove similar scenarios.
 Do not create relationships without their corresponding entities.
 Do not use the example Movie context to assume the ontology. The ontology should be created based on the provided text only.
+Do not allow entities without at least one unique attribute.
 
 Ontology:
 {ontology}
@@ -432,7 +435,6 @@ Question: Which managers own Neo4j stocks?
 Context:[manager:CTL LLC, manager:JANE STREET GROUP LLC]
 Helpful Answer: CTL LLC, JANE STREET GROUP LLC owns Neo4j stocks.
 
-If the provided information is empty, say that you don't know the answer.
 """
 
 GRAPH_QA_PROMPT = """
