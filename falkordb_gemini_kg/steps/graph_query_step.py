@@ -30,10 +30,10 @@ class GraphQueryGenerationStep(Step):
         graph: Graph,
         ontology: Ontology,
         chat_session: GenerativeModelChatSession,
-        config: dict = {},
+        config: dict = None,
     ) -> None:
         self.ontology = ontology
-        self.config = config
+        self.config = config or {}
         self.graph = graph
         self.chat_session = chat_session
 

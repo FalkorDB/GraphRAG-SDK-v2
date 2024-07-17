@@ -9,8 +9,6 @@ import unittest
 from falkordb_gemini_kg.classes.source import Source
 from falkordb_gemini_kg.models.openai import OpenAiGenerativeModel
 from falkordb_gemini_kg import KnowledgeGraph, KnowledgeGraphModelConfig
-import vertexai
-import os
 import logging
 from falkordb import FalkorDB
 

@@ -1,6 +1,3 @@
-from falkordb_gemini_kg.kg import KnowledgeGraph
-
-
 class Agent(object):
 
     @property
@@ -12,7 +9,7 @@ class Agent(object):
         pass
 
     @property
-    def _schema(self) -> list[dict]:
+    def schema(self) -> list[dict]:
         pass
 
     def run(self, params: dict):

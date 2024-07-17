@@ -3,9 +3,11 @@ import logging
 from .attribute import Attribute, AttributeType
 from falkordb import Node as GraphNode
 import re
+
 logger = logging.getLogger(__name__)
 
 descriptionKey = "__description__"
+
 
 class Entity:
     def __init__(self, label: str, attributes: list[Attribute], description: str = ""):
@@ -24,9 +26,10 @@ class Entity:
                     AttributeType.fromString(entity.properties[attr]),
                     "!" in entity.properties[attr],
                 )
-                for attr in entity.properties if attr != descriptionKey
+                for attr in entity.properties
+                if attr != descriptionKey
             ],
-            entity.properties[descriptionKey] if descriptionKey in entity.properties else "",
+            entity.properties.get(descriptionKey, ""),
         )
 
     @staticmethod
@@ -34,11 +37,8 @@ class Entity:
         txt = txt if isinstance(txt, dict) else json.loads(txt)
         return Entity(
             txt["label"],
-            [
-                Attribute.from_json(attr)
-                for attr in (txt["attributes"] if "attributes" in txt else [])
-            ],
-            txt["description"] if "description" in txt else "",
+            [Attribute.from_json(attr) for attr in (txt.get("attributes", []))],
+            txt.get("description", ""),
         )
 
     def to_json(self):

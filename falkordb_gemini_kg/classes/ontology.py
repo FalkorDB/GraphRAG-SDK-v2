@@ -11,9 +11,9 @@ logger = logging.getLogger(__name__)
 
 
 class Ontology(object):
-    def __init__(self, entities: list[Entity] = [], relations: list[Relation] = []):
-        self.entities = entities
-        self.relations = relations
+    def __init__(self, entities: list[Entity] = None, relations: list[Relation] = None):
+        self.entities = entities or []
+        self.relations = relations or []
 
     @staticmethod
     def from_sources(
@@ -46,7 +46,9 @@ class Ontology(object):
             ontology.add_entity(Entity.from_graph(entity[0]))
 
         for relation in graph.query("MATCH ()-[r]->() RETURN r").result_set:
-            ontology.add_relation(Relation.from_graph(relation[0], [x for xs in entities for x in xs]))
+            ontology.add_relation(
+                Relation.from_graph(relation[0], [x for xs in entities for x in xs])
+            )
 
         return ontology
 
@@ -93,13 +95,18 @@ class Ontology(object):
             for entity in self.entities
             if all(
                 [
-                    relation.source.label != entity.label and relation.target.label != entity.label
+                    relation.source.label != entity.label
+                    and relation.target.label != entity.label
                     for relation in self.relations
                 ]
             )
         ]
 
-        self.entities = [entity for entity in self.entities if entity.label not in entities_to_discard]
+        self.entities = [
+            entity
+            for entity in self.entities
+            if entity.label not in entities_to_discard
+        ]
         self.relations = [
             relation
             for relation in self.relations
@@ -120,7 +127,11 @@ class Ontology(object):
             or relation.target.label not in [entity.label for entity in self.entities]
         ]
 
-        self.relations = [relation for relation in self.relations if relation.label not in relations_to_discard]
+        self.relations = [
+            relation
+            for relation in self.relations
+            if relation.label not in relations_to_discard
+        ]
 
         if len(relations_to_discard) > 0:
             logger.info(f"Discarded relations: {', '.join(relations_to_discard)}")
@@ -130,7 +141,9 @@ class Ontology(object):
     def validate_entities(self):
         # Check for entities without unique attributes
         entities_without_unique_attributes = [
-            entity.label for entity in self.entities if len(entity.get_unique_attributes()) == 0
+            entity.label
+            for entity in self.entities
+            if len(entity.get_unique_attributes()) == 0
         ]
         if len(entities_without_unique_attributes) > 0:
             logger.warn(

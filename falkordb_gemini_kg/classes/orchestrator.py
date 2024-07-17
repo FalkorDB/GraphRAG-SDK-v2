@@ -8,8 +8,6 @@ from falkordb_gemini_kg.fixtures.prompts import (
 from falkordb_gemini_kg.helpers import extract_json
 from falkordb_gemini_kg.classes.execution_plan import (
     ExecutionPlan,
-    PlanStep,
-    StepBlockType,
 )
 import logging
 
@@ -31,7 +29,8 @@ class Orchestrator:
 
         self._chat = self._model.with_system_instruction(
             ORCHESTRATOR_SYSTEM.replace(
-                "#AGENTS", ",".join([agent.to_orchestrator() for agent in self._agents])
+                "#AGENTS",
+                ",".join([agent.to_orchestrator() for agent in self._agents]),
             )
         ).start_chat({"response_validation": False})
 
@@ -42,14 +41,18 @@ class Orchestrator:
         return runner
 
     def _create_execution_plan(self, question: str):
-        response = self._chat.send_message(
-            ORCHESTRATOR_EXECUTION_PLAN_PROMPT.replace("#QUESTION", question)
-        )
+        try:
+            response = self._chat.send_message(
+                ORCHESTRATOR_EXECUTION_PLAN_PROMPT.replace("#QUESTION", question)
+            )
 
-        logger.debug(f"Execution plan response: {response.text}")
+            logger.debug(f"Execution plan response: {response.text}")
 
-        plan = ExecutionPlan.from_json(extract_json(response.text))
+            plan = ExecutionPlan.from_json(extract_json(response.text))
 
-        logger.debug(f"Execution plan: {plan}")
+            logger.debug(f"Execution plan: {plan}")
 
-        return plan
+            return plan
+        except Exception as e:
+            logger.error(f"Failed to create plan: {e}")
+            raise e

@@ -1,4 +1,10 @@
-from .model import *
+from .model import (
+    GenerativeModel,
+    GenerativeModelConfig,
+    GenerationResponse,
+    FinishReason,
+    GenerativeModelChatSession,
+)
 from vertexai.generative_models import (
     GenerativeModel as VertexAiGenerativeModel,
     GenerationConfig as VertexAiGenerationConfig,

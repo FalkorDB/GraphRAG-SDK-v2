@@ -6,13 +6,9 @@ from falkordb_gemini_kg.classes.entity import Entity
 from falkordb_gemini_kg.classes.relation import Relation
 from falkordb_gemini_kg.classes.attribute import Attribute, AttributeType
 import unittest
-from falkordb_gemini_kg.classes.source import Source
 from falkordb_gemini_kg.models.gemini import GeminiGenerativeModel
 from falkordb_gemini_kg import KnowledgeGraph, KnowledgeGraphModelConfig
-import vertexai
-import os
 import logging
-from falkordb import FalkorDB
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)

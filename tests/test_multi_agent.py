@@ -13,7 +13,6 @@ from falkordb_gemini_kg.agents.kg_agent import KGAgent
 import vertexai
 import os
 import logging
-from falkordb import FalkorDB
 from json import loads
 
 logging.basicConfig(level=logging.DEBUG)
@@ -231,9 +230,12 @@ class TestMultiAgent(unittest.TestCase):
         restaurants_kg: KnowledgeGraph,
         attractions_kg: KnowledgeGraph,
     ):
-        cities = loads(open("tests/data/cities.json").read())
-        restaurants = loads(open("tests/data/restaurants.json").read())
-        attractions = loads(open("tests/data/attractions.json").read())
+        with open("tests/data/cities.json") as f:
+            cities = loads(f.read())
+        with open("tests/data/restaurants.json") as f:
+            restaurants = loads(f.read())
+        with open("tests/data/attractions.json") as f:
+            attractions = loads(f.read())
 
         for city in cities:
             restaurants_kg.add_node(
@@ -320,4 +322,6 @@ class TestMultiAgent(unittest.TestCase):
 
         assert response.text is not None
 
-        assert "itinerary" in response.text.lower(), f"Response should contain the 'itinerary' string: {response.text}"
+        assert (
+            "itinerary" in response.text.lower()
+        ), f"Response should contain the 'itinerary' string: {response.text}"

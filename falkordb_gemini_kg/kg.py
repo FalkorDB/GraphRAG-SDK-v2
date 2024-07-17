@@ -198,9 +198,9 @@ class KnowledgeGraph:
         relation: str,
         source: str,
         target: str,
-        source_attr: dict = {},
-        target_attr: dict = {},
-        attributes: dict = {},
+        source_attr: dict = None,
+        target_attr: dict = None,
+        attributes: dict = None,
     ):
         """
         Add an edge to the knowledge graph, checking if it matches the ontology
@@ -213,6 +213,11 @@ class KnowledgeGraph:
             target_attr (dict): target entity attributes
             attributes (dict): relation attributes
         """
+
+        source_attr = source_attr or {}
+        target_attr = target_attr or {}
+        attributes = attributes or {}
+
         self._validate_relation(
             relation, source, target, source_attr, target_attr, attributes
         )

@@ -20,14 +20,12 @@ class OrchestratorRunner:
         chat: GenerativeModelChatSession,
         agents: list[Agent],
         plan: ExecutionPlan,
-        config: dict = {
-            "max_workers": 16,
-        },
+        config: dict = None,
     ):
         self._chat = chat
         self._agents = agents
         self._plan = plan
-        self._config = config
+        self._config = config or {"max_workers": 16}
 
     def run(self) -> GenerationResponse:
         for step in self._plan.steps[:-1]:
@@ -67,8 +65,8 @@ class OrchestratorRunner:
         with ThreadPoolExecutor(
             max_workers=min(self._config["max_workers"], len(step.properties.steps))
         ) as executor:
-            for step in step.properties.steps:
-                tasks.append(executor.submit(self._run_step, step))
+            for sub_step in step.properties.steps:
+                tasks.append(executor.submit(self._run_step, sub_step))
 
         wait(tasks)
 

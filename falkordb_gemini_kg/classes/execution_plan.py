@@ -29,7 +29,7 @@ class PromptAgentProperties:
     @staticmethod
     def from_json(json: dict) -> "PromptAgentProperties":
         return PromptAgentProperties(
-            json["agent"], json["prompt"], json.get("response", None)
+            json["agent"], json["prompt"], json.get("response")
         )
 
     def to_json(self) -> dict:

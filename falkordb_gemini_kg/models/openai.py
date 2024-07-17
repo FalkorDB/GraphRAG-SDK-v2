@@ -1,5 +1,5 @@
-from .model import *
-from openai import OpenAI, completions
+from .model import GenerativeModel, GenerativeModelConfig, GenerationResponse, FinishReason, GenerativeModelChatSession
+from openai import OpenAI
 
 
 class OpenAiGenerativeModel(GenerativeModel):

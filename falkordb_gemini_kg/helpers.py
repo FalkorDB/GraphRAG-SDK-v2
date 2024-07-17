@@ -201,8 +201,7 @@ def validate_cypher_relation_directions(cypher: str, ontology: falkordb_gemini_k
                 )
 
             i += 1
-        except Exception as e:
-            # errors.append(str(e))
+        except Exception:
             continue
 
     return errors

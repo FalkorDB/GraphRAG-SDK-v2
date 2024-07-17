@@ -15,7 +15,7 @@ class _RelationEntity:
     @staticmethod
     def from_json(txt: str):
         txt = txt if isinstance(txt, dict) else json.loads(txt)
-        return _RelationEntity(txt["label"] if "label" in txt else txt)
+        return _RelationEntity(txt.get("label", txt))
 
     def to_json(self):
         return {"label": self.label}
@@ -30,9 +30,9 @@ class Relation:
         label: str,
         source: _RelationEntity | str,
         target: _RelationEntity | str,
-        attributes: list[Attribute] = [],
+        attributes: list[Attribute] = None,
     ):
-
+        attributes = attributes or []
         if isinstance(source, str):
             source = _RelationEntity(source)
         if isinstance(target, str):
@@ -53,8 +53,12 @@ class Relation:
         logger.debug(f"Relation.from_graph: {relation}")
         return Relation(
             relation.relation,
-            _RelationEntity(next(n.labels[0] for n in entities if n.id == relation.src_entity)),
-            _RelationEntity(next(n.labels[0] for n in entities if n.id == relation.dest_entity)),
+            _RelationEntity(
+                next(n.labels[0] for n in entities if n.id == relation.src_entity)
+            ),
+            _RelationEntity(
+                next(n.labels[0] for n in entities if n.id == relation.dest_entity)
+            ),
             [
                 Attribute(
                     attr,
@@ -87,7 +91,9 @@ class Relation:
         target = re.search(NODE_LABEL_REGEX, txt).group(1).strip()
         relation = re.search(EDGE_REGEX, txt).group(0)
         attributes = (
-            relation.split("{")[1].split("}")[0].strip().split(",") if "{" in relation else []
+            relation.split("{")[1].split("}")[0].strip().split(",")
+            if "{" in relation
+            else []
         )
 
         return Relation(

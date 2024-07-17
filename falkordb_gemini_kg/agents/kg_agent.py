@@ -36,7 +36,7 @@ class KGAgent(Agent):
         self._introduction = value
 
     @property
-    def _schema(self) -> list[dict]:
+    def schema(self) -> list[dict]:
         return self._schema
     
     @property
