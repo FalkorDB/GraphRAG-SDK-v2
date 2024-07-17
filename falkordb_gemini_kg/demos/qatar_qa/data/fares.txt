@@ -1,0 +1,216 @@
+{"anchor": "How will I be charged?", "positive": "with international roaming rates. Service charges will be invoiced automatically by your local mobile network operator.", "category": "fares", "keyword": "charges"}
+{"anchor": "How will I benefit if I join?", "positive": "to earn commission on Cost Per Action (CPA) model.", "category": "fares", "keyword": "cost"}
+{"anchor": "Can I be refun ded in the event of an emergency?", "positive": "may not be cancelled. You are advised to separately purchase travel insurance from a third-party including events insurance to guarantee a protection in the event of an emergency.", "category": "fares", "keyword": "rate"}
+{"anchor": "Complaint Resolution Services", "positive": "disability service request, please contact our Customer Care team using the below link https://www.qatarairways.com/en/help.html#feedbac k", "category": "fares", "keyword": "fee"}
+{"anchor": "What is the fare from the Far East to Qatar?", "positive": "The fare from the Far East to Qatar is 240 USD.", "category": "fares", "keyword": "fare"}
+{"anchor": "How much is the fare from the Far East to the Americas?", "positive": "The fare from the Far East to the Americas is 630 USD (CAD 820).", "category": "fares", "keyword": "fare"}
+{"anchor": "What is the fare from Australia, New Zealand, Japan, and South Korea to Africa?", "positive": "The fare from Australia, New Zealand, Japan, and South Korea to Africa is 630 USD.", "category": "fares", "keyword": "fare"}
+{"anchor": "How much does it cost to fly from Australia, New Zealand, Japan, and South Korea to Europe?", "positive": "Flying from Australia, New Zealand, Japan, and South Korea to Europe costs 630 USD.", "category": "fares", "keyword": "cost"}
+{"anchor": "What is the fare from Australia, New Zealand, Japan, and South Korea to the Far East?", "positive": "The fare from Australia, New Zealand, Japan, and South Korea to the Far East is 630 USD.", "category": "fares", "keyword": "fare"}
+{"anchor": "How much does it cost to fly from Australia, New Zealand, Japan, and South Korea to Australia, New Zealand, Japan, and South Korea?", "positive": "Flying from Australia, New Zealand, Japan, and South Korea to Australia, New Zealand, Japan, and South Korea has a fare of 630 USD.", "category": "fares", "keyword": "fare"}
+{"anchor": "What is the fare from Australia, New Zealand, Japan, and South Korea to the Middle East and Indian sub-continent?", "positive": "The fare from Australia, New Zealand, Japan, and South Korea to the Middle East and Indian sub-continent is 450 USD.", "category": "fares", "keyword": "fare"}
+{"anchor": "How much does it cost to fly from Australia, New Zealand, Japan, and South Korea to Qatar?", "positive": "Flying from Australia, New Zealand, Japan, and South Korea to Qatar costs 440 USD.", "category": "fares", "keyword": "cost"}
+{"anchor": "How much does it cost to fly from the sub-continent to Qatar?", "positive": "Flying from the sub-continent to Qatar costs 270 USD.", "category": "fares", "keyword": "cost"}
+{"anchor": "What is the fare for flying from Australia, New Zealand, Japan, or South Korea to Africa?", "positive": "The one-way fare from Australia, New Zealand, Japan, or South Korea to Africa is 630 USD.", "category": "fares", "keyword": "fare"}
+{"anchor": "How much does it cost to fly from Australia, New Zealand, Japan, or South Korea to Europe?", "positive": "The one-way fare from Australia, New Zealand, Japan, or South Korea to Europe is 630 USD.", "category": "fares", "keyword": "fare"}
+{"anchor": "What is the fare for flying from Australia, New Zealand, Japan, or South Korea to the Far East?", "positive": "The one-way fare from Australia, New Zealand, Japan, or South Korea to the Far East is 630 USD.", "category": "fares", "keyword": "fare"}
+{"anchor": "How much does it cost to fly from Australia, New Zealand, Japan, or South Korea to the Middle East or Indian sub-continent?", "positive": "The one-way fare from Australia, New Zealand, Japan, or South Korea to the Middle East or Indian sub-continent is 450 USD.", "category": "fares", "keyword": "fare"}
+{"anchor": "What is the fare for flying from Australia, New Zealand, Japan, or South Korea to Qatar?", "positive": "The one-way fare from Australia, New Zealand, Japan, or South Korea to Qatar is 440 USD.", "category": "fares", "keyword": "fare"}
+{"anchor": "What is the fare for flying to the Americas from the Far East?", "positive": "The one-way fare from the Far East to the Americas is 630 USD (CAD 820).", "category": "fares", "keyword": "fare"}
+{"anchor": "What is the fare for flying from the sub-continent to any destination?", "positive": "The one-way fare from the sub-continent to any destination is 270 USD.", "category": "fares", "keyword": "fare"}
+{"anchor": "How much is the fare from the Far East to Qatar?", "positive": "The fare from the Far East to Qatar is 240 USD.", "category": "fares", "keyword": "fare"}
+{"anchor": "What is the fare from Australia, New Zealand, Japan, and South Korea to Europe?", "positive": "The fare from Australia, New Zealand, Japan, and South Korea to Europe is 630 USD.", "category": "fares", "keyword": "fare"}
+{"anchor": "How much is the fare from Australia, New Zealand, Japan, and South Korea to the Far East?", "positive": "The fare from Australia, New Zealand, Japan, and South Korea to the Far East is 630 USD.", "category": "fares", "keyword": "fare"}
+{"anchor": "How much is the fare from Australia, New Zealand, Japan, and South Korea to Qatar?", "positive": "The fare from Australia, New Zealand, Japan, and South Korea to Qatar is 440 USD.", "category": "fares", "keyword": "fare"}
+{"anchor": "How much is the fare from Australia, New Zealand, Japan, and South Korea to the Middle East and Indian sub-continent?", "positive": "The fare from Australia, New Zealand, Japan, and South Korea to the Middle East and Indian sub-continent is 450 USD.", "category": "fares", "keyword": "fare"}
+{"anchor": "What is the fare from the Far East to the Americas?", "positive": "The fare from the Far East to the Americas is 630 USD (CAD 820).", "category": "fares", "keyword": "fare"}
+{"anchor": "What is the fare from Australia, New Zealand, Japan, and South Korea to themselves?", "positive": "The fare from Australia, New Zealand, Japan, and South Korea to Australia, New Zealand, Japan, and South Korea is 630 USD.", "category": "fares", "keyword": "fare"}
+{"anchor": "Is there a difference in fare if I travel from the sub-continent to Qatar as compared to the Far East?", "positive": "Yes, there is a difference in fare. The fare from the sub-continent to Qatar is 270 USD, while the fare from the Far East to Qatar is 240 USD.", "category": "fares", "keyword": "fare"}
+{"anchor": "What is the fare from Australia, New Zealand, Japan, and South Korea to the Middle East?", "positive": "The fare from Australia, New Zealand, Japan, and South Korea to the Middle East is 450 USD.", "category": "fares", "keyword": "fare"}
+{"anchor": "How much does it cost to fly from the Middle East to Africa?", "positive": "It costs 270 USD to fly from the Middle East to Africa.", "category": "fares", "keyword": "cost"}
+{"anchor": "What are the rates for flying from the Middle East to Europe?", "positive": "The rates for flying from the Middle East to Europe are 270 USD.", "category": "fares", "keyword": "rate"}
+{"anchor": "How much does it cost to fly from the Middle East to the Far East?", "positive": "It costs 270 USD to fly from the Middle East to the Far East.", "category": "fares", "keyword": "cost"}
+{"anchor": "How much does it cost to fly from the Middle East to Qatar?", "positive": "It costs 115 USD to fly from the Middle East to Qatar.", "category": "fares", "keyword": "cost"}
+{"anchor": "How much does it cost to fly from the Middle East to the Americas?", "positive": "The cost of flying from the Middle East to the Americas is 450 USD (CAD 590).", "category": "fares", "keyword": "cost"}
+{"anchor": "How much does it cost to fly from ISC to Africa?", "positive": "It costs 270 USD to fly from ISC to Africa.", "category": "fares", "keyword": "cost"}
+{"anchor": "What is the fare from Australia to the Americas?", "positive": "The fare from Australia to the Americas is 630 USD (CAD 820).", "category": "fares", "keyword": "fare"}
+{"anchor": "How much is the fare from the Middle East to Europe?", "positive": "The fare from the Middle East to Europe is 270 USD.", "category": "fares", "keyword": "fare"}
+{"anchor": "How much is the fare from the Middle East to Africa?", "positive": "The fare from the Middle East to Africa is 270 USD.", "category": "fares", "keyword": "fare"}
+{"anchor": "What are the rates from the Middle East to Australia, New Zealand, Japan, and South Korea?", "positive": "The fare from the Middle East to Australia, New Zealand, Japan, and South Korea is 450 USD.", "category": "fares", "keyword": "fare"}
+{"anchor": "What is the fare from the Middle East to Qatar?", "positive": "The fare from the Middle East to Qatar is 115 USD.", "category": "fares", "keyword": "fare"}
+{"anchor": "What is the fare from the Middle East to the Americas?", "positive": "The fare from the Middle East to the Americas is 450 USD (CAD 590).", "category": "fares", "keyword": "fare"}
+{"anchor": "How much does it cost to fly from the Middle East or Indian sub-continent to Europe?", "positive": "It costs 270 USD to fly from the Middle East or Indian sub-continent to Europe.", "category": "fares", "keyword": "cost"}
+{"anchor": "Can I fly from the Middle East or Indian sub-continent to Australia, New Zealand, Japan, or South Korea?", "positive": "Yes, you can fly from the Middle East or Indian sub-continent to Australia, New Zealand, Japan, or South Korea. The cost for this route is 450 USD.", "category": "fares", "keyword": "cost"}
+{"anchor": "Which countries are part of the GCC region?", "positive": "The countries that are part of the GCC region are Kuwait, Oman, Saudi Arabia, and United Arab Emirates.", "category": "fares", "keyword": "rate"}
+{"anchor": "Which countries are included in the GCC region?", "positive": "The countries included in the GCC region are Kuwait, Oman, Saudi Arabia, and United Arab Emirates.", "category": "fares", "keyword": "rate"}
+{"anchor": "What are the rates for travelling from The Middle East and Indian sub-continent to Australia, New Zealand, Japan, and South Korea?", "positive": "The rates for travelling from The Middle East and Indian sub-continent to Australia, New Zealand, Japan, and South Korea are 450 USD.", "category": "fares", "keyword": "rate"}
+{"anchor": "How much does it cost to fly from Australasia to South/East Asia?", "positive": "It costs $40 to fly from Australasia to South/East Asia.", "category": "fares", "keyword": "cost"}
+{"anchor": "What is the fee for traveling from GCC to South/East Asia?", "positive": "The fee for traveling from GCC to South/East Asia is $8.", "category": "fares", "keyword": "fee"}
+{"anchor": "How much does it cost to fly from Qatar to South/East Asia?", "positive": "It costs QAR 50 to fly from Qatar to South/East Asia.", "category": "fares", "keyword": "cost"}
+{"anchor": "How much does it cost to fly from South/East Asia to Central Asia?", "positive": "It costs $15 to fly from South/East Asia to Central Asia.", "category": "fares", "keyword": "cost"}
+{"anchor": "What is the fee for traveling from Japan & Korea to Central Asia?", "positive": "The fee for traveling from Japan & Korea to Central Asia is $40.", "category": "fares", "keyword": "fee"}
+{"anchor": "How much does it cost to fly from Australasia to Central Asia?", "positive": "It costs $15 to fly from Australasia to Central Asia.", "category": "fares", "keyword": "cost"}
+{"anchor": "What is the fee for traveling from GCC to Central Asia?", "positive": "The fee for traveling from GCC to Central Asia is $13.", "category": "fares", "keyword": "fee"}
+{"anchor": "How much does it cost to fly from Iran to South/East Asia?", "positive": "It costs $8 to fly from Iran to South/East Asia.", "category": "fares", "keyword": "cost"}
+{"anchor": "What is the fee for traveling from Levant to South/East Asia?", "positive": "The fee for traveling from Levant to South/East Asia is $8.", "category": "fares", "keyword": "fee"}
+{"anchor": "How much does it cost to travel from South/East Asia to Central Asia?", "positive": "The cost of traveling from South/East Asia to Central Asia is $15.", "category": "fares", "keyword": "cost"}
+{"anchor": "What is the cost of flying from Qatar to South/East Asia?", "positive": "The cost of flying from Qatar to South/East Asia is QAR 50.", "category": "fares", "keyword": "cost"}
+{"anchor": "What is the fare for traveling from GCC to Central Asia?", "positive": "The fare for traveling from GCC to Central Asia is $13.", "category": "fares", "keyword": "fare"}
+{"anchor": "What is the cost of flying from Europe to Central Asia?", "positive": "The cost of flying from Europe to Central Asia is $15.", "category": "fares", "keyword": "cost"}
+{"anchor": "How much does it cost to travel from Levant to South/East Asia?", "positive": "The cost of traveling from Levant to South/East Asia is $8.", "category": "fares", "keyword": "cost"}
+{"anchor": "What is the fare for traveling from Iran to South/East Asia?", "positive": "The fare for traveling from Iran to South/East Asia is $8.", "category": "fares", "keyword": "fare"}
+{"anchor": "How much does it cost to fly from Japan & Korea to Central Asia?", "positive": "The cost of flying from Japan & Korea to Central Asia is $40.", "category": "fares", "keyword": "cost"}
+{"anchor": "What is the cost of flying from ISC & Pakistan to Central Asia?", "positive": "The cost of flying from ISC & Pakistan to Central Asia is $13.", "category": "fares", "keyword": "cost"}
+{"anchor": "How much does it cost to fly from GCC to South/East Asia?", "positive": "The cost of flying from GCC to South/East Asia is $8.", "category": "fares", "keyword": "cost"}
+{"anchor": "How much does it cost to fly from Europe to Central Asia?", "positive": "The cost of flying from Europe to Central Asia is $15.", "category": "fares", "keyword": "cost"}
+{"anchor": "What is the fare from Levant to Central Asia?", "positive": "The fare from Levant to Central Asia is $13.", "category": "fares", "keyword": "fare"}
+{"anchor": "How much does it cost to travel from Iran to Central Asia?", "positive": "The fare from Iran to Central Asia is $13.", "category": "fares", "keyword": "fare"}
+{"anchor": "What is the fare from Qatar to Central Asia?", "positive": "The fare from Qatar to Central Asia is QAR 50.", "category": "fares", "keyword": "fare"}
+{"anchor": "What is the fare from Europe to Japan & Korea?", "positive": "The fare from Europe to Japan & Korea is $15.", "category": "fares", "keyword": "fare"}
+{"anchor": "How much does it cost to travel from ISC & Pakistan to Japan & Korea?", "positive": "The fare from ISC & Pakistan to Japan & Korea is $30.", "category": "fares", "keyword": "fare"}
+{"anchor": "What is the fare from South/East Asia to Japan & Korea?", "positive": "The fare from South/East Asia to Japan & Korea is $40.", "category": "fares", "keyword": "fare"}
+{"anchor": "How much does it cost to travel from Central Asia to Japan & Korea?", "positive": "The fare from Central Asia to Japan & Korea is $15.", "category": "fares", "keyword": "fare"}
+{"anchor": "What is the fare from Japan & Korea to Japan & Korea?", "positive": "The fare from Japan & Korea to Japan & Korea is $40.", "category": "fares", "keyword": "fare"}
+{"anchor": "How much does it cost to travel from Australasia to Japan & Korea?", "positive": "The fare from Australasia to Japan & Korea is $55.", "category": "fares", "keyword": "fare"}
+{"anchor": "What is the fare from GCC to Japan & Korea?", "positive": "The fare from GCC to Japan & Korea is $13.", "category": "fares", "keyword": "fare"}
+{"anchor": "What is the price to travel from Central Asia to Japan & Korea?", "positive": "The price to travel from Central Asia to Japan & Korea is $15.", "category": "fares", "keyword": "price"}
+{"anchor": "What is the cost to travel from Qatar to Japan & Korea?", "positive": "The cost to travel from Qatar to Japan & Korea is QAR 50.", "category": "fares", "keyword": "cost"}
+{"anchor": "What is the price to travel from Iran to Japan & Korea?", "positive": "The price to travel from Iran to Japan & Korea is $13.", "category": "fares", "keyword": "price"}
+{"anchor": "What is the cost of flying from Japan & Korea to GCC?", "positive": "Flying from Japan & Korea to GCC costs $13.", "category": "fares", "keyword": "cost"}
+{"anchor": "How much does it cost to travel from GCC to Levant?", "positive": "The cost of traveling from GCC to Levant is $8.", "category": "fares", "keyword": "cost"}
+{"anchor": "How much does it cost to travel from Levant to Levant?", "positive": "The cost of traveling from Levant to Levant is $8.", "category": "fares", "keyword": "cost"}
+{"anchor": "What is the fare from Qatar to GCC?", "positive": "The fare from Qatar to GCC is QAR 28.", "category": "fares", "keyword": "fare"}
+{"anchor": "What is the fare from ISC & Pakistan to Levant?", "positive": "The fare from ISC & Pakistan to Levant is $10.", "category": "fares", "keyword": "fare"}
+{"anchor": "How much does it cost to travel from South/East Asia to Levant?", "positive": "The fare from South/East Asia to Levant is $13.", "category": "fares", "keyword": "fare"}
+{"anchor": "What is the fare from Central Asia to Levant?", "positive": "The fare from Central Asia to Levant is $13.", "category": "fares", "keyword": "fare"}
+{"anchor": "What is the fee for traveling from South/East Asia to Europe?", "positive": "The fee for traveling from South/East Asia to Europe is USD 30.", "category": "fares", "keyword": "fee"}
+{"anchor": "Is there an additional charge for flying from Australasia to Europe?", "positive": "Yes, there is an additional charge of USD 40 for flying from Australasia to Europe.", "category": "fares", "keyword": "charge"}
+{"anchor": "What is the fee for traveling from Iran to ISC & Pakistan?", "positive": "The fee for traveling from Iran to ISC & Pakistan is USD 20.", "category": "fares", "keyword": "fee"}
+{"anchor": "Do I need to pay any extra fees for flying from Europe to South/East Asia?", "positive": "No, there are no extra fees for flying from Europe to South/East Asia. The cost is USD 30.", "category": "fares", "keyword": "cost"}
+{"anchor": "What is the fee for traveling from Levant to Europe?", "positive": "The fee for traveling from Levant to Europe is USD 20.", "category": "fares", "keyword": "fee"}
+{"anchor": "What is the fee for flying from Europe to Japan or Korea with Qatar Airways?", "positive": "The fee for flying from Europe to Japan or Korea with Qatar Airways is USD 30.", "category": "fares", "keyword": "fee"}
+{"anchor": "How much does it cost to fly from South/East Asia to Europe with Qatar Airways?", "positive": "The cost of flying from South/East Asia to Europe with Qatar Airways is USD 30.", "category": "fares", "keyword": "cost"}
+{"anchor": "What is the fee for flying from Levant to Europe with Qatar Airways?", "positive": "The fee for flying from Levant to Europe with Qatar Airways is USD 20.", "category": "fares", "keyword": "fee"}
+{"anchor": "How much will it cost to fly from Qatar to Europe with Qatar Airways?", "positive": "The cost of flying from Qatar to Europe with Qatar Airways is USD 20.", "category": "fares", "keyword": "cost"}
+{"anchor": "How much will it cost to fly from GCC to ISC & Pakistan with Qatar Airways?", "positive": "The cost of flying from GCC to ISC & Pakistan with Qatar Airways is USD 20.", "category": "fares", "keyword": "cost"}
+{"anchor": "What is the fee for flying from Iran to ISC & Pakistan with Qatar Airways?", "positive": "The fee for flying from Iran to ISC & Pakistan with Qatar Airways is USD 20.", "category": "fares", "keyword": "fee"}
+{"anchor": "How much will it cost to fly from Central Asia to South/East Asia with Qatar Airways?", "positive": "The cost of flying from Central Asia to South/East Asia with Qatar Airways is USD 30.", "category": "fares", "keyword": "cost"}
+{"anchor": "What is the price to travel from Qatar to South/East Asia?", "positive": "The price to travel from Qatar to South/East Asia is USD 60.", "category": "fares", "keyword": "price"}
+{"anchor": "What is the price to travel from Australasia to South/East Asia?", "positive": "The price to travel from Australasia to South/East Asia is USD 39.", "category": "fares", "keyword": "price"}
+{"anchor": "What is the price to travel from GCC to Central Asia?", "positive": "The price to travel from GCC to Central Asia is USD 30.", "category": "fares", "keyword": "price"}
+{"anchor": "What is the price to travel from Japan & Korea to Central Asia?", "positive": "The price to travel from Japan & Korea to Central Asia is USD 40.", "category": "fares", "keyword": "price"}
+{"anchor": "How much does it cost to travel from Europe to Central Asia?", "positive": "The cost of traveling from Europe to Central Asia is USD 30.", "category": "fares", "keyword": "cost"}
+{"anchor": "What is the price to travel from ISC & Pakistan to Central Asia?", "positive": "The price to travel from ISC & Pakistan to Central Asia is USD 30.", "category": "fares", "keyword": "price"}
+{"anchor": "How much does it cost to travel from Central Asia to Central Asia?", "positive": "The cost of traveling from Central Asia to Central Asia is USD 30.", "category": "fares", "keyword": "cost"}
+{"anchor": "What is the fee for flying from Qatar to Central Asia?", "positive": "The fee for flying from Qatar to Central Asia is USD 65.", "category": "fares", "keyword": "fee"}
+{"anchor": "Are there any additional charges for flying from Australia or New Zealand to Central Asia?", "positive": "Yes, there is an additional charge of USD 39 for flying from Australasia to Central Asia.", "category": "fares", "keyword": "charges"}
+{"anchor": "What is the fee for flying from the Gulf Cooperation Council (GCC) countries to South/East Asia?", "positive": "The fee for flying from the GCC countries to South/East Asia is USD 20.", "category": "fares", "keyword": "fee"}
+{"anchor": "What is the fee for flying from Iran to South/East Asia?", "positive": "The fee for flying from Iran to South/East Asia is USD 20.", "category": "fares", "keyword": "fee"}
+{"anchor": "How much does it cost to fly from the Levant to South/East Asia?", "positive": "It costs USD 20 to fly from the Levant to South/East Asia.", "category": "fares", "keyword": "cost"}
+{"anchor": "What is the fee for flying from the Indian Subcontinent (ISC) and Pakistan to Central Asia?", "positive": "The fee for flying from the ISC and Pakistan to Central Asia is USD 30.", "category": "fares", "keyword": "fee"}
+{"anchor": "Are there any additional charges for flying from Central Asian countries to Central Asia?", "positive": "Yes, there is an additional charge of USD 30 for flying from Central Asian countries to Central Asia.", "category": "fares", "keyword": "charges"}
+{"anchor": "How much does it cost to travel from South/East Asia to South/East Asia?", "positive": "The cost to travel from South/East Asia to South/East Asia is USD 30.", "category": "fares", "keyword": "cost"}
+{"anchor": "What is the cost of traveling from Australasia to South/East Asia?", "positive": "The cost of traveling from Australasia to South/East Asia is USD 39.", "category": "fares", "keyword": "cost"}
+{"anchor": "How much does it cost to travel from GCC to South/East Asia?", "positive": "The cost to travel from GCC to South/East Asia is USD 20.", "category": "fares", "keyword": "cost"}
+{"anchor": "What is the fare from Levant to South/East Asia?", "positive": "The fare from Levant to South/East Asia is USD 20.", "category": "fares", "keyword": "fare"}
+{"anchor": "How much does it cost to travel from Iran to South/East Asia?", "positive": "The cost to travel from Iran to South/East Asia is USD 20.", "category": "fares", "keyword": "cost"}
+{"anchor": "What is the fare from Qatar to South/East Asia?", "positive": "The fare from Qatar to South/East Asia is USD 60.", "category": "fares", "keyword": "fare"}
+{"anchor": "What is the fare from ISC & Pakistan to Central Asia?", "positive": "The fare from ISC & Pakistan to Central Asia is USD 30.", "category": "fares", "keyword": "fare"}
+{"anchor": "What is the fare from Japan & Korea to Central Asia?", "positive": "The fare from Japan & Korea to Central Asia is USD 40.", "category": "fares", "keyword": "fare"}
+{"anchor": "How much is the fare from Europe to Japan and Korea?", "positive": "The fare from Europe to Japan and Korea is USD 40.", "category": "fares", "keyword": "fare"}
+{"anchor": "How much is the fare from Iran to Australia?", "positive": "The fare from Iran to Australia is USD 30.", "category": "fares", "keyword": "fare"}
+{"anchor": "How much is the fare from South/East Asia to Australasia?", "positive": "The fare from South/East Asia to Australasia is USD 40.", "category": "fares", "keyword": "fare"}
+{"anchor": "What is the fare from Qatar to Japan and Korea?", "positive": "The fare from Qatar to Japan and Korea is USD 70.", "category": "fares", "keyword": "fare"}
+{"anchor": "Can you please tell me how much it costs to fly from Levant to Australasia?", "positive": "The fare from Levant to Australasia is USD 30.", "category": "fares", "keyword": "fare"}
+{"anchor": "How much does it cost to fly from Central Asia to Japan and Korea?", "positive": "The fare from Central Asia to Japan and Korea is USD 40.", "category": "fares", "keyword": "fare"}
+{"anchor": "What is the fare for traveling from Australasia to Australasia?", "positive": "The fare for traveling from Australasia to Australasia is USD 55.", "category": "fares", "keyword": "fare"}
+{"anchor": "How much is the fare from Europe to Australasia?", "positive": "The fare from Europe to Australasia is USD 45.", "category": "fares", "keyword": "fare"}
+{"anchor": "How much does it cost to fly from GCC to Japan and Korea?", "positive": "The fare from GCC to Japan and Korea is USD 30.", "category": "fares", "keyword": "fare"}
+{"anchor": "What is the fare from Iran to Japan and Korea?", "positive": "The fare from Iran to Japan and Korea is USD 30.", "category": "fares", "keyword": "fare"}
+{"anchor": "How much does it cost to fly from South/East Asia to Australasia?", "positive": "The cost of flying from South/East Asia to Australasia is USD 40.", "category": "fares", "keyword": "cost"}
+{"anchor": "How much does it cost to travel from Europe to Australasia?", "positive": "The cost of traveling from Europe to Australasia is USD 45.", "category": "fares", "keyword": "cost"}
+{"anchor": "How much does it cost to fly from Central Asia to Levant?", "positive": "The cost of flying from Central Asia to Levant is USD 30.", "category": "fares", "keyword": "cost"}
+{"anchor": "How much does it cost to fly from Qatar to Levant?", "positive": "The cost of flying from Qatar to Levant is USD 30.", "category": "fares", "keyword": "cost"}
+{"anchor": "How much does it cost to fly from South/East Asia to Iran?", "positive": "The cost of flying from South/East Asia to Iran is USD 20.", "category": "fares", "keyword": "cost"}
+{"anchor": "How much is the fee for traveling from Australasia to GCC?", "positive": "The fee for traveling from Australasia to GCC is USD 30.", "category": "fares", "keyword": "fee"}
+{"anchor": "What is the fee for traveling from Levant to GCC?", "positive": "The fee for traveling from Levant to GCC is USD 2100.", "category": "fares", "keyword": "fee"}
+{"anchor": "What is the fee for traveling from Qatar to GCC?", "positive": "The fee for traveling from Qatar to GCC is USD 30.", "category": "fares", "keyword": "fee"}
+{"anchor": "What is the fee for traveling from South/East Asia to Levant?", "positive": "The fee for traveling from South/East Asia to Levant is USD 20.", "category": "fares", "keyword": "fee"}
+{"anchor": "How much does it cost to travel from Central Asia to Levant?", "positive": "It costs USD 30 to travel from Central Asia to Levant.", "category": "fares", "keyword": "cost"}
+{"anchor": "What is the fee for traveling from Japan & Korea to Levant?", "positive": "The fee for traveling from Japan & Korea to Levant is USD 30.", "category": "fares", "keyword": "fee"}
+{"anchor": "What is the fee for traveling from Iran to Levant?", "positive": "The fee for traveling from Iran to Levant is USD 10.", "category": "fares", "keyword": "fee"}
+{"anchor": "How much does it cost to travel from Qatar to Iran?", "positive": "It costs USD 40 to travel from Qatar to Iran.", "category": "fares", "keyword": "cost"}
+{"anchor": "What is the fee to travel from Europe to Levant?", "positive": "The fee to travel from Europe to Levant is USD 20.", "category": "fares", "keyword": "fee"}
+{"anchor": "What is the fee for traveling from Central Asia to Iran?", "positive": "The fee for traveling from Central Asia to Iran is USD 30.", "category": "fares", "keyword": "fee"}
+{"anchor": "How much does it cost to travel from Japan & Korea to Qatar?", "positive": "The cost of traveling from Japan & Korea to Qatar is USD 13.", "category": "fares", "keyword": "cost"}
+{"anchor": "What is the fee to travel from Australia to GCC?", "positive": "The fee for traveling from Australasia to GCC is USD 30.", "category": "fares", "keyword": "fee"}
+{"anchor": "What is the cost of traveling from Qatar to Iran?", "positive": "To travel from Qatar to Iran, the cost is USD 40.", "category": "fares", "keyword": "cost"}
+{"anchor": "What is the fee for traveling from Europe to Qatar?", "positive": "The fee for traveling from Europe to Qatar is USD 13.", "category": "fares", "keyword": "fee"}
+{"anchor": "How much does it cost to travel from South/East Asia to Iran?", "positive": "The cost of traveling from South/East Asia to Iran is USD 20.", "category": "fares", "keyword": "cost"}
+{"anchor": "What is the fee to travel from GCC to Levant?", "positive": "The fee to travel from GCC to Levant is USD 10.", "category": "fares", "keyword": "fee"}
+{"anchor": "How much does it cost to fly from Australasia to Qatar?", "positive": "The cost of flying from Australasia to Qatar is USD 20.", "category": "fares", "keyword": "cost"}
+{"anchor": "Is there a fee for traveling from Australasia to Qatar?", "positive": "Yes, there is a fee of USD 20 for traveling from Australasia to Qatar.", "category": "fares", "keyword": "fee"}
+{"anchor": "What is the cost of airfare from Australasia to Qatar?", "positive": "The cost of airfare from Australasia to Qatar is USD 20.", "category": "fares", "keyword": "fare"}
+{"anchor": "How much does it cost to travel from Australasia to Qatar?", "positive": "It costs USD 20 to travel from Australasia to Qatar.", "category": "fares", "keyword": "cost"}
+{"anchor": "What is the fare for traveling from Australasia to Qatar?", "positive": "The fare for traveling from Australasia to Qatar is USD 20.", "category": "fares", "keyword": "fare"}
+{"anchor": "How expensive is it to fly from Australasia to Qatar?", "positive": "It is USD 20 to fly from Australasia to Qatar.", "category": "fares", "keyword": "expensive"}
+{"anchor": "How much does it cost to fly from GCC to Qatar?", "positive": "The cost to fly from GCC to Qatar is USD 8.", "category": "fares", "keyword": "cost"}
+{"anchor": "How much does it cost to fly from Iran to Qatar?", "positive": "The cost to fly from Iran to Qatar is USD 8.", "category": "fares", "keyword": "cost"}
+{"anchor": "How much does it cost to travel between Africa and Qatar?", "positive": "The cost to travel between Africa and Qatar is USD 100.", "category": "fares", "keyword": "cost"}
+{"anchor": "What countries are included in the GCC region?", "positive": "The GCC region includes Kuwait, Oman, Saudi Arabia, and the United Arab Emirates. If you are traveling to or from any of these countries, you can refer to Qatar Airways' policies and procedures specific to the GCC region.", "category": "fares", "keyword": "rate"}
+{"anchor": "What countries are considered part of the GCC?", "positive": "The Gulf Cooperation Council (GCC) includes Kuwait, Oman, Saudi Arabia, and the United Arab Emirates.", "category": "fares", "keyword": "rate"}
+{"anchor": "How much does it cost to travel from Qatar to Europe?", "positive": "The cost to travel from Qatar to Europe is QAR 80.", "category": "fares", "keyword": "cost"}
+{"anchor": "What is the fare from Australasia to Europe?", "positive": "The fare from Australasia to Europe is USD 25.", "category": "fares", "keyword": "fare"}
+{"anchor": "How much does it cost to travel from Iran to Europe?", "positive": "The cost to travel from Iran to Europe is USD 20.", "category": "fares", "keyword": "cost"}
+{"anchor": "What is the fare from Japan & Korea to ISC & Pakistan?", "positive": "The fare from Japan & Korea to ISC & Pakistan is USD 50.", "category": "fares", "keyword": "fare"}
+{"anchor": "How much does it cost to travel from Levant to Europe?", "positive": "The cost to travel from Levant to Europe is USD 30.", "category": "fares", "keyword": "cost"}
+{"anchor": "What is the fare from Qatar to ISC & Pakistan?", "positive": "The fare from Qatar to ISC & Pakistan is QAR 60.", "category": "fares", "keyword": "fare"}
+{"anchor": "What is the fare from Central Asia to Europe?", "positive": "The fare from Central Asia to Europe is USD 50.", "category": "fares", "keyword": "fare"}
+{"anchor": "What is the fare from GCC to ISC & Pakistan?", "positive": "The fare from GCC to ISC & Pakistan is USD 25.", "category": "fares", "keyword": "fare"}
+{"anchor": "How much does it cost to travel from Europe to ISC & Pakistan?", "positive": "The cost to travel from Europe to ISC & Pakistan is USD 40.", "category": "fares", "keyword": "cost"}
+{"anchor": "What is the fare from Qatar to Europe?", "positive": "The fare from Qatar to Europe is QAR 80.", "category": "fares", "keyword": "fare"}
+{"anchor": "How much does it cost to travel from Australasia to Europe?", "positive": "The cost to travel from Australasia to Europe is USD 25.", "category": "fares", "keyword": "cost"}
+{"anchor": "What is the fare from Iran to Europe?", "positive": "The fare from Iran to Europe is USD 20.", "category": "fares", "keyword": "fare"}
+{"anchor": "What is the fare from Japan & Korea to Europe?", "positive": "The fare from Japan & Korea to Europe is USD 60.", "category": "fares", "keyword": "fare"}
+{"anchor": "How much does it cost to travel from South/East Asia to ISC & Pakistan?", "positive": "The cost to travel from South/East Asia to ISC & Pakistan is USD 40.", "category": "fares", "keyword": "cost"}
+{"anchor": "What is the fare from GCC to Europe?", "positive": "The fare from GCC to Europe is USD 30.", "category": "fares", "keyword": "fare"}
+{"anchor": "How much does it cost to travel from Japan & Korea to ISC & Pakistan?", "positive": "The cost to travel from Japan & Korea to ISC & Pakistan is USD 50.", "category": "fares", "keyword": "cost"}
+{"anchor": "How much does it cost to fly from South/East Asia to Europe?", "positive": "Flying from South/East Asia to Europe costs USD 40.", "category": "fares", "keyword": "cost"}
+{"anchor": "How much does it cost to fly from Australasia to ISC & Pakistan?", "positive": "Flying from Australasia to ISC & Pakistan costs USD 60.", "category": "fares", "keyword": "cost"}
+{"anchor": "How much is the fare from Australasia to South/East Asia?", "positive": "The fare from Australasia to South/East Asia is USD 60.", "category": "fares", "keyword": "fare"}
+{"anchor": "How much is the fare from Europe to Central Asia?", "positive": "The fare from Europe to Central Asia is USD 40.", "category": "fares", "keyword": "fare"}
+{"anchor": "What is the fare from South/East Asia to Central Asia?", "positive": "The fare from South/East Asia to Central Asia is USD 40.", "category": "fares", "keyword": "fare"}
+{"anchor": "How much is the fare from Qatar to Central Asia?", "positive": "The fare from Qatar to Central Asia is QAR 100.", "category": "fares", "keyword": "fare"}
+{"anchor": "What is the fare from GCC to Central Asia?", "positive": "The fare from GCC to Central Asia is USD 60.", "category": "fares", "keyword": "fare"}
+{"anchor": "How much is the fare from Iran to Central Asia?", "positive": "The fare from Iran to Central Asia is USD 40.", "category": "fares", "keyword": "fare"}
+{"anchor": "How much is the fare from Japan & Korea to Central Asia?", "positive": "The fare from Japan & Korea to Central Asia is USD 40.", "category": "fares", "keyword": "fare"}
+{"anchor": "What is the fare from Australasia to Central Asia?", "positive": "The fare from Australasia to Central Asia is USD 60.", "category": "fares", "keyword": "fare"}
+{"anchor": "How much does it cost to fly from South/East Asia?", "positive": "The cost of flying from South/East Asia is USD 55.", "category": "fares", "keyword": "cost"}
+{"anchor": "What is the price to fly from Australasia to South/East Asia?", "positive": "The price for flying from Australasia to South/East Asia is USD 60.", "category": "fares", "keyword": "price"}
+{"anchor": "What is the price to fly from Europe to Central Asia?", "positive": "The price for flying from Europe to Central Asia is USD 40.", "category": "fares", "keyword": "price"}
+{"anchor": "How much does it cost to fly from Qatar to Japan & Korea?", "positive": "It costs QAR 110 to fly from Qatar to Japan & Korea.", "category": "fares", "keyword": "cost"}
+{"anchor": "How much does it cost to travel from GCC to GCC?", "positive": "The cost to travel from GCC to GCC is USD 20.", "category": "fares", "keyword": "cost"}
+{"anchor": "How much does it cost to travel from Iran to GCC?", "positive": "The cost to travel from Iran to GCC is USD 20.", "category": "fares", "keyword": "cost"}
+{"anchor": "How much does it cost to travel from ISC & Pakistan to Levant?", "positive": "The cost to travel from ISC & Pakistan to Levant is USD 30.", "category": "fares", "keyword": "cost"}
+{"anchor": "How much does it cost to travel from Qatar to GCC?", "positive": "The cost of traveling from Qatar to GCC is USD 40.", "category": "fares", "keyword": "cost"}
+{"anchor": "How much does it cost to fly from South/East Asia to Levant?", "positive": "The cost of flying from South/East Asia to Levant is USD 30.", "category": "fares", "keyword": "cost"}
+{"anchor": "How much does it cost to travel from Japan & Korea to Levant?", "positive": "The cost of traveling from Japan & Korea to Levant is USD 40.", "category": "fares", "keyword": "cost"}
+{"anchor": "How much does it cost to fly from Iran to Levant?", "positive": "The cost of flying from Iran to Levant is USD 20.", "category": "fares", "keyword": "cost"}
+{"anchor": "How much does it cost to fly from Qatar to GCC?", "positive": "The cost of flying from Qatar to GCC is USD 40.", "category": "fares", "keyword": "cost"}
+{"anchor": "Is there a fee for flying from Australasia to Qatar?", "positive": "Yes, there is a fee of USD 50 for flying from Australasia to Qatar.", "category": "fares", "keyword": "fee"}
+{"anchor": "Are there any additional fees for flying from Australasia to Qatar?", "positive": "No, there are no additional fees for flying from Australasia to Qatar. The cost is USD 50.", "category": "fares", "keyword": "cost"}
+{"anchor": "What is the cost of flying from Levant to Qatar?", "positive": "The cost for flying from Levant to Qatar is USD 25.", "category": "fares", "keyword": "cost"}
+{"anchor": "How much does it cost to travel from GCC to Qatar?", "positive": "It costs USD 25 to travel from GCC to Qatar.", "category": "fares", "keyword": "cost"}
+{"anchor": "How much does it cost to travel from Levant to Qatar?", "positive": "It costs USD 25 to travel from Levant to Qatar.", "category": "fares", "keyword": "cost"}
+{"anchor": "How much does it cost to fly from Levant to Qatar?", "positive": "It costs USD 25 to fly from Levant to Qatar.", "category": "fares", "keyword": "cost"}
+{"anchor": "What countries are included in the GCC region for Qatar Airways?", "positive": "The countries included in the GCC region for Qatar Airways are Kuwait, Oman, Saudi Arabia, and the United Arab Emirates.", "category": "fares", "keyword": "rate"}
+{"anchor": "Which countries are included in Qatar Airways' GCC region?", "positive": "Qatar Airways' GCC region includes Kuwait, Oman, Saudi Arabia, and the United Arab Emirates.", "category": "fares", "keyword": "rate"}
+{"anchor": "What are the countries included in the GCC region for Qatar Airways?", "positive": "The countries included in the GCC region for Qatar Airways are Kuwait, Oman, Saudi Arabia, and the United Arab Emirates.", "category": "fares", "keyword": "rate"}
+{"anchor": "How do I convert amp-hours to watt-hours?", "positive": "To convert amp-hours (Ah) to watt-hours (Wh), multiply the rated capacity (Ah) by the nominal voltage (V).", "category": "fares", "keyword": "rate"}
+{"anchor": "How do I convert amp-hours (Ah) to watt-hours (Wh)?", "positive": "To convert amp-hours (Ah) to watt-hours (Wh), multiply the rated capacity (Ah) by the nominal voltage (V).", "category": "fares", "keyword": "rate"}
+{"anchor": "How much does it cost to transport my golf clubs from Japan to Central Asia?", "positive": "The fee for transporting your golf clubs from Japan to Central Asia is $40.", "category": "fares", "keyword": "cost"}
+{"anchor": "I'm traveling from New Zealand to Thailand. How much does it cost to transport my scuba gear?", "positive": "The fee for transporting your scuba gear from New Zealand to Thailand is $40, as New Zealand is part of Australasia and Thailand is in South/East Asia.", "category": "fares", "keyword": "cost"}
+{"anchor": "Which countries are included in the GCC region by Qatar Airways?", "positive": "The GCC region, as per Qatar Airways, includes Kuwait, Oman, Saudi Arabia, and the United Arab Emirates.", "category": "fares", "keyword": "rate"}
+{"anchor": "What if my final destination is Dubai, but I have a layover in Doha?", "positive": "This information is not available in the provided text. Please specify the origin of your journey for a more accurate answer.", "category": "fares", "keyword": "rate"}
+{"anchor": "What does \"GCC\" stand for in the list of countries?", "positive": "GCC stands for Gulf Cooperation Council and includes Kuwait, Oman, Saudi Arabia, and the United Arab Emirates.", "category": "fares", "keyword": "rate"}
+{"anchor": "What is the difference between the Levant and GCC regions for Qatar Airways?", "positive": "The Levant region includes countries like Iran, Iraq, Jordan, and Lebanon. In contrast, the GCC region consists of Kuwait, Oman, Saudi Arabia, and the United Arab Emirates.", "category": "fares", "keyword": "rate"}

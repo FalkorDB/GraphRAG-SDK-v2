@@ -23,6 +23,8 @@ ratelimit = "^2.2.1"
 python-dotenv = "^1.0.1"
 openai = "^1.35.9"
 fix-busted-json = "^0.0.18"
+langchain-experimental = "^0.0.62"
+langchain-openai = "^0.1.16"
 
 [tool.poetry.group.test.dependencies]
 pytest = "^8.2.1"

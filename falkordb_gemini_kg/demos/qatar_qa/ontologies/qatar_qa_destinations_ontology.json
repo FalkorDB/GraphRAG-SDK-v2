@@ -1,0 +1,199 @@
+{
+  "entities": [
+    {
+      "label": "Region",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "string",
+          "unique": true,
+          "required": true
+        }
+      ],
+      "description": "A region. Ex: Middle East, Europe, Asia, Africa, North America, Oceania"
+    },
+    {
+      "label": "Country",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "string",
+          "unique": true,
+          "required": true
+        }
+      ],
+      "description": "A country. Ex: Qatar, USA, France, Germany, Australia, Japan"
+    },
+    {
+      "label": "City",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "string",
+          "unique": true,
+          "required": true
+        }
+      ],
+      "description": "A city. Ex: Doha, New York, Paris, Berlin, Sydney, Tokyo"
+    },
+    {
+      "label": "Airport",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "string",
+          "unique": true,
+          "required": true
+        }
+      ],
+      "description": "An airport. Ex: JFK, CDG, LHR, DOH, SYD, NRT"
+    }
+  ],
+  "relations": [
+    {
+      "label": "IN_COUNTRY",
+      "source": {
+        "label": "City"
+      },
+      "target": {
+        "label": "Country"
+      },
+      "attributes": []
+    },
+    {
+      "label": "IN_REGION",
+      "source": {
+        "label": "Country"
+      },
+      "target": {
+        "label": "Region"
+      },
+      "attributes": []
+    },
+    {
+      "label": "IN_CITY",
+      "source": {
+        "label": "Airport"
+      },
+      "target": {
+        "label": "City"
+      },
+      "attributes": []
+    },
+    {
+      "label": "HAS_ROUTE",
+      "source": {
+        "label": "Airport"
+      },
+      "target": {
+        "label": "Airport"
+      },
+      "attributes": [
+        {
+          "name": "fare_price",
+          "type": "number",
+          "unique": false,
+          "required": false
+        },
+        {
+          "name": "fare_currency",
+          "type": "number",
+          "unique": false,
+          "required": false
+        }
+      ]
+    },
+    {
+      "label": "HAS_ROUTE",
+      "source": {
+        "label": "Region"
+      },
+      "target": {
+        "label": "Region"
+      },
+      "attributes": [
+        {
+          "name": "fare_price",
+          "type": "number",
+          "unique": false,
+          "required": false
+        },
+        {
+          "name": "fare_currency",
+          "type": "number",
+          "unique": false,
+          "required": false
+        }
+      ]
+    },
+    {
+      "label": "HAS_ROUTE",
+      "source": {
+        "label": "Region"
+      },
+      "target": {
+        "label": "Country"
+      },
+      "attributes": [
+        {
+          "name": "fare_price",
+          "type": "number",
+          "unique": false,
+          "required": false
+        },
+        {
+          "name": "fare_currency",
+          "type": "number",
+          "unique": false,
+          "required": false
+        }
+      ]
+    },
+    {
+      "label": "HAS_ROUTE",
+      "source": {
+        "label": "Country"
+      },
+      "target": {
+        "label": "Region"
+      },
+      "attributes": [
+        {
+          "name": "fare_price",
+          "type": "number",
+          "unique": false,
+          "required": false
+        },
+        {
+          "name": "fare_currency",
+          "type": "number",
+          "unique": false,
+          "required": false
+        }
+      ]
+    },
+    {
+      "label": "HAS_ROUTE",
+      "source": {
+        "label": "City"
+      },
+      "target": {
+        "label": "City"
+      },
+      "attributes": [
+        {
+          "name": "fare_price",
+          "type": "number",
+          "unique": false,
+          "required": false
+        },
+        {
+          "name": "fare_currency",
+          "type": "number",
+          "unique": false,
+          "required": false
+        }
+      ]
+    }
+  ]
+}

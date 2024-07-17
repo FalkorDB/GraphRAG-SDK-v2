@@ -1,0 +1,897 @@
+{
+  "entities": [
+    {
+      "label": "Region",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "string",
+          "unique": true,
+          "required": true
+        },
+        {
+          "name": "region_name",
+          "type": "string",
+          "unique": true,
+          "required": true
+        }
+      ],
+      "description": ""
+    },
+    {
+      "label": "TransportFee",
+      "attributes": [
+        {
+          "name": "amount",
+          "type": "number",
+          "unique": false,
+          "required": true
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "unique": false,
+          "required": true
+        }
+      ],
+      "description": ""
+    },
+    {
+      "label": "Airline",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "string",
+          "unique": true,
+          "required": true
+        }
+      ],
+      "description": ""
+    },
+    {
+      "label": "Class",
+      "attributes": [
+        {
+          "name": "class_name",
+          "type": "string",
+          "unique": true,
+          "required": true
+        },
+        {
+          "name": "type",
+          "type": "string",
+          "unique": true,
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "unique": true,
+          "required": true
+        }
+      ],
+      "description": ""
+    },
+    {
+      "label": "Currency",
+      "attributes": [
+        {
+          "name": "currency_code",
+          "type": "string",
+          "unique": true,
+          "required": true
+        }
+      ],
+      "description": ""
+    },
+    {
+      "label": "Policy",
+      "attributes": [
+        {
+          "name": "policy_name",
+          "type": "string",
+          "unique": true,
+          "required": true
+        }
+      ],
+      "description": ""
+    },
+    {
+      "label": "Pet",
+      "attributes": [
+        {
+          "name": "type",
+          "type": "string",
+          "unique": true,
+          "required": true
+        }
+      ],
+      "description": ""
+    },
+    {
+      "label": "Kennel",
+      "attributes": [
+        {
+          "name": "size",
+          "type": "string",
+          "unique": true,
+          "required": true
+        }
+      ],
+      "description": ""
+    },
+    {
+      "label": "Journey",
+      "attributes": [
+        {
+          "name": "duration",
+          "type": "number",
+          "unique": true,
+          "required": true
+        }
+      ],
+      "description": ""
+    },
+    {
+      "label": "GroundStaff",
+      "attributes": [
+        {
+          "name": "location",
+          "type": "string",
+          "unique": true,
+          "required": true
+        }
+      ],
+      "description": ""
+    },
+    {
+      "label": "QatarAirways",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "string",
+          "unique": true,
+          "required": true
+        }
+      ],
+      "description": ""
+    },
+    {
+      "label": "Breed",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "string",
+          "unique": true,
+          "required": true
+        }
+      ],
+      "description": ""
+    },
+    {
+      "label": "HoldingArea",
+      "attributes": [
+        {
+          "name": "location",
+          "type": "string",
+          "unique": true,
+          "required": true
+        }
+      ],
+      "description": ""
+    },
+    {
+      "label": "Country",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "string",
+          "unique": true,
+          "required": true
+        }
+      ],
+      "description": ""
+    },
+    {
+      "label": "Document",
+      "attributes": [
+        {
+          "name": "title",
+          "type": "string",
+          "unique": true,
+          "required": true
+        },
+        {
+          "name": "category",
+          "type": "string",
+          "unique": false,
+          "required": true
+        },
+        {
+          "name": "keyword",
+          "type": "string",
+          "unique": false,
+          "required": false
+        }
+      ],
+      "description": ""
+    },
+    {
+      "label": "Service",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "string",
+          "unique": true,
+          "required": true
+        }
+      ],
+      "description": ""
+    },
+    {
+      "label": "Fee",
+      "attributes": [
+        {
+          "name": "amount",
+          "type": "number",
+          "unique": false,
+          "required": true
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "unique": false,
+          "required": true
+        }
+      ],
+      "description": ""
+    },
+    {
+      "label": "Animal",
+      "attributes": [
+        {
+          "name": "type",
+          "type": "string",
+          "unique": false,
+          "required": true
+        },
+        {
+          "name": "species",
+          "type": "string",
+          "unique": true,
+          "required": true
+        }
+      ],
+      "description": ""
+    },
+    {
+      "label": "Rate",
+      "attributes": [
+        {
+          "name": "cost",
+          "type": "number",
+          "unique": false,
+          "required": true
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "unique": false,
+          "required": true
+        }
+      ],
+      "description": ""
+    },
+    {
+      "label": "TemperatureLimit",
+      "attributes": [
+        {
+          "name": "degree_celsius",
+          "type": "number",
+          "unique": true,
+          "required": true
+        },
+        {
+          "name": "degree_fahrenheit",
+          "type": "number",
+          "unique": true,
+          "required": true
+        }
+      ],
+      "description": ""
+    },
+    {
+      "label": "Permit",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "string",
+          "unique": true,
+          "required": true
+        }
+      ],
+      "description": ""
+    },
+    {
+      "label": "City",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "string",
+          "unique": true,
+          "required": true
+        }
+      ],
+      "description": ""
+    },
+    {
+      "label": "EntityType",
+      "attributes": [
+        {
+          "name": "description",
+          "type": "string",
+          "unique": true,
+          "required": false
+        }
+      ],
+      "description": ""
+    },
+    {
+      "label": "ServiceAnimal",
+      "attributes": [
+        {
+          "name": "type",
+          "type": "string",
+          "unique": true,
+          "required": true
+        }
+      ],
+      "description": ""
+    },
+    {
+      "label": "Route",
+      "attributes": [
+        {
+          "name": "path",
+          "type": "string",
+          "unique": true,
+          "required": true
+        }
+      ],
+      "description": ""
+    }
+  ],
+  "relations": [
+    {
+      "label": "HAS_FEE",
+      "source": {
+        "label": "Region"
+      },
+      "target": {
+        "label": "Region"
+      },
+      "attributes": [
+        {
+          "name": "fee",
+          "type": "number",
+          "unique": false,
+          "required": true
+        }
+      ]
+    },
+    {
+      "label": "OFFERS",
+      "source": {
+        "label": "Airline"
+      },
+      "target": {
+        "label": "TransportFee"
+      },
+      "attributes": []
+    },
+    {
+      "label": "HAS_POLICY",
+      "source": {
+        "label": "Airline"
+      },
+      "target": {
+        "label": "Policy"
+      },
+      "attributes": []
+    },
+    {
+      "label": "APPLICABLE_FLIGHT_CLASS",
+      "source": {
+        "label": "Policy"
+      },
+      "target": {
+        "label": "Class"
+      },
+      "attributes": []
+    },
+    {
+      "label": "APPLICABLE_REGION",
+      "source": {
+        "label": "Policy"
+      },
+      "target": {
+        "label": "Region"
+      },
+      "attributes": []
+    },
+    {
+      "label": "PRICE",
+      "source": {
+        "label": "Policy"
+      },
+      "target": {
+        "label": "Currency"
+      },
+      "attributes": [
+        {
+          "name": "amount",
+          "type": "number",
+          "unique": false,
+          "required": true
+        }
+      ]
+    },
+    {
+      "label": "HAS_TRANSPORTATION_RESTRICTION",
+      "source": {
+        "label": "Airline"
+      },
+      "target": {
+        "label": "Region"
+      },
+      "attributes": []
+    },
+    {
+      "label": "HAS",
+      "source": {
+        "label": "Kennel"
+      },
+      "target": {
+        "label": "Pet"
+      },
+      "attributes": []
+    },
+    {
+      "label": "MONITORS",
+      "source": {
+        "label": "GroundStaff"
+      },
+      "target": {
+        "label": "Pet"
+      },
+      "attributes": []
+    },
+    {
+      "label": "CHANGES_WATER",
+      "source": {
+        "label": "GroundStaff"
+      },
+      "target": {
+        "label": "Pet"
+      },
+      "attributes": []
+    },
+    {
+      "label": "PROVIDES_FOOD",
+      "source": {
+        "label": "GroundStaff"
+      },
+      "target": {
+        "label": "Pet"
+      },
+      "attributes": []
+    },
+    {
+      "label": "REFILLS_WATER_CONTAINER",
+      "source": {
+        "label": "GroundStaff"
+      },
+      "target": {
+        "label": "Kennel"
+      },
+      "attributes": []
+    },
+    {
+      "label": "WALKS",
+      "source": {
+        "label": "GroundStaff"
+      },
+      "target": {
+        "label": "Pet"
+      },
+      "attributes": []
+    },
+    {
+      "label": "OWNS",
+      "source": {
+        "label": "QatarAirways"
+      },
+      "target": {
+        "label": "Kennel"
+      },
+      "attributes": []
+    },
+    {
+      "label": "APPLIES_RESTRICTION_TO",
+      "source": {
+        "label": "QatarAirways"
+      },
+      "target": {
+        "label": "Breed"
+      },
+      "attributes": []
+    },
+    {
+      "label": "HAS_DURING_TRANSFER",
+      "source": {
+        "label": "HoldingArea"
+      },
+      "target": {
+        "label": "Pet"
+      },
+      "attributes": []
+    },
+    {
+      "label": "TRAVELS_TO",
+      "source": {
+        "label": "Airline"
+      },
+      "target": {
+        "label": "Country"
+      },
+      "attributes": []
+    },
+    {
+      "label": "TRAVELS_FROM",
+      "source": {
+        "label": "Airline"
+      },
+      "target": {
+        "label": "Country"
+      },
+      "attributes": []
+    },
+    {
+      "label": "REQUIRES_DOCUMENTATION",
+      "source": {
+        "label": "Service"
+      },
+      "target": {
+        "label": "Document"
+      },
+      "attributes": []
+    },
+    {
+      "label": "RELATED_TO_ANIMAL",
+      "source": {
+        "label": "Document"
+      },
+      "target": {
+        "label": "Animal"
+      },
+      "attributes": []
+    },
+    {
+      "label": "APPLICABLE_TO_REGION",
+      "source": {
+        "label": "Fee"
+      },
+      "target": {
+        "label": "Region"
+      },
+      "attributes": []
+    },
+    {
+      "label": "APPROVED_BY",
+      "source": {
+        "label": "Service"
+      },
+      "target": {
+        "label": "Airline"
+      },
+      "attributes": []
+    },
+    {
+      "label": "TRAVELS_TO_REGION",
+      "source": {
+        "label": "Airline"
+      },
+      "target": {
+        "label": "Region"
+      },
+      "attributes": []
+    },
+    {
+      "label": "ALLOWS",
+      "source": {
+        "label": "Airline"
+      },
+      "target": {
+        "label": "Animal"
+      },
+      "attributes": [
+        {
+          "name": "max_count",
+          "type": "number",
+          "unique": false,
+          "required": false
+        }
+      ]
+    },
+    {
+      "label": "CARRIES_IN",
+      "source": {
+        "label": "Animal"
+      },
+      "target": {
+        "label": "Class"
+      },
+      "attributes": [
+        {
+          "name": "max_count",
+          "type": "number",
+          "unique": false,
+          "required": false
+        }
+      ]
+    },
+    {
+      "label": "SUBJECT_TO",
+      "source": {
+        "label": "Airline"
+      },
+      "target": {
+        "label": "Country"
+      },
+      "attributes": []
+    },
+    {
+      "label": "TRANSPORTS_FROM_TO",
+      "source": {
+        "label": "Region"
+      },
+      "target": {
+        "label": "Region"
+      },
+      "attributes": [
+        {
+          "name": "rate",
+          "type": "number",
+          "unique": false,
+          "required": false
+        },
+        {
+          "name": "currency",
+          "type": "string",
+          "unique": false,
+          "required": false
+        }
+      ]
+    },
+    {
+      "label": "NEEDS_DOCUMENTATION",
+      "source": {
+        "label": "Animal"
+      },
+      "target": {
+        "label": "Airline"
+      },
+      "attributes": [
+        {
+          "name": "doc_type",
+          "type": "string",
+          "unique": false,
+          "required": true
+        },
+        {
+          "name": "requirement",
+          "type": "string",
+          "unique": false,
+          "required": true
+        }
+      ]
+    },
+    {
+      "label": "ACCEPTS",
+      "source": {
+        "label": "Airline"
+      },
+      "target": {
+        "label": "Animal"
+      },
+      "attributes": []
+    },
+    {
+      "label": "HAS_LIMIT",
+      "source": {
+        "label": "Airline"
+      },
+      "target": {
+        "label": "TemperatureLimit"
+      },
+      "attributes": []
+    },
+    {
+      "label": "ALLOWS_TRANSFER_TO",
+      "source": {
+        "label": "Airline"
+      },
+      "target": {
+        "label": "Airline"
+      },
+      "attributes": []
+    },
+    {
+      "label": "PROHIBITS_TRANSFER_FROM",
+      "source": {
+        "label": "Airline"
+      },
+      "target": {
+        "label": "Airline"
+      },
+      "attributes": []
+    },
+    {
+      "label": "SUSPENDS",
+      "source": {
+        "label": "Country"
+      },
+      "target": {
+        "label": "Animal"
+      },
+      "attributes": [
+        {
+          "name": "duration",
+          "type": "string",
+          "unique": false,
+          "required": false
+        }
+      ]
+    },
+    {
+      "label": "RESTRICTS_ENTRIES_FROM",
+      "source": {
+        "label": "Country"
+      },
+      "target": {
+        "label": "Country"
+      },
+      "attributes": []
+    },
+    {
+      "label": "REQUIRES",
+      "source": {
+        "label": "Country"
+      },
+      "target": {
+        "label": "Permit"
+      },
+      "attributes": []
+    },
+    {
+      "label": "CONSIDERS_HIGH_RISK",
+      "source": {
+        "label": "Country"
+      },
+      "target": {
+        "label": "Country"
+      },
+      "attributes": []
+    },
+    {
+      "label": "PERMITS_ENTRANCE",
+      "source": {
+        "label": "Country"
+      },
+      "target": {
+        "label": "Animal"
+      },
+      "attributes": []
+    },
+    {
+      "label": "PROVIDES_INFORMATION_ON",
+      "source": {
+        "label": "EntityType"
+      },
+      "target": {
+        "label": "Country"
+      },
+      "attributes": []
+    },
+    {
+      "label": "HAS_INFORMATION_ON",
+      "source": {
+        "label": "Country"
+      },
+      "target": {
+        "label": "EntityType"
+      },
+      "attributes": []
+    },
+    {
+      "label": "FLIES_TO",
+      "source": {
+        "label": "Airline"
+      },
+      "target": {
+        "label": "City"
+      },
+      "attributes": []
+    },
+    {
+      "label": "HAS_LIMITATIONS",
+      "source": {
+        "label": "Country"
+      },
+      "target": {
+        "label": "ServiceAnimal"
+      },
+      "attributes": []
+    },
+    {
+      "label": "VERIFIES_LIMITATIONS",
+      "source": {
+        "label": "Airline"
+      },
+      "target": {
+        "label": "Country"
+      },
+      "attributes": []
+    },
+    {
+      "label": "CARRIES",
+      "source": {
+        "label": "Airline"
+      },
+      "target": {
+        "label": "Pet"
+      },
+      "attributes": []
+    },
+    {
+      "label": "IS_TRANSPORTED_IN",
+      "source": {
+        "label": "Pet"
+      },
+      "target": {
+        "label": "Class"
+      },
+      "attributes": []
+    },
+    {
+      "label": "IS_TRANSPORTED_ON",
+      "source": {
+        "label": "Pet"
+      },
+      "target": {
+        "label": "Route"
+      },
+      "attributes": []
+    },
+    {
+      "label": "HAS_FEES",
+      "source": {
+        "label": "Airline"
+      },
+      "target": {
+        "label": "ServiceAnimal"
+      },
+      "attributes": []
+    },
+    {
+      "label": "HAS_SIZE_REQUIREMENTS",
+      "source": {
+        "label": "Airline"
+      },
+      "target": {
+        "label": "Pet"
+      },
+      "attributes": []
+    }
+  ]
+}

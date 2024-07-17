@@ -1,0 +1,274 @@
+{
+  "entities": [
+    {
+      "label": "Airline",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "string",
+          "unique": true,
+          "required": true
+        }
+      ],
+      "description": ""
+    },
+    {
+      "label": "Pet",
+      "attributes": [
+        {
+          "name": "type",
+          "type": "string",
+          "unique": true,
+          "required": true
+        },
+        {
+          "name": "travel_method",
+          "type": "string",
+          "unique": false,
+          "required": false
+        },
+        {
+          "name": "health_status",
+          "type": "string",
+          "unique": false,
+          "required": false
+        },
+        {
+          "name": "route",
+          "type": "string",
+          "unique": false,
+          "required": false
+        },
+        {
+          "name": "max_per_cabin",
+          "type": "string",
+          "unique": false,
+          "required": false
+        },
+        {
+          "name": "max_per_passenger",
+          "type": "string",
+          "unique": false,
+          "required": false
+        }
+      ],
+      "description": ""
+    },
+    {
+      "label": "HealthCertificate",
+      "attributes": [
+        {
+          "name": "type",
+          "type": "string",
+          "unique": true,
+          "required": true
+        },
+        {
+          "name": "signed_by",
+          "type": "string",
+          "unique": false,
+          "required": true
+        },
+        {
+          "name": "fit_to_fly",
+          "type": "boolean",
+          "unique": false,
+          "required": true
+        }
+      ],
+      "description": ""
+    },
+    {
+      "label": "PetContainer",
+      "attributes": [
+        {
+          "name": "type",
+          "type": "string",
+          "unique": true,
+          "required": true
+        },
+        {
+          "name": "size",
+          "type": "string",
+          "unique": false,
+          "required": false
+        },
+        {
+          "name": "ventilation",
+          "type": "string",
+          "unique": false,
+          "required": false
+        },
+        {
+          "name": "design",
+          "type": "string",
+          "unique": false,
+          "required": false
+        },
+        {
+          "name": "strength",
+          "type": "string",
+          "unique": false,
+          "required": false
+        }
+      ],
+      "description": ""
+    },
+    {
+      "label": "Nationality",
+      "attributes": [
+        {
+          "name": "country",
+          "type": "string",
+          "unique": true,
+          "required": true
+        }
+      ],
+      "description": ""
+    },
+    {
+      "label": "Document",
+      "attributes": [
+        {
+          "name": "type",
+          "type": "string",
+          "unique": true,
+          "required": true
+        },
+        {
+          "name": "source",
+          "type": "string",
+          "unique": false,
+          "required": false
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "unique": false,
+          "required": false
+        }
+      ],
+      "description": ""
+    },
+    {
+      "label": "ServiceDog",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "string",
+          "unique": true,
+          "required": true
+        },
+        {
+          "name": "route",
+          "type": "string",
+          "unique": false,
+          "required": false
+        },
+        {
+          "name": "cabin_free_of_charge",
+          "type": "boolean",
+          "unique": false,
+          "required": false
+        }
+      ],
+      "description": ""
+    },
+    {
+      "label": "Country",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "string",
+          "unique": true,
+          "required": true
+        }
+      ],
+      "description": ""
+    },
+    {
+      "label": "TransferCare",
+      "attributes": [
+        {
+          "name": "details",
+          "type": "string",
+          "unique": true,
+          "required": true
+        }
+      ],
+      "description": ""
+    }
+  ],
+  "relations": [
+    {
+      "label": "ACCEPTS",
+      "source": {
+        "label": "Airline"
+      },
+      "target": {
+        "label": "Pet"
+      },
+      "attributes": []
+    },
+    {
+      "label": "HAS",
+      "source": {
+        "label": "Pet"
+      },
+      "target": {
+        "label": "HealthCertificate"
+      },
+      "attributes": []
+    },
+    {
+      "label": "REQUIRES",
+      "source": {
+        "label": "Airline"
+      },
+      "target": {
+        "label": "Document"
+      },
+      "attributes": []
+    },
+    {
+      "label": "USES",
+      "source": {
+        "label": "Pet"
+      },
+      "target": {
+        "label": "PetContainer"
+      },
+      "attributes": []
+    },
+    {
+      "label": "ALLOWS",
+      "source": {
+        "label": "Airline"
+      },
+      "target": {
+        "label": "ServiceDog"
+      },
+      "attributes": []
+    },
+    {
+      "label": "HAS_RESTRICTIONS",
+      "source": {
+        "label": "Airline"
+      },
+      "target": {
+        "label": "Country"
+      },
+      "attributes": []
+    },
+    {
+      "label": "RECEIVES",
+      "source": {
+        "label": "Pet"
+      },
+      "target": {
+        "label": "TransferCare"
+      },
+      "attributes": []
+    }
+  ]
+}

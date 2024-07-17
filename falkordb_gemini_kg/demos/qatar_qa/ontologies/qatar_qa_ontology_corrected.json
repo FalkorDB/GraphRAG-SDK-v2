@@ -1,0 +1,222 @@
+{
+  "entities": [
+    {
+      "label": "Airline",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "string",
+          "unique": true,
+          "required": true
+        }
+      ],
+      "description": ""
+    },
+    {
+      "label": "Pet",
+      "attributes": [
+        {
+          "name": "species",
+          "type": "string",
+          "unique": true,
+          "required": true
+        },
+        {
+          "name": "health_certificate",
+          "type": "string",
+          "unique": false,
+          "required": true
+        },
+        {
+          "name": "pet_passport",
+          "type": "string",
+          "unique": false,
+          "required": false
+        },
+        {
+          "name": "care_during_transfer_details",
+          "type": "string",
+          "unique": false,
+          "required": true
+        },
+        {
+          "name": "max_per_cabin",
+          "type": "string",
+          "unique": false,
+          "required": true
+        },
+        {
+          "name": "max_per_passenger",
+          "type": "string",
+          "unique": false,
+          "required": true
+        }
+      ],
+      "description": ""
+    },
+    {
+      "label": "Document",
+      "attributes": [
+        {
+          "name": "type",
+          "type": "string",
+          "unique": true,
+          "required": true
+        },
+        {
+          "name": "signed_by",
+          "type": "string",
+          "unique": false,
+          "required": true
+        }
+      ],
+      "description": ""
+    },
+    {
+      "label": "PetContainer",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "string",
+          "unique": true,
+          "required": true
+        },
+        {
+          "name": "size",
+          "type": "string",
+          "unique": false,
+          "required": true
+        },
+        {
+          "name": "ventilation",
+          "type": "string",
+          "unique": false,
+          "required": true
+        },
+        {
+          "name": "strength",
+          "type": "string",
+          "unique": false,
+          "required": true
+        }
+      ],
+      "description": ""
+    },
+    {
+      "label": "PetFood",
+      "attributes": [
+        {
+          "name": "type",
+          "type": "string",
+          "unique": true,
+          "required": true
+        },
+        {
+          "name": "availability",
+          "type": "string",
+          "unique": false,
+          "required": true
+        },
+        {
+          "name": "provided_by",
+          "type": "string",
+          "unique": false,
+          "required": true
+        }
+      ],
+      "description": ""
+    },
+    {
+      "label": "Route",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "string",
+          "unique": true,
+          "required": true
+        },
+        {
+          "name": "regional_restrictions",
+          "type": "string",
+          "unique": false,
+          "required": true
+        }
+      ],
+      "description": ""
+    },
+    {
+      "label": "Country",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "string",
+          "unique": true,
+          "required": true
+        }
+      ],
+      "description": ""
+    }
+  ],
+  "relations": [
+    {
+      "label": "ACCEPTS",
+      "source": {
+        "label": "Airline"
+      },
+      "target": {
+        "label": "Pet"
+      },
+      "attributes": []
+    },
+    {
+      "label": "REQUIRES",
+      "source": {
+        "label": "Airline"
+      },
+      "target": {
+        "label": "Document"
+      },
+      "attributes": []
+    },
+    {
+      "label": "ACCOMMODATES",
+      "source": {
+        "label": "Airline"
+      },
+      "target": {
+        "label": "PetContainer"
+      },
+      "attributes": []
+    },
+    {
+      "label": "PROVIDES",
+      "source": {
+        "label": "Airline"
+      },
+      "target": {
+        "label": "PetFood"
+      },
+      "attributes": []
+    },
+    {
+      "label": "SERVES",
+      "source": {
+        "label": "Airline"
+      },
+      "target": {
+        "label": "Route"
+      },
+      "attributes": []
+    },
+    {
+      "label": "APPLIES_TO",
+      "source": {
+        "label": "Route"
+      },
+      "target": {
+        "label": "Country"
+      },
+      "attributes": []
+    }
+  ]
+}
