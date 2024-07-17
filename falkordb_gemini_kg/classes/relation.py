@@ -3,7 +3,8 @@ import re
 import logging
 from .attribute import Attribute, AttributeType
 from falkordb import Node as GraphNode, Edge as GraphEdge
-from falkordb_gemini_kg.fixtures.regex import *
+from falkordb_gemini_kg.fixtures.regex import EDGE_LABEL_REGEX, NODE_LABEL_REGEX, EDGE_REGEX
+
 
 logger = logging.getLogger(__name__)
 
