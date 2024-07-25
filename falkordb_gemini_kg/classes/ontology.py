@@ -74,7 +74,7 @@ class Ontology(object):
             else:
                 # Entity exists in self, merge attributes
                 entity1 = next(n for n in self.entities if n.label == entity.label)
-                entity1.combine(entity)
+                entity1.merge(entity)
 
         # Merge relations
         for relation in o.relations:

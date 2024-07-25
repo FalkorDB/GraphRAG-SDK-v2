@@ -3,6 +3,22 @@ from .agent import Agent
 
 
 class KGAgent(Agent):
+    """Represents an Agent for a FalkorDB Knowledge Graph.
+
+    Args:
+        agent_id (str): The ID of the agent.
+        kg (KnowledgeGraph): The knowledge graph to query.
+        introduction (str): The introduction to the agent.
+
+    Examples:
+        >>> from falkordb_gemini_kg import KnowledgeGraph, Orchestrator
+        >>> from falkordb_gemini_kg.agents.kg_agent import KGAgent
+        >>> orchestrator = Orchestrator(model)
+        >>> kg = KnowledgeGraph("test_kg", ontology, model)
+        >>> agent = KGAgent("test_agent", kg, "This is a test agent.")
+        >>> orchestrator.register_agent(agent)
+
+    """
 
     _schema = [
         {
@@ -22,7 +38,7 @@ class KGAgent(Agent):
     @property
     def agent_id(self) -> str:
         return self._agent_id
-    
+
     @agent_id.setter
     def agent_id(self, value):
         self._agent_id = value
@@ -30,27 +46,37 @@ class KGAgent(Agent):
     @property
     def introduction(self) -> str:
         return self._introduction
-    
+
     @introduction.setter
     def introduction(self, value):
         self._introduction = value
 
     @property
-    def schema(self) -> list[dict]:
+    def interface(self) -> list[dict]:
         return self._schema
-    
+
     @property
     def kg(self) -> KnowledgeGraph:
         return self._kg
-    
+
     @kg.setter
-    def kg(self, value):
+    def kg(self, value: KnowledgeGraph):
         self._kg = value
 
-    def run(self, params: dict):
-        return self._kg.ask(params["prompt"])
+    def run(self, params: dict) -> dict:
+        """
+        Ask the agent a question.
 
-    def to_orchestrator(self):
+        Args:
+            params (dict): The parameters for the agent.
+
+        Returns:
+            str: The agent's response.
+
+        """
+        return {"output": self._kg.ask(params["prompt"])}
+
+    def __repr__(self):
         return f"""
 ---
 Agent ID: {self.agent_id}

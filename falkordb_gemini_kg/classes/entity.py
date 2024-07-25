@@ -23,7 +23,7 @@ class Entity:
             [
                 Attribute(
                     attr,
-                    AttributeType.fromString(entity.properties[attr]),
+                    AttributeType.from_string(entity.properties[attr]),
                     "!" in entity.properties[attr],
                 )
                 for attr in entity.properties
@@ -48,7 +48,7 @@ class Entity:
             "description": self.description,
         }
 
-    def combine(self, entity2: "Entity"):
+    def merge(self, entity2: "Entity"):
         """Overwrite attributes of self with attributes of entity2."""
         if self.label != entity2.label:
             raise Exception("Entities must have the same label to be combined")
@@ -64,10 +64,15 @@ class Entity:
         return [attr for attr in self.attributes if attr.unique]
 
     def to_graph_query(self):
-        attributes = ", ".join([str(attr) for attr in self.attributes])
+        unique_attributes = ", ".join(
+            [str(attr) for attr in self.attributes if attr.unique]
+        )
+        non_unique_attributes = ", ".join(
+            [str(attr) for attr in self.attributes if not attr.unique]
+        )
         if self.description:
-            attributes += f"{', ' if len(attributes) > 0 else ''} {descriptionKey}: '{self.description}'"
-        return f"MERGE (n:{self.label} {{{attributes}}}) RETURN n"
+            non_unique_attributes += f"{', ' if len(non_unique_attributes) > 0 else ''} {descriptionKey}: '{self.description}'"
+        return f"MERGE (n:{self.label} {{{unique_attributes}}}) SET n += {{{non_unique_attributes}}} RETURN n"
 
     def __str__(self) -> str:
         return (

@@ -22,23 +22,27 @@ class Orchestrator:
     def __init__(self, model: GenerativeModel):
         self._model = model
 
+    def _get_chat(self):
+        if self._chat is None:
+            self._chat = self._model.with_system_instruction(
+                ORCHESTRATOR_SYSTEM.replace(
+                    "#AGENTS",
+                    ",".join([agent.to_orchestrator() for agent in self._agents]),
+                )
+            ).start_chat({"response_validation": False})
+
+        return self._chat
+
     def register_agent(self, agent: Agent):
         self._agents.append(agent)
 
     def ask(self, question: str):
+        return self.runner(question).run()
 
-        self._chat = self._model.with_system_instruction(
-            ORCHESTRATOR_SYSTEM.replace(
-                "#AGENTS",
-                ",".join([agent.to_orchestrator() for agent in self._agents]),
-            )
-        ).start_chat({"response_validation": False})
-
+    def runner(self, question: str) -> OrchestratorRunner:
         plan = self._create_execution_plan(question)
 
-        runner = OrchestratorRunner(self._chat, self._agents, plan)
-
-        return runner
+        return OrchestratorRunner(self._get_chat(), self._agents, plan)
 
     def _create_execution_plan(self, question: str):
         try:

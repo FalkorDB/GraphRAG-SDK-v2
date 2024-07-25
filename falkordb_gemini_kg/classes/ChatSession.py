@@ -8,6 +8,23 @@ from falkordb import Graph
 
 
 class ChatSession:
+    """
+    Represents a chat session with a Knowledge Graph.
+
+    Args:
+        model_config (KnowledgeGraphModelConfig): The model configuration to use.
+        ontology (Ontology): The ontology to use.
+        graph (Graph): The graph to query.
+
+    Examples:
+        >>> from falkordb_gemini_kg import KnowledgeGraph, Orchestrator
+        >>> from falkordb_gemini_kg.classes.ontology import Ontology
+        >>> from falkordb_gemini_kg.classes.model_config import KnowledgeGraphModelConfig
+        >>> model_config = KnowledgeGraphModelConfig.with_model(model)
+        >>> kg = KnowledgeGraph("test_kg", model_config, ontology)
+        >>> chat_session = kg.start_chat()
+        >>> chat_session.send_message("What is the capital of France?")
+    """
 
     def __init__(
         self, model_config: KnowledgeGraphModelConfig, ontology: Ontology, graph: Graph
@@ -37,7 +54,15 @@ class ChatSession:
         ).start_chat()
 
     def send_message(self, message: str):
+        """
+        Sends a message to the chat session.
 
+        Args:
+            message (str): The message to send.
+
+        Returns:
+            str: The response to the message.
+        """
         cypher_step = GraphQueryGenerationStep(
             graph=self.graph,
             chat_session=self.cypher_chat_session,

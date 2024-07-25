@@ -63,7 +63,7 @@ class Relation:
             [
                 Attribute(
                     attr,
-                    AttributeType.fromString(relation.properties),
+                    AttributeType.from_string(relation.properties),
                     "!" in relation.properties[attr],
                     "*" in relation.properties[attr],
                 )

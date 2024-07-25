@@ -31,7 +31,7 @@ class TestValidateCypher1(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
 
-        cls._ontology = Ontology([], [])
+        cls._ontology = Ontology()
 
         cls._ontology.add_entity(
             Entity(

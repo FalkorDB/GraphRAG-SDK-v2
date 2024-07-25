@@ -309,14 +309,7 @@ class TestMultiAgent(unittest.TestCase):
 
     def test_multi_agent(self):
 
-        runner = self.orchestrator.ask("Write me a 3 day itinerary for a trip to Italy")
-
-        assert runner is not None
-
-        assert len(runner._agents) == 2, "There should be two agents"
-        assert runner._plan is not None, "Execution plan should not be None"
-
-        response = runner.run()
+        response = self.orchestrator.ask("Write me a 3 day itinerary for a trip to Italy")
 
         assert response is not None
 

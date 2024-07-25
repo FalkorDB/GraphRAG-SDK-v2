@@ -8,6 +8,20 @@ class FinishReason:
 
 
 class GenerativeModelConfig:
+    """
+    Configuration for a generative model
+
+    Args:
+        temperature (float): The temperature to use for sampling.
+        top_p (float): The top-p value to use for sampling.
+        top_k (int): The top-k value to use for sampling.
+        max_output_tokens (int): The maximum number of tokens to generate.
+        stop_sequences (list[str]): The stop sequences to use for sampling.
+
+    Examples:
+
+        >>> config = GenerativeModelConfig(temperature=0.5, top_p=0.9, top_k=50, max_output_tokens=100, stop_sequences=[".", "?", "!"])
+    """
     def __init__(
         self,
         temperature: float,
@@ -34,6 +48,9 @@ class GenerationResponse:
 
 
 class GenerativeModelChatSession(ABC):
+    """
+    A chat session with a generative model.
+    """
 
     @abstractmethod
     def __init__(self, model: "GenerativeModel"):
@@ -45,6 +62,9 @@ class GenerativeModelChatSession(ABC):
 
 
 class GenerativeModel(ABC):
+    """
+    A generative model that can be used to generate text.
+    """
 
     @abstractmethod
     def with_system_instruction(self, system_instruction: str) -> "GenerativeModel":
