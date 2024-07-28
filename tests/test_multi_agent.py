@@ -14,8 +14,6 @@ import vertexai
 import os
 import logging
 from json import loads
-from _pytest.monkeypatch import MonkeyPatch
-
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -27,7 +25,6 @@ class TestMultiAgent(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.monkeypatch = MonkeyPatch()
 
         cls.restaurants_ontology = Ontology()
         cls.restaurants_ontology.add_entity(
@@ -312,9 +309,7 @@ class TestMultiAgent(unittest.TestCase):
 
     def test_multi_agent(self):
 
-        self.monkeypatch.setattr("builtins.input", lambda _: "food and history")
-
-        response = self.orchestrator.ask("Write me a 3 day itinerary for a trip to Italy")
+        response = self.orchestrator.ask("Write me a 3 day itinerary for a trip to Italy. Do not ask any questions to me, just provide your best itinerary.")
 
         assert response is not None
 
