@@ -1,12 +1,12 @@
 from falkordb_gemini_kg.models import GenerativeModel
 from falkordb_gemini_kg.agents import Agent
-from falkordb_gemini_kg.classes.orchestrator_runner import OrchestratorRunner
+from .orchestrator_runner import OrchestratorRunner
 from falkordb_gemini_kg.fixtures.prompts import (
     ORCHESTRATOR_SYSTEM,
     ORCHESTRATOR_EXECUTION_PLAN_PROMPT,
 )
 from falkordb_gemini_kg.helpers import extract_json
-from falkordb_gemini_kg.classes.execution_plan import (
+from .execution_plan import (
     ExecutionPlan,
 )
 import logging
@@ -27,7 +27,7 @@ class Orchestrator:
             self._chat = self._model.with_system_instruction(
                 ORCHESTRATOR_SYSTEM.replace(
                     "#AGENTS",
-                    ",".join([agent.to_orchestrator() for agent in self._agents]),
+                    ",".join([str(agent) for agent in self._agents]),
                 )
             ).start_chat({"response_validation": False})
 
@@ -46,13 +46,13 @@ class Orchestrator:
 
     def _create_execution_plan(self, question: str):
         try:
-            response = self._chat.send_message(
+            response = self._get_chat().send_message(
                 ORCHESTRATOR_EXECUTION_PLAN_PROMPT.replace("#QUESTION", question)
             )
 
             logger.debug(f"Execution plan response: {response.text}")
 
-            plan = ExecutionPlan.from_json(extract_json(response.text))
+            plan = ExecutionPlan.from_json(extract_json(response.text, skip_repair=True))
 
             logger.debug(f"Execution plan: {plan}")
 

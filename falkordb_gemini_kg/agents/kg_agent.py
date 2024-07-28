@@ -1,5 +1,6 @@
 from falkordb_gemini_kg.kg import KnowledgeGraph
 from .agent import Agent
+from falkordb_gemini_kg.models import GenerativeModelChatSession
 
 
 class KGAgent(Agent):
@@ -20,7 +21,7 @@ class KGAgent(Agent):
 
     """
 
-    _schema = [
+    _interface = [
         {
             "name": "prompt",
             "type": "string",
@@ -53,7 +54,7 @@ class KGAgent(Agent):
 
     @property
     def interface(self) -> list[dict]:
-        return self._schema
+        return self._interface
 
     @property
     def kg(self) -> KnowledgeGraph:
@@ -63,7 +64,9 @@ class KGAgent(Agent):
     def kg(self, value: KnowledgeGraph):
         self._kg = value
 
-    def run(self, params: dict) -> dict:
+    def run(
+        self, params: dict, session: GenerativeModelChatSession | None = None
+    ) -> dict:
         """
         Ask the agent a question.
 
@@ -74,13 +77,15 @@ class KGAgent(Agent):
             str: The agent's response.
 
         """
-        return {"output": self._kg.ask(params["prompt"])}
+        (output, chat_session) = self._kg.ask(params["prompt"], session)
+        return (output, chat_session)
 
     def __repr__(self):
         return f"""
 ---
 Agent ID: {self.agent_id}
 Knowledge Graph Name: {self._kg.name}
+Interface: {self.interface}
 
 Introduction: {self.introduction}
 """

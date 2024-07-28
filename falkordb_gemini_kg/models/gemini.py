@@ -78,6 +78,23 @@ class GeminiGenerativeModel(GenerativeModel):
             ),
         )
 
+    def to_json(self) -> dict:
+        return {
+            "model_name": self._model_name,
+            "generation_config": self._generation_config.to_json(),
+            "system_instruction": self._system_instruction,
+        }
+
+    @staticmethod
+    def from_json(json: dict) -> "GenerativeModel":
+        return GeminiGenerativeModel(
+            model_name=json["model_name"],
+            generation_config=GenerativeModelConfig.from_json(
+                json["generation_config"]
+            ),
+            system_instruction=json["system_instruction"],
+        )
+
 
 class GeminiChatSession(GenerativeModelChatSession):
 

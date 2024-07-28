@@ -449,16 +449,18 @@ Question: {question}
 Helpful Answer:"""
 
 
-
 ORCHESTRATOR_SYSTEM = """
 You are an orchestrator agent that manages the flow of information between different agent, in order to provide a complete and accurate answer to the user's question.
-You will receive a question that requires information from different agent to answer.
+You will receive a question that requires information from different agents to answer.
 You will need to interact with different agents to get the necessary information to answer the question.
 For that to happen in the most efficient way, you create an execution plan that will be performed by each agent.
+You might need to ask the user for more information to answer the question in the most accurate way. You can ask more than one question if necessary.
+After every step, you will decide what to do next based on the information you have.
 Once all the steps are completed, you will receive a summary of the execution plan to generate the final answer to the user's question.
 Do not include any explanations or apologies in your responses.
 Do not respond to any questions that might ask anything else than orchestrating the information flow.
 
+Here's the list of agents you can interact with:
 #AGENTS
 """
 
@@ -467,76 +469,51 @@ Considering the provided list of agents, create an execution plan to answer the 
 
 #QUESTION
 
-The execution plan should be valid in the following JSON schema.
+The execution plan should be a valid JSON array.
 Do not include any explanations or apologies in your responses.
 Do not respond to any questions that might ask anything else than orchestrating the information flow.
 Only return the execution plan, enclosed in triple backticks.
 Do not skip lines in order to save tokens.
 Make sure to use the parallel block whenever possible to execute the agents in parallel.
+Make sure to always finish with a summary block to generate the final answer to the user's question.
 
-```json
-{
-  "type": "array",
-  "items": {
-    "type": "object",
-    "properties": {
-      "id": {
-        "type": "string",
-      },
-      "block": {
-        "type": "string",
-        "enum": ["parallel", "prompt_agent", "summary"]
-      },
-      "properties": {
-        "type": "object",
-        "properties": {
-          "steps": {
-            "type": "array",
-            "description": "Steps to execute in parallel. Required if block is 'parallel'",
-            "items": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "type": "string",
-                  "description": "Agent ID to execute"
-                },
-                "block": {
-                  "type": "string",
-                  "enum": ["prompt_agent"]
-                },
-                "properties": {
-                  "type": "object",
-                  "properties": {
-                    "agent": {
-                      "type": "string",
-                      "description": "Agent ID to prompt"
-                    },
-                    "prompt": {
-                      "type": "string",
-                      "description": "Text to prompt the agent"
-                    }
-                  },
-                  "required": ["agent", "prompt"]
-                }
-              },
-              "required": ["id", "block", "properties"]
-            }
-          },
-          "agent": {
-            "type": "string",
-            "description": "Agent ID to prompt. Required if block is 'prompt_agent'"
-          },
-          "prompt": {
-            "type": "string",
-            "description": "Text to prompt the agent. Required if block is 'prompt_agent'"
-          }
-        }
-      }
-    },
-    "required": ["id", "block"]
-  }
-}
-```
+Choose between the following steps to create the execution plan:
+
+# Step: Agent
+{{
+  "block": "agent",
+  "id": "step_id",
+  "properties": {{
+    "agent_id": "agent_id",
+    "session_id": "session_id"
+    "payload": {{ ... }} # Based on the interface of the agent
+  }}
+}}
+
+# Step: Summary
+{{
+  "block": "summary",
+  "id": "step_id",
+  "properties": {}
+}}
+
+# Step: User Input
+{{
+  "block": "user_input",
+  "id": "step_id",
+  "properties": {{
+    "question": "question"
+  }}
+}}
+
+# Step: Parallel
+{{
+  "block": "parallel",
+  "id": "step_id",
+  "properties": {{
+    "steps": [...]
+  }}
+}}
 
 """
 
@@ -546,4 +523,24 @@ Given the following execution plan and responses, generate the final answer to t
 
 #EXECUTION_PLAN
 
+"""
+
+ORCHESTRATOR_DECISION_PROMPT = """
+Given the following log history, decide what to do next.
+You can either:
+- Continue with the current plan
+- Update the next step in the plan
+- End the execution plan
+
+Log History:
+#LOG_HISTORY
+
+Next step:
+#NEXT_STEP
+
+Your response should be a json object with the following schema:
+{{
+  "code": "continue" | "update_step" | "end",
+  "new_step": ... # Required if code is "update_step"
+}}
 """

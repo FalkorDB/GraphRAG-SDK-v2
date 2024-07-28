@@ -10,6 +10,7 @@ from falkordb_gemini_kg.steps.qa_step import QAStep
 from falkordb_gemini_kg.classes.ChatSession import ChatSession
 from falkordb_gemini_kg.helpers import map_dict_to_cypher_properties
 from falkordb_gemini_kg.classes.attribute import AttributeType, Attribute
+from falkordb_gemini_kg.models import GenerativeModelChatSession
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -117,18 +118,23 @@ class KnowledgeGraph:
 
         step.run(instructions)
 
-    def ask(self, question: str) -> str:
+    def ask(
+        self, question: str, qa_chat_session: GenerativeModelChatSession | None = None
+    ) -> tuple[str, GenerativeModelChatSession]:
         """
-        Query the knowledge graph using natural language
-        if the query is asked as part of a longer conversation make sure to
-        include past history.
+        Query the knowledge graph using natural language.
+        Optionally, you can provide a qa_chat_session to use for the query.
+
+        Parameters:
+            question (str): question to ask the knowledge graph
+            qa_chat_session (GenerativeModelChatSession|None): qa_chat_session to use for the query
 
         Returns:
-            str: answer
+            tuple[str, GenerativeModelChatSession]: answer, qa_chat_session
 
          Example:
-            >>> ans = kg.ask("Which actor has the most oscars")
-            >>> ans = kg.ask("List a few movies in which that actored played in", history)
+            >>> (ans, qa_chat_session) = kg.ask("List a few movies in which that actor played in")
+            >>> print(ans)
         """
 
         cypher_chat_session = (
@@ -147,16 +153,19 @@ class KnowledgeGraph:
         if not cypher or len(cypher) == 0:
             return "I am sorry, I could not find the answer to your question"
 
-        qa_chat_session = self._model_config.qa.with_system_instruction(
-            GRAPH_QA_SYSTEM
-        ).start_chat()
+        qa_chat_session = (
+            qa_chat_session
+            or self._model_config.qa.with_system_instruction(
+                GRAPH_QA_SYSTEM
+            ).start_chat()
+        )
         qa_step = QAStep(
             chat_session=qa_chat_session,
         )
 
         answer = qa_step.run(question, cypher, context)
 
-        return answer
+        return (answer, qa_chat_session)
 
     def delete(self) -> None:
         """
