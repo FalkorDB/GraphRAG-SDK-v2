@@ -93,7 +93,7 @@ class TestKGGemini(unittest.TestCase):
 
         logger.info(f"Answer: {answer}")
 
-        assert "Joseph Scotto" in answer, "Joseph Scotto not found in answer"
+        assert "Joseph Scotto" in answer[0], "Joseph Scotto not found in answer"
 
     def test_kg_delete(self):
 

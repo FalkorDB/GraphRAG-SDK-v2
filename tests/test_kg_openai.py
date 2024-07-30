@@ -9,8 +9,6 @@ import unittest
 from falkordb_gemini_kg.classes.source import Source
 from falkordb_gemini_kg.models.openai import OpenAiGenerativeModel
 from falkordb_gemini_kg import KnowledgeGraph, KnowledgeGraphModelConfig
-import vertexai
-import os
 import logging
 from falkordb import FalkorDB
 
@@ -89,7 +87,7 @@ class TestKGOpenAI(unittest.TestCase):
 
         logger.info(f"Answer: {answer}")
 
-        assert "Joseph Scotto" in answer, "Joseph Scotto not found in answer"
+        assert "Joseph Scotto" in answer[0], "Joseph Scotto not found in answer"
 
     def test_kg_delete(self):
 

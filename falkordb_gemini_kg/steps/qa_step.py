@@ -16,9 +16,9 @@ class QAStep(Step):
     def __init__(
         self,
         chat_session: GenerativeModelChatSession,
-        config: dict = {},
+        config: dict = None,
     ) -> None:
-        self.config = config
+        self.config = config or {}
         self.chat_session = chat_session
 
     def run(self, question: str, cypher: str, context: str):

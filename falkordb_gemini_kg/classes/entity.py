@@ -3,9 +3,11 @@ import logging
 from .attribute import Attribute, AttributeType
 from falkordb import Node as GraphNode
 import re
+
 logger = logging.getLogger(__name__)
 
 descriptionKey = "__description__"
+
 
 class Entity:
     def __init__(self, label: str, attributes: list[Attribute], description: str = ""):
@@ -21,12 +23,13 @@ class Entity:
             [
                 Attribute(
                     attr,
-                    AttributeType.fromString(entity.properties[attr]),
+                    AttributeType.from_string(entity.properties[attr]),
                     "!" in entity.properties[attr],
                 )
-                for attr in entity.properties if attr != descriptionKey
+                for attr in entity.properties
+                if attr != descriptionKey
             ],
-            entity.properties[descriptionKey] if descriptionKey in entity.properties else "",
+            entity.properties.get(descriptionKey, ""),
         )
 
     @staticmethod
@@ -34,11 +37,8 @@ class Entity:
         txt = txt if isinstance(txt, dict) else json.loads(txt)
         return Entity(
             txt["label"],
-            [
-                Attribute.from_json(attr)
-                for attr in (txt["attributes"] if "attributes" in txt else [])
-            ],
-            txt["description"] if "description" in txt else "",
+            [Attribute.from_json(attr) for attr in (txt.get("attributes", []))],
+            txt.get("description", ""),
         )
 
     def to_json(self):
@@ -48,7 +48,7 @@ class Entity:
             "description": self.description,
         }
 
-    def combine(self, entity2: "Entity"):
+    def merge(self, entity2: "Entity"):
         """Overwrite attributes of self with attributes of entity2."""
         if self.label != entity2.label:
             raise Exception("Entities must have the same label to be combined")
@@ -64,10 +64,15 @@ class Entity:
         return [attr for attr in self.attributes if attr.unique]
 
     def to_graph_query(self):
-        attributes = ", ".join([str(attr) for attr in self.attributes])
+        unique_attributes = ", ".join(
+            [str(attr) for attr in self.attributes if attr.unique]
+        )
+        non_unique_attributes = ", ".join(
+            [str(attr) for attr in self.attributes if not attr.unique]
+        )
         if self.description:
-            attributes += f"{', ' if len(attributes) > 0 else ''} {descriptionKey}: '{self.description}'"
-        return f"MERGE (n:{self.label} {{{attributes}}}) RETURN n"
+            non_unique_attributes += f"{', ' if len(non_unique_attributes) > 0 else ''} {descriptionKey}: '{self.description}'"
+        return f"MERGE (n:{self.label} {{{unique_attributes}}}) SET n += {{{non_unique_attributes}}} RETURN n"
 
     def __str__(self) -> str:
         return (

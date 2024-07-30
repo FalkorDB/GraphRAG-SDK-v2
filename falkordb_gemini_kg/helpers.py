@@ -6,16 +6,16 @@ from fix_busted_json import repair_json
 logger = logging.getLogger(__name__)
 
 
-def extract_json(text: str | dict) -> str:
+def extract_json(text: str | dict, skip_repair=False) -> str:
     if not isinstance(text, str):
         text = str(text)
     regex = r"(?:```)?(?:json)?([^`]*)(?:\\n)?(?:```)?"
     matches = re.findall(regex, text, re.DOTALL)
 
     try:
-        return repair_json("".join(matches))
+        return repair_json("".join(matches)) if not skip_repair else "".join(matches)
     except Exception as e:
-        logger.error(f"Failed to repair JSON: {e}")
+        logger.error(f"Failed to repair JSON: {e} - {text}")
         return "".join(matches)
 
 
@@ -114,7 +114,9 @@ def validate_cypher_entities_exist(cypher: str, ontology: falkordb_gemini_kg.Ont
         if label not in [entity.label for entity in ontology.entities]:
             not_found_entity_labels.append(label)
 
-    return [f"Entity {label} not found in ontology" for label in not_found_entity_labels]
+    return [
+        f"Entity {label} not found in ontology" for label in not_found_entity_labels
+    ]
 
 
 def validate_cypher_relations_exist(cypher: str, ontology: falkordb_gemini_kg.Ontology):
@@ -127,10 +129,14 @@ def validate_cypher_relations_exist(cypher: str, ontology: falkordb_gemini_kg.On
         if label not in [relation.label for relation in ontology.relations]:
             not_found_relation_labels.append(label)
 
-    return [f"Relation {label} not found in ontology" for label in not_found_relation_labels]
+    return [
+        f"Relation {label} not found in ontology" for label in not_found_relation_labels
+    ]
 
 
-def validate_cypher_relation_directions(cypher: str, ontology: falkordb_gemini_kg.Ontology):
+def validate_cypher_relation_directions(
+    cypher: str, ontology: falkordb_gemini_kg.Ontology
+):
 
     errors = []
     relations = list(re.finditer(r"\[.*?\]", cypher))
@@ -201,8 +207,7 @@ def validate_cypher_relation_directions(cypher: str, ontology: falkordb_gemini_k
                 )
 
             i += 1
-        except Exception as e:
-            # errors.append(str(e))
+        except Exception:
             continue
 
     return errors

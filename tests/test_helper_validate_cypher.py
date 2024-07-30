@@ -31,7 +31,7 @@ class TestValidateCypher1(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
 
-        cls._ontology = Ontology([], [])
+        cls._ontology = Ontology()
 
         cls._ontology.add_entity(
             Entity(
@@ -156,36 +156,36 @@ class TestValidateCypher3(unittest.TestCase):
 
         cls._ontology = Ontology([], [])
 
-        cls._ontology.add_node(
-            Node(
+        cls._ontology.add_entity(
+            Entity(
                 label="Airline",
                 attributes=[],
             )
         )
 
-        cls._ontology.add_node(
-            Node(
+        cls._ontology.add_entity(
+            Entity(
                 label="Pet",
                 attributes=[],
             )
         )
 
-        cls._ontology.add_node(
-            Node(
+        cls._ontology.add_entity(
+            Entity(
                 label="Route",
                 attributes=[],
             )
         )
 
-        cls._ontology.add_node(
-            Node(
+        cls._ontology.add_entity(
+            Entity(
                 label="Service_Dog",
                 attributes=[],
             )
         )
 
-        cls._ontology.add_edge(
-            Edge(
+        cls._ontology.add_relation(
+            Relation(
                 label="ACCEPTS",
                 source="Airline",
                 target="Pet",
@@ -193,8 +193,8 @@ class TestValidateCypher3(unittest.TestCase):
             )
         )
 
-        cls._ontology.add_edge(
-            Edge(
+        cls._ontology.add_relation(
+            Relation(
                 label="ALLOWS",
                 source="Route",
                 target="Service_Dog",
@@ -204,19 +204,19 @@ class TestValidateCypher3(unittest.TestCase):
 
     def test_validate_cypher_nodes_exist(self):
 
-        errors = validate_cypher_nodes_exist(self.cypher, self._ontology)
+        errors = validate_cypher_entities_exist(self.cypher, self._ontology)
 
         assert len(errors) == 0
 
     def test_validate_cypher_edges_exist(self):
 
-        errors = validate_cypher_edges_exist(self.cypher, self._ontology)
+        errors = validate_cypher_relations_exist(self.cypher, self._ontology)
 
         assert len(errors) == 0
 
     def test_validate_cypher_edge_directions(self):
 
-        errors = validate_cypher_edge_directions(self.cypher, self._ontology)
+        errors = validate_cypher_relation_directions(self.cypher, self._ontology)
 
         assert len(errors) == 0
 

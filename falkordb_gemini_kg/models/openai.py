@@ -1,5 +1,11 @@
-from .model import *
-from openai import OpenAI, completions
+from .model import (
+    GenerativeModel,
+    GenerativeModelConfig,
+    GenerationResponse,
+    FinishReason,
+    GenerativeModelChatSession,
+)
+from openai import OpenAI
 
 
 class OpenAiGenerativeModel(GenerativeModel):
@@ -59,6 +65,23 @@ class OpenAiGenerativeModel(GenerativeModel):
                     else FinishReason.OTHER
                 )
             ),
+        )
+
+    def to_json(self) -> dict:
+        return {
+            "model_name": self.model_name,
+            "generation_config": self.generation_config.to_json(),
+            "system_instruction": self.system_instruction,
+        }
+
+    @staticmethod
+    def from_json(json: dict) -> "GenerativeModel":
+        return OpenAiGenerativeModel(
+            json["model_name"],
+            generation_config=GenerativeModelConfig.from_json(
+                json["generation_config"]
+            ),
+            system_instruction=json["system_instruction"],
         )
 
 

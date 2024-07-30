@@ -12,15 +12,31 @@ class AttributeType:
     BOOLEAN = "boolean"
 
     @staticmethod
-    def fromString(txt: str):
-        if txt.isdigit():
+    def from_string(txt: str):
+        if txt.lower() == AttributeType.STRING:
+            return AttributeType.STRING
+        if txt.lower() == AttributeType.NUMBER:
             return AttributeType.NUMBER
-        elif txt.lower() in ["true", "false"]:
+        if txt.lower() == AttributeType.BOOLEAN:
             return AttributeType.BOOLEAN
-        return AttributeType.STRING
+        raise Exception(f"Invalid attribute type: {txt}")
 
 
 class Attribute:
+    """ Represents an attribute of an entity or relation in the ontology.
+
+        Args:
+            name (str): The name of the attribute.
+            attr_type (AttributeType): The type of the attribute.
+            unique (bool): Whether the attribute is unique.
+            required (bool): Whether the attribute is required.
+
+        Examples:
+            >>> attr = Attribute("name", AttributeType.STRING, True, True)
+            >>> print(attr)
+            name: "string!*"
+    """
+
     def __init__(
         self, name: str, attr_type: AttributeType, unique: bool, required: bool = False
     ):
@@ -32,21 +48,32 @@ class Attribute:
     @staticmethod
     def from_json(txt: str | dict):
         txt = txt if isinstance(txt, dict) else json.loads(txt)
-        if txt["type"] not in [
-            AttributeType.STRING,
-            AttributeType.NUMBER,
-            AttributeType.BOOLEAN,
-        ]:
-            raise Exception(f"Invalid attribute type: {txt['type']}")
+
         return Attribute(
             txt["name"],
-            txt["type"],
+            AttributeType.from_string(txt["type"]),
             txt["unique"],
             txt["required"] if "required" in txt else False,
         )
 
     @staticmethod
     def from_string(txt: str):
+        """
+        Parses an attribute from a string.
+        The "!" symbol indicates that the attribute is unique.
+        The "*" symbol indicates that the attribute is required
+
+        Args:
+            txt (str): The string to parse.
+
+        Returns:
+            Attribute: The parsed attribute.
+
+        Examples:
+            >>> attr = Attribute.from_string("name:string!*")
+            >>> print(attr.name)
+            name
+        """
         name = txt.split(":")[0].strip()
         attr_type = txt.split(":")[1].split("!")[0].split("*")[0].strip()
         unique = "!" in txt
@@ -59,7 +86,7 @@ class Attribute:
         ]:
             raise Exception(f"Invalid attribute type: {attr_type}")
 
-        return Attribute(name, attr_type, unique, required)
+        return Attribute(name, AttributeType.from_string(attr_type), unique, required)
 
     def to_json(self):
         return {

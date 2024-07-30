@@ -5,7 +5,6 @@ from falkordb_gemini_kg.classes.ontology import Ontology
 from falkordb_gemini_kg.models import (
     GenerativeModel,
     GenerativeModelChatSession,
-    GenerativeModelConfig,
     GenerationResponse,
     FinishReason,
 )
@@ -168,7 +167,7 @@ class ExtractDataStep(Step):
                 data = json.loads(extract_json(json_fix_response.text))
                 _task_logger.debug(f"Fixed JSON: {data}")
 
-            if not "entities" in data or not "relations" in data:
+            if "entities" not in data or "relations" not in data:
                 _task_logger.debug(
                     f"Invalid data format. Missing entities or relations. {data}"
                 )
@@ -188,7 +187,7 @@ class ExtractDataStep(Step):
                 except Exception as e:
                     _task_logger.error(f"Error creating relation: {e}")
                     continue
-                
+
         except Exception as e:
             logger.exception(e)
             raise e
