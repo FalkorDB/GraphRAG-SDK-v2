@@ -146,7 +146,7 @@ class OrchestratorRunner:
         return self._run_loop([])
 
     def _call_summary_step(self):
-        self._run_loop(
+        return self._run_loop(
             [
                 PlanStep.from_json(
                     {

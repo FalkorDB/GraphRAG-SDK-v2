@@ -316,9 +316,9 @@ class TestMultiAgent(unittest.TestCase):
             "Write me a 3 day itinerary for a trip to Italy. Do not ask any questions to me, just provide your best itinerary."
         )
 
+        print(response)
         assert response is not None
 
-        print(response.output)
 
         assert (
             "itinerary" in response.output.lower() or "day" in response.output.lower()
