@@ -15,16 +15,6 @@ class ExecutionPlan:
             json = loads(json)
         return ExecutionPlan([PlanStep.from_json(step) for step in json])
 
-    def find_step(self, step_id: str) -> PlanStep:
-        for step in self.steps:
-            if step.id == step_id:
-                return step
-            if step.block == StepBlockType.PARALLEL:
-                for sub_step in step.payload.steps:
-                    if sub_step.id == step_id:
-                        return sub_step
-        raise ValueError(f"Step with id {step_id} not found")
-
     def to_json(self) -> dict:
         return {"steps": [step.to_json() for step in self.steps]}
 

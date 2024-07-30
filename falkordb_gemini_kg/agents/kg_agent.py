@@ -66,7 +66,7 @@ class KGAgent(Agent):
 
     def run(
         self, params: dict, session: GenerativeModelChatSession | None = None
-    ) -> dict:
+    ) -> tuple[str, GenerativeModelChatSession]:
         """
         Ask the agent a question.
 

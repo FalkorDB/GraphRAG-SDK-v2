@@ -76,11 +76,10 @@ class SummaryStep(falkordb_gemini_kg.orchestrator.step.PlanStep):
         runner: OrchestratorRunner,
         config: dict = None,
     ) -> SummaryResult:
-        logger.debug(f"Execution plan summary: {runner.plan.to_json()}")
         response = runner.chat.send_message(
             ORCHESTRATOR_SUMMARY_PROMPT.replace(
-                "#EXECUTION_PLAN", str(runner.plan.to_json())
-            )
+                "#USER_QUESTION", str(runner.user_question)
+            ).replace("#EXECUTION_LOG", str(runner.runner_log))
         )
 
         return SummaryResult(response.text)

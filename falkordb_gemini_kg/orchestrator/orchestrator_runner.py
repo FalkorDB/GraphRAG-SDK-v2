@@ -46,11 +46,13 @@ class OrchestratorRunner:
         chat: GenerativeModelChatSession,
         agents: list[Agent],
         plan: ExecutionPlan,
+        user_question: str = "",
         config: dict = None,
     ):
         self._chat = chat
         self._agents = agents
         self._plan = plan
+        self._user_question = user_question
         self._config = config or {"parallel_max_workers": 16}
         self._runner_log = []
         self._agent_sessions = {}
@@ -62,6 +64,14 @@ class OrchestratorRunner:
     @property
     def chat(self) -> GenerativeModelChatSession:
         return self._chat
+
+    @property
+    def runner_log(self) -> list[tuple[PlanStep, StepResult]]:
+        return self._runner_log
+
+    @property
+    def user_question(self) -> str:
+        return self._user_question
 
     def get_agent(self, agent_id: str) -> Agent:
         return next(agent for agent in self._agents if agent.agent_id == agent_id)
@@ -94,48 +104,46 @@ class OrchestratorRunner:
         return loop_response
 
     def _run_loop(self, steps: list[PlanStep]) -> StepResult:
-
         decision = self._get_orchestrator_decision(
             steps[0] if len(steps) > 0 else None,
         )
 
         if decision.code == OrchestratorDecisionCode.END:
-            last_step = self._runner_log[-1][0] if len(self._runner_log) > 0 else None
-            if last_step is None:
-                return OrchestratorResult("No steps to run")
-            if last_step.block != StepBlockType.SUMMARY:
-                return self._call_summary_step()
-            last_result = self._runner_log[-1][1] if len(self._runner_log) > 0 else None
+            return self._handle_end_decision()
 
-            return (
-                OrchestratorResult(last_result.output)
-                if last_result
-                else OrchestratorResult("No steps to run")
-            )
         if decision.code == OrchestratorDecisionCode.CONTINUE:
-            last_result = self._runner_log[-1][1] if len(self._runner_log) > 0 else None
-            if len(steps) == 0:
-                last_step = (
-                    self._runner_log[-1][0] if len(self._runner_log) > 0 else None
-                )
-                if last_step is None:
-                    return OrchestratorResult("No steps to run")
-                if last_step.block != StepBlockType.SUMMARY:
-                    return self._call_summary_step()
-                return (
-                    OrchestratorResult(last_result.output)
-                    if last_result
-                    else OrchestratorResult("No steps to run")
-                )
-            next_step = steps[0]
-            next_step_result = next_step.run(self, self._config)
-            self._runner_log.append((next_step, next_step_result))
-            return self._run_loop(steps[1:])
+            return self._handle_continue_decision(steps)
+
         if decision.code == OrchestratorDecisionCode.UPDATE_STEP:
-            next_step = decision.new_step
-            next_step_result = next_step.run(self, self._config)
-            self._runner_log.append((next_step, next_step_result))
-            return self._run_loop([])
+            return self._handle_update_step_decision(decision.new_step)
+
+    def _handle_end_decision(self) -> StepResult:
+        last_step = self._runner_log[-1][0] if len(self._runner_log) > 0 else None
+        if last_step is None:
+            return OrchestratorResult("No steps to run")
+        if last_step.block != StepBlockType.SUMMARY:
+            return self._call_summary_step()
+        last_result = self._runner_log[-1][1] if len(self._runner_log) > 0 else None
+
+        return (
+            OrchestratorResult(last_result.output)
+            if last_result
+            else OrchestratorResult("No steps to run")
+        )
+
+    def _handle_continue_decision(self, steps: list[PlanStep]) -> StepResult:
+        if len(steps) == 0:
+            return self._handle_end_decision()
+
+        next_step = steps[0]
+        next_step_result = next_step.run(self, self._config)
+        self._runner_log.append((next_step, next_step_result))
+        return self._run_loop(steps[1:])
+
+    def _handle_update_step_decision(self, new_step: PlanStep) -> StepResult:
+        next_step_result = new_step.run(self, self._config)
+        self._runner_log.append((new_step, next_step_result))
+        return self._run_loop([])
 
     def _call_summary_step(self):
         self._run_loop(

@@ -220,7 +220,10 @@ class TestMultiAgent(unittest.TestCase):
         """,
         )
 
-        cls.orchestrator = Orchestrator(cls.model)
+        cls.orchestrator = Orchestrator(
+            cls.model,
+            backstory="You are a trip planner, and you want to provide the best possible itinerary for your clients.",
+        )
 
         cls.orchestrator.register_agent(cls.restaurants_agent)
         cls.orchestrator.register_agent(cls.attractions_agent)
@@ -309,7 +312,9 @@ class TestMultiAgent(unittest.TestCase):
 
     def test_multi_agent(self):
 
-        response = self.orchestrator.ask("Write me a 3 day itinerary for a trip to Italy. Do not ask any questions to me, just provide your best itinerary.")
+        response = self.orchestrator.ask(
+            "Write me a 3 day itinerary for a trip to Italy. Do not ask any questions to me, just provide your best itinerary."
+        )
 
         assert response is not None
 

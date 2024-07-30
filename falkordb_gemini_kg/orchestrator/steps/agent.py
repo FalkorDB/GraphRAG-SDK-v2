@@ -59,6 +59,12 @@ class AgentProperties:
             "payload": self.payload,
         }
 
+    def __str__(self) -> str:
+        return f"AgentProperties(agent_id={self.agent_id}, session_id={self.session_id}, payload={self.payload})"
+
+    def __repr__(self) -> str:
+        return str(self)
+
 
 class AgentStep(PlanStep):
 
@@ -100,7 +106,7 @@ class AgentStep(PlanStep):
         runner: "OrchestratorRunner",
         config: dict = None,
     ) -> AgentStepResult:
-        logger.info(f"Running agent step {self.id}")
+        logger.info(f"Running agent {self.properties.agent_id}, step: {self.id}, payload: {self.properties.payload}")
         session = (
             runner.get_session(self.properties.session_id)
             if self.properties.session_id

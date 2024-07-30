@@ -19,13 +19,14 @@ class Orchestrator:
     _agents = []
     _chat = None
 
-    def __init__(self, model: GenerativeModel):
+    def __init__(self, model: GenerativeModel, backstory: str = ""):
         self._model = model
+        self._backstory = backstory
 
     def _get_chat(self):
         if self._chat is None:
             self._chat = self._model.with_system_instruction(
-                ORCHESTRATOR_SYSTEM.replace(
+                ORCHESTRATOR_SYSTEM.replace("#BACKSTORY", self._backstory).replace(
                     "#AGENTS",
                     ",".join([str(agent) for agent in self._agents]),
                 )
@@ -42,7 +43,9 @@ class Orchestrator:
     def runner(self, question: str) -> OrchestratorRunner:
         plan = self._create_execution_plan(question)
 
-        return OrchestratorRunner(self._get_chat(), self._agents, plan)
+        return OrchestratorRunner(
+            self._get_chat(), self._agents, plan, user_question=question
+        )
 
     def _create_execution_plan(self, question: str):
         try:
@@ -52,7 +55,9 @@ class Orchestrator:
 
             logger.debug(f"Execution plan response: {response.text}")
 
-            plan = ExecutionPlan.from_json(extract_json(response.text, skip_repair=True))
+            plan = ExecutionPlan.from_json(
+                extract_json(response.text, skip_repair=True)
+            )
 
             logger.debug(f"Execution plan: {plan}")
 

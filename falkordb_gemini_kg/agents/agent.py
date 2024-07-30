@@ -50,21 +50,24 @@ class AgentResponse:
 class Agent(ABC):
 
     @property
+    @abstractmethod
     def agent_id(self) -> str:
         pass
 
     @property
+    @abstractmethod
     def introduction(self) -> str:
         pass
 
     @property
+    @abstractmethod
     def interface(self) -> list[dict]:
         pass
 
     @abstractmethod
     def run(
         self, params: dict, session: GenerativeModelChatSession
-    ) -> (str, GenerativeModelChatSession):
+    ) -> tuple[str, GenerativeModelChatSession]:
         pass
 
     @abstractmethod
