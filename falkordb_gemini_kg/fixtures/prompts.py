@@ -465,9 +465,10 @@ To answer the user's question, you first need to determine what information is m
 For that, you must first gather information from the agents you have at your disposal, and ask the user for more information if necessary.
 
 Execution Plan:
-1. BaggageAgent: What are the restrictions for carrying pets on the plane?
-2. SpecialItemsAgent: Are there any special requirements for carrying pets on the plane?
-3. RoutesAgent: Are there any restrictions on the routes where pets are allowed on the plane?
+1. Parallel:
+  a. BaggageAgent: What are the restrictions for carrying pets on the plane?
+  b. SpecialItemsAgent: Are there any special requirements for carrying pets on the plane?
+  c. RoutesAgent: Are there any restrictions on the routes where pets are allowed on the plane?
 4. Ask the user for more information if necessary.
 5. Retrieve more information from the agents if necessary.
 6. Summary: Generate the final answer to the user's question.

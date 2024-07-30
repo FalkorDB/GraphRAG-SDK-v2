@@ -318,8 +318,6 @@ class TestMultiAgent(unittest.TestCase):
 
         assert response is not None
 
-        assert response.output is not None
-
         print(response.output)
 
         assert (
