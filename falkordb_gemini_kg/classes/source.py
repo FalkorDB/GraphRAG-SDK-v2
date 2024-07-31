@@ -55,6 +55,7 @@ class AbstractSource(ABC):
     def __init__(self, path: str):
         self.path = path
         self.loader = None
+        self.instruction = ""
 
     def load(self) -> Iterator[Document]:
         return self.loader.load()
