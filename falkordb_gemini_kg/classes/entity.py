@@ -21,11 +21,7 @@ class Entity:
         return Entity(
             entity.labels[0],
             [
-                Attribute(
-                    attr,
-                    AttributeType.from_string(entity.properties[attr]),
-                    "!" in entity.properties[attr],
-                )
+                Attribute.from_string(f"{attr}:{entity.properties[attr]}")
                 for attr in entity.properties
                 if attr != descriptionKey
             ],

@@ -3,7 +3,11 @@ import re
 import logging
 from .attribute import Attribute, AttributeType
 from falkordb import Node as GraphNode, Edge as GraphEdge
-from falkordb_gemini_kg.fixtures.regex import EDGE_LABEL_REGEX, NODE_LABEL_REGEX, EDGE_REGEX
+from falkordb_gemini_kg.fixtures.regex import (
+    EDGE_LABEL_REGEX,
+    NODE_LABEL_REGEX,
+    EDGE_REGEX,
+)
 
 
 logger = logging.getLogger(__name__)
@@ -55,18 +59,13 @@ class Relation:
         return Relation(
             relation.relation,
             _RelationEntity(
-                next(n.labels[0] for n in entities if n.id == relation.src_entity)
+                next(n.labels[0] for n in entities if n.id == relation.src_node)
             ),
             _RelationEntity(
-                next(n.labels[0] for n in entities if n.id == relation.dest_entity)
+                next(n.labels[0] for n in entities if n.id == relation.dest_node)
             ),
             [
-                Attribute(
-                    attr,
-                    AttributeType.from_string(relation.properties),
-                    "!" in relation.properties[attr],
-                    "*" in relation.properties[attr],
-                )
+                Attribute.from_string(f"{attr}:{relation.properties[attr]}")
                 for attr in relation.properties
             ],
         )

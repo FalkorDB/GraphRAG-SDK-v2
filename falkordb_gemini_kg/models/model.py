@@ -25,11 +25,11 @@ class GenerativeModelConfig:
 
     def __init__(
         self,
-        temperature: float,
-        top_p: float,
-        top_k: int,
-        max_output_tokens: int,
-        stop_sequences: list[str],
+        temperature: float | None = None,
+        top_p: float | None = None,
+        top_k: int | None = None,
+        max_output_tokens: int | None = None,
+        stop_sequences: list[str] | None = None,
     ):
         self.temperature = temperature
         self.top_p = top_p
