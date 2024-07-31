@@ -32,26 +32,10 @@ class ChatSession:
         self.model_config = model_config
         self.graph = graph
         self.ontology = ontology
-        self.cypher_chat_session = GenerativeModel(
-            model_config.cypher_generation.model,
-            generation_config=(
-                model_config.cypher_generation.generation_config.to_generation_config()
-                if model_config.cypher_generation.generation_config is not None
-                else None
-            ),
-            system_instruction=CYPHER_GEN_SYSTEM.replace(
+        self.cypher_chat_session = model_config.cypher_generation.with_system_instruction(CYPHER_GEN_SYSTEM.replace(
                 "#ONTOLOGY", str(ontology.to_json())
-            ),
-        ).start_chat()
-        self.qa_chat_session = GenerativeModel(
-            model_config.qa.model,
-            generation_config=(
-                model_config.qa.generation_config.to_generation_config()
-                if model_config.qa.generation_config is not None
-                else None
-            ),
-            system_instruction=GRAPH_QA_SYSTEM,
-        ).start_chat()
+            )).start_chat()
+        self.qa_chat_session = model_config.qa.with_system_instruction(GRAPH_QA_SYSTEM).start_chat()
 
     def send_message(self, message: str):
         """
