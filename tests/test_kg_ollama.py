@@ -2,8 +2,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 from falkordb_gemini_kg.classes.ontology import Ontology
-from falkordb_gemini_kg.classes.node import Node
-from falkordb_gemini_kg.classes.edge import Edge
+from falkordb_gemini_kg.classes.entity import Entity
+from falkordb_gemini_kg.classes.relation import Relation
 from falkordb_gemini_kg.classes.attribute import Attribute, AttributeType
 import unittest
 from falkordb_gemini_kg.classes.source import Source
@@ -26,8 +26,8 @@ class TestKGOllama(unittest.TestCase):
 
         cls.ontology = Ontology([], [])
 
-        cls.ontology.add_node(
-            Node(
+        cls.ontology.add_entity(
+            Entity(
                 label="Actor",
                 attributes=[
                     Attribute(
@@ -39,8 +39,8 @@ class TestKGOllama(unittest.TestCase):
                 ],
             )
         )
-        cls.ontology.add_node(
-            Node(
+        cls.ontology.add_entity(
+            Entity(
                 label="Movie",
                 attributes=[
                     Attribute(
@@ -52,8 +52,8 @@ class TestKGOllama(unittest.TestCase):
                 ],
             )
         )
-        cls.ontology.add_edge(
-            Edge(
+        cls.ontology.add_relation(
+            Relation(
                 label="ACTED_IN",
                 source="Actor",
                 target="Movie",
