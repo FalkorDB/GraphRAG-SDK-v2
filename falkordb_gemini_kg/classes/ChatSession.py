@@ -2,7 +2,6 @@ from falkordb_gemini_kg.classes.ontology import Ontology
 from falkordb_gemini_kg.classes.model_config import KnowledgeGraphModelConfig
 from falkordb_gemini_kg.steps.graph_query_step import GraphQueryGenerationStep
 from falkordb_gemini_kg.steps.qa_step import QAStep
-from vertexai.generative_models import GenerativeModel
 from falkordb_gemini_kg.fixtures.prompts import GRAPH_QA_SYSTEM, CYPHER_GEN_SYSTEM
 from falkordb import Graph
 
