@@ -70,7 +70,7 @@ class TestKGOllama(unittest.TestCase):
 
         cls.graph_name = "IMDB_ollama"
 
-        model = OllamaGenerativeModel(model_name="llama3")
+        model = OllamaGenerativeModel(model_name="gemma2:2b")
         cls.kg = KnowledgeGraph(
             name=cls.graph_name,
             ontology=cls.ontology,
@@ -89,7 +89,7 @@ class TestKGOllama(unittest.TestCase):
 
         logger.info(f"Answer: {answer}")
 
-        assert "Joseph Scotto" in answer, "Joseph Scotto not found in answer"
+        assert "Joseph Scotto" in answer[0], "Joseph Scotto not found in answer"
 
     def test_kg_delete(self):
 

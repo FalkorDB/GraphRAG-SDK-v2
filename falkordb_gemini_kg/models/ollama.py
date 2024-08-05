@@ -28,6 +28,7 @@ class OllamaGenerativeModel(GenerativeModel):
         self.system_instruction = system_instruction
         self.client = None
         self._get_model()
+        self.client.pull(self.model_name)
 
         return self
 
