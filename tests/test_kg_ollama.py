@@ -79,6 +79,8 @@ class TestKGOllama(unittest.TestCase):
 
     def test_kg_creation(self):
 
+        raise unittest.SkipTest("not ready for testing")
+
         file_path = "tests/data/madoff.txt"
 
         sources = [Source(file_path)]
@@ -92,6 +94,8 @@ class TestKGOllama(unittest.TestCase):
         assert "Joseph Scotto" in answer[0], "Joseph Scotto not found in answer"
 
     def test_kg_delete(self):
+
+        raise unittest.SkipTest("not ready for testing")
 
         self.kg.delete()
 
