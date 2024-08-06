@@ -25,9 +25,22 @@ class ChatSession:
         >>> chat_session.send_message("What is the capital of France?")
     """
 
-    def __init__(
-        self, model_config: KnowledgeGraphModelConfig, ontology: Ontology, graph: Graph
-    ):
+    def __init__(self, model_config: KnowledgeGraphModelConfig, ontology: Ontology, graph: Graph):
+        """
+        Initializes a new ChatSession object.
+
+        Args:
+            model_config (KnowledgeGraphModelConfig): The model configuration.
+            ontology (Ontology): The ontology object.
+            graph (Graph): The graph object.
+
+        Attributes:
+            model_config (KnowledgeGraphModelConfig): The model configuration.
+            ontology (Ontology): The ontology object.
+            graph (Graph): The graph object.
+            cypher_chat_session (CypherChatSession): The Cypher chat session object.
+            qa_chat_session (QAChatSession): The QA chat session object.
+        """
         self.model_config = model_config
         self.graph = graph
         self.ontology = ontology
