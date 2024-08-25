@@ -89,7 +89,7 @@ class TestKGGemini(unittest.TestCase):
 
         self.kg.process_sources(sources)
 
-        answer = self.kg.ask("List a few actors")
+        (answer, chat_session) = self.kg.ask("List a few actors")
 
         logger.info(f"Answer: {answer}")
 

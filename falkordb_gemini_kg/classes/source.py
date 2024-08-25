@@ -53,20 +53,52 @@ class AbstractSource(ABC):
     """
 
     def __init__(self, path: str):
+        """
+        Initializes a new instance of the Source class.
+
+        Args:
+            path (str): The path to the source file.
+
+        Attributes:
+            path (str): The path to the source file.
+            loader: The loader object associated with the source file.
+            instruction (str): The instruction for the source file.
+        """
         self.path = path
         self.loader = None
         self.instruction = ""
 
     def load(self) -> Iterator[Document]:
+        """
+        Loads documents from the source.
+
+        Returns:
+            An iterator of Document objects.
+        """
         return self.loader.load()
 
     def __eq__(self, other) -> bool:
+        """
+        Check if this source object is equal to another source object.
+
+        Args:
+            other: The other source object to compare with.
+
+        Returns:
+            bool: True if the source objects are equal, False otherwise.
+        """
         if not isinstance(other, AbstractSource):
             return False
 
         return self.path == other.path
 
     def __hash__(self):
+        """
+        Calculates the hash value of the Source object based on its path.
+
+        Returns:
+            int: The hash value of the Source object.
+        """
         return hash(self.path)
 
 
