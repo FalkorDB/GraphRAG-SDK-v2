@@ -1,66 +1,81 @@
-from vertexai.generative_models import GenerationConfig
-
-
-class StepModelGenerationConfig:
-    def __init__(
-        self,
-        temperature: float,
-        top_p: float,
-        top_k: int,
-        candidate_count: int,
-        max_output_tokens: int,
-        stop_sequences: list[str],
-    ):
-        self.temperature = temperature
-        self.top_p = top_p
-        self.top_k = top_k
-        self.candidate_count = candidate_count
-        self.max_output_tokens = max_output_tokens
-        self.stop_sequences = stop_sequences
-
-    def to_generation_config(self) -> GenerationConfig:
-        return GenerationConfig(
-            temperature=self.temperature,
-            top_p=self.top_p,
-            top_k=self.top_k,
-            candidate_count=self.candidate_count,
-            max_output_tokens=self.max_output_tokens,
-            stop_sequences=self.stop_sequences,
-        )
-
-
-class StepModelConfig:
-
-    def __init__(
-        self, model: str, generation_config: StepModelGenerationConfig | None = None
-    ):
-        self.model = model
-        self.generation_config = generation_config
+from falkordb_gemini_kg.models import GenerativeModel
 
 
 class KnowledgeGraphModelConfig:
+    """
+    Represents the configuration for a knowledge graph model.
+
+    Args:
+        extract_data (GenerativeModel): The generative model for extracting data.
+        cypher_generation (GenerativeModel): The generative model for cypher generation.
+        qa (GenerativeModel): The generative model for question answering.
+
+    """
 
     def __init__(
         self,
-        extract_data: StepModelConfig | None = None,
-        cypher_generation: StepModelConfig | None = None,
-        qa: StepModelConfig | None = None,
+        extract_data: GenerativeModel,
+        cypher_generation: GenerativeModel,
+        qa: GenerativeModel,
     ):
+        """
+        Initialize a KnowledgeGraphModelConfig object.
+
+        Args:
+            extract_data (GenerativeModel): The generative model for data extraction.
+            cypher_generation (GenerativeModel): The generative model for Cypher query generation.
+            qa (GenerativeModel): The generative model for question answering.
+        """
         self.extract_data = extract_data
         self.cypher_generation = cypher_generation
         self.qa = qa
 
     @staticmethod
-    def from_dict(d: dict):
-        model = d.get("model")
-        generation_config = d.get("generation_config")
-        extract_data = StepModelConfig(model=model, generation_config=generation_config)
-        cypher_generation = StepModelConfig(
-            model=model, generation_config=generation_config
-        )
-        qa = StepModelConfig(model=model, generation_config=generation_config)
+    def with_model(model: GenerativeModel):
+        """
+        Creates a new KnowledgeGraphModelConfig instance with the given generative model.
+
+        Args:
+            model (GenerativeModel): The generative model to use.
+
+        Returns:
+            KnowledgeGraphModelConfig: The new KnowledgeGraphModelConfig instance.
+
+        """
         return KnowledgeGraphModelConfig(
-            extract_data=extract_data,
-            cypher_generation=cypher_generation,
-            qa=qa,
+            extract_data=model,
+            cypher_generation=model,
+            qa=model,
         )
+    
+    @staticmethod
+    def from_json(json: dict) -> "KnowledgeGraphModelConfig":
+        """
+        Creates a new KnowledgeGraphModelConfig instance from a JSON dictionary.
+
+        Args:
+            json (dict): The JSON dictionary representing the model configuration.
+
+        Returns:
+            KnowledgeGraphModelConfig: The new KnowledgeGraphModelConfig instance.
+
+        """
+        return KnowledgeGraphModelConfig(
+            GenerativeModel.from_json(json["extract_data"]),
+            GenerativeModel.from_json(json["cypher_generation"]),
+            GenerativeModel.from_json(json["qa"]),
+        )
+    
+    def to_json(self) -> dict:
+        """
+        Converts the model configuration to a JSON dictionary.
+
+        Returns:
+            dict: The JSON dictionary representing the model configuration.
+
+        """
+        return {
+            "extract_data": self.extract_data.to_json(),
+            "cypher_generation": self.cypher_generation.to_json(),
+            "qa": self.qa.to_json(),
+        }
