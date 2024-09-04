@@ -188,6 +188,35 @@ Raw text:
 {text}
 """
 
+# CREATE_ONTOLOGY_PROMPT = """Given the following text, create an ontology that accurately represents the entities, relationships, and attributes within the data. Follow these guidelines to ensure a comprehensive and precise extraction:
+
+# 1. **Entity and Relationship Extraction:**
+#    - Identify and extract all relevant entities and relationships in the text.
+#    - Ensure that each entity has at least one unique attribute that distinctly identifies it within the context.
+#    - Relationships should connect relevant entities meaningfully, reflecting the structure and meaning of the text.
+
+# 2. **Attribute Handling:**
+#    - Extract attributes that describe entities or relationships. Where possible, promote attributes to entities or relationships if doing so enhances the ontology's richness.
+#    - For example, rather than treating "director" as an attribute of a "Movie" entity, create a "Person" entity and connect it to the "Movie" entity with a "DIRECTED" relationship.
+
+# 3. **Avoid Redundancies:**
+#    - Do not create redundant inverse relationships. For instance, if a relationship "OWNS" exists from "Person" to "House," avoid creating a reverse relationship "OWNED_BY" from "House" to "Person."
+#    - Ensure that each relationship has a corresponding pair of entities and does not exist in isolation.
+
+# 4. **Contextual Focus:**
+#    - Do not rely on any pre-existing schemas or examples (e.g., the "Movie" example provided) to assume the structure of the ontology. Base all entities, relationships, and attributes solely on the content of the provided text.
+#    - Adapt your extraction to the specific domain and context of the text to ensure relevance and accuracy.
+
+# 5. **Boundary Adherence:**
+#    - Use the provided boundaries as constraints for the ontology extraction process. These boundaries may include specific domains, entity types, or relationship types that must be adhered to.
+#    - Ensure that the extraction remains within the defined boundaries and does not introduce elements that fall outside the scope.
+
+# **Instructions:**
+# - **Boundaries:** {boundaries}
+# - **Raw Text:** {text}
+
+# """
+
 UPDATE_ONTOLOGY_PROMPT = """
 Given the following text and ontology update the ontology that represents the entities and relationships in the data.
 Extract as many entities and relations as possible to fully describe the data.
