@@ -8,7 +8,7 @@ from falkordb_gemini_kg.classes.source import TEXT
 from falkordb_gemini_kg import KnowledgeGraph, Ontology
 from falkordb_gemini_kg.models.openai import OpenAiGenerativeModel
 from falkordb_gemini_kg.classes.model_config import KnowledgeGraphModelConfig
-os.environ['OPENAI_API_KEY'] = 'sk-proj-5lxkQXgxTkiQDBnQNTFhT3BlbkFJn9wCDMrokYKcLDqsGUSx'
+os.environ['OPENAI_API_KEY'] = 'sk-'
 load_dotenv()
 from llama_index.core import StorageContext
 from llama_index.core import PropertyGraphIndex
