@@ -329,9 +329,9 @@ runner = orchestrator.ask("Write me a 2 day itinerary for a trip to Italy. Do no
 
 print(runner.output)
 ```
-
+```
 Thank you for your patience! Based on the information gathered from the agents, here is a detailed 2-day itinerary for your trip to Italy:
-`
+
 ### Day 1: Rome
 **Morning:**
 1. **Colosseum**: Start your day early with a visit to the iconic Colosseum. One of Italy’s most enduring attractions, it’s a must-see for any visitor. Allocate about 2-3 hours here.
@@ -359,4 +359,5 @@ Thank you for your patience! Based on the information gathered from the agents, 
 **Dinner:**
 - Find a cozy restaurant in Florence’s historic center to savor some traditional Florentine dishes as you reflect on your day.
 
-This itinerary balances historical landmarks with fine dining, ensuring you get a comprehensive taste of Italy's rich culture, history, and cuisine in just two days. Enjoy your trip!`
+This itinerary balances historical landmarks with fine dining, ensuring you get a comprehensive taste of Italy's rich culture, history, and cuisine in just two days. Enjoy your trip!
+```
