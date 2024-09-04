@@ -1,7 +1,14 @@
+> [!IMPORTANT]
+> **GraphRAG-SDK-V2 is in development and is actively changing.**
+>
+> This version is expected to succeed [GraphRAG-SDK](https://github.com/FalkorDB/GraphRAG-SDK) in the near future.
+> 
+> We greatly appreciate the community's feedback and support.
+
 [![Dockerhub](https://img.shields.io/docker/pulls/falkordb/falkordb?label=Docker)](https://hub.docker.com/r/falkordb/falkordb/)
 [![Discord](https://img.shields.io/discord/1146782921294884966?style=flat-square)](https://discord.gg/6M4QwDXn2w)
 
-# GraphRAG-SDK
+# GraphRAG-SDK-V2
 [![Try Free](https://img.shields.io/badge/Try%20Free-FalkorDB%20Cloud-FF8101?labelColor=FDE900&style=for-the-badge&link=https://app.falkordb.cloud)](https://app.falkordb.cloud)
 
 GraphRAG-SDK-v2 is designed to facilitate the creation of a Graph Retrieval-Augmented Generation (GraphRAG) solutions. Built on top of FalkorDB, it offers seamless integration with different LLMs (OpenAI, Gemini...) to enable advanced multi agent data querying and Multi knowledge graph construction.
