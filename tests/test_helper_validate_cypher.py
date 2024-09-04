@@ -1,9 +1,9 @@
 import re
-from falkordb_gemini_kg.classes.ontology import Ontology
-from falkordb_gemini_kg.classes.entity import Entity
-from falkordb_gemini_kg.classes.relation import Relation
+from graphrag_sdk.classes.ontology import Ontology
+from graphrag_sdk.classes.entity import Entity
+from graphrag_sdk.classes.relation import Relation
 import json
-from falkordb_gemini_kg.helpers import (
+from graphrag_sdk.helpers import (
     validate_cypher,
     validate_cypher_entities_exist,
     validate_cypher_relations_exist,

@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "falkordb_gemini_kg"
+name = "graphrag_sdk"
 version = "0.1.2-beta"
 license = "MIT"
 description = ""

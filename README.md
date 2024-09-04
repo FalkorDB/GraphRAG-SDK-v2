@@ -81,10 +81,10 @@ These are interconnected via `ACT` and `DIRECTED` edges.
 from dotenv import load_dotenv
 
 load_dotenv()
-from falkordb_gemini_kg.classes.model_config import KnowledgeGraphModelConfig
-from falkordb_gemini_kg.models.openai import OpenAiGenerativeModel
-from falkordb_gemini_kg import KnowledgeGraph, Ontology
-from falkordb_gemini_kg.classes.source import URL
+from graphrag_sdk.classes.model_config import KnowledgeGraphModelConfig
+from graphrag_sdk.models.openai import OpenAiGenerativeModel
+from graphrag_sdk import KnowledgeGraph, Ontology
+from graphrag_sdk.classes.source import URL
 import vertexai
 import os
 from random import shuffle
