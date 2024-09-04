@@ -1,14 +1,14 @@
 from dotenv import load_dotenv
 
 load_dotenv()
-from falkordb_gemini_kg.classes.ontology import Ontology
-from falkordb_gemini_kg.classes.entity import Entity
-from falkordb_gemini_kg.classes.relation import Relation
-from falkordb_gemini_kg.classes.attribute import Attribute, AttributeType
+from graphrag_sdk.classes.ontology import Ontology
+from graphrag_sdk.classes.entity import Entity
+from graphrag_sdk.classes.relation import Relation
+from graphrag_sdk.classes.attribute import Attribute, AttributeType
 import unittest
-from falkordb_gemini_kg.classes.source import Source
-from falkordb_gemini_kg.models.openai import OpenAiGenerativeModel
-from falkordb_gemini_kg import KnowledgeGraph, KnowledgeGraphModelConfig
+from graphrag_sdk.classes.source import Source
+from graphrag_sdk.models.openai import OpenAiGenerativeModel
+from graphrag_sdk import KnowledgeGraph, KnowledgeGraphModelConfig
 import logging
 from falkordb import FalkorDB
 

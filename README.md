@@ -1,7 +1,14 @@
+> [!IMPORTANT]
+> **GraphRAG-SDK-V2 is in development and is actively changing.**
+>
+> This version is expected to succeed [GraphRAG-SDK](https://github.com/FalkorDB/GraphRAG-SDK) in the near future.
+> 
+> We greatly appreciate the community's feedback and support.
+
 [![Dockerhub](https://img.shields.io/docker/pulls/falkordb/falkordb?label=Docker)](https://hub.docker.com/r/falkordb/falkordb/)
 [![Discord](https://img.shields.io/discord/1146782921294884966?style=flat-square)](https://discord.gg/6M4QwDXn2w)
 
-# GraphRAG-SDK
+# GraphRAG-SDK-V2
 [![Try Free](https://img.shields.io/badge/Try%20Free-FalkorDB%20Cloud-FF8101?labelColor=FDE900&style=for-the-badge&link=https://app.falkordb.cloud)](https://app.falkordb.cloud)
 
 GraphRAG-SDK-v2 is designed to facilitate the creation of a Graph Retrieval-Augmented Generation (GraphRAG) solutions. Built on top of FalkorDB, it offers seamless integration with different LLMs (OpenAI, Gemini...) to enable advanced multi agent data querying and Multi knowledge graph construction.
@@ -81,10 +88,10 @@ These are interconnected via `ACT` and `DIRECTED` edges.
 from dotenv import load_dotenv
 
 load_dotenv()
-from falkordb_gemini_kg.classes.model_config import KnowledgeGraphModelConfig
-from falkordb_gemini_kg.models.openai import OpenAiGenerativeModel
-from falkordb_gemini_kg import KnowledgeGraph, Ontology
-from falkordb_gemini_kg.classes.source import URL
+from graphrag_sdk.classes.model_config import KnowledgeGraphModelConfig
+from graphrag_sdk.models.openai import OpenAiGenerativeModel
+from graphrag_sdk import KnowledgeGraph, Ontology
+from graphrag_sdk.classes.source import URL
 import vertexai
 import os
 from random import shuffle
