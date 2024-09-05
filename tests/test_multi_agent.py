@@ -1,15 +1,15 @@
 from dotenv import load_dotenv
 
 load_dotenv()
-from falkordb_gemini_kg.classes.ontology import Ontology
-from falkordb_gemini_kg.classes.entity import Entity
-from falkordb_gemini_kg.classes.relation import Relation
-from falkordb_gemini_kg.classes.attribute import Attribute, AttributeType
+from graphrag_sdk.classes.ontology import Ontology
+from graphrag_sdk.classes.entity import Entity
+from graphrag_sdk.classes.relation import Relation
+from graphrag_sdk.classes.attribute import Attribute, AttributeType
 import unittest
-from falkordb_gemini_kg.models.gemini import GeminiGenerativeModel
-from falkordb_gemini_kg import KnowledgeGraph, KnowledgeGraphModelConfig
-from falkordb_gemini_kg.orchestrator import Orchestrator
-from falkordb_gemini_kg.agents.kg_agent import KGAgent
+from graphrag_sdk.models.gemini import GeminiGenerativeModel
+from graphrag_sdk import KnowledgeGraph, KnowledgeGraphModelConfig
+from graphrag_sdk.orchestrator import Orchestrator
+from graphrag_sdk.agents.kg_agent import KGAgent
 import vertexai
 import os
 import logging
