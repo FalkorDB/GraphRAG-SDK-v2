@@ -178,7 +178,7 @@ Lana Wachowski and Lilly Wachowski directed the movie The Matrix.
 Lana Wachowski and Lilly Wachowski directed the movie The Matrix, in which Keanu Reeves acted. 
 
 ## Multi Agent
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/FalkorDB/GraphRAG-SDK-v2/blob/master/examples/trup/demo_orchestrator_trip.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/FalkorDB/GraphRAG-SDK-v2/blob/master/examples/trip/demo_orchestrator_trip.ipynb)
 
 
 The following example demonstrates how to use the FalkorDB GraphRAG SDK to create a multi-agent query system.
