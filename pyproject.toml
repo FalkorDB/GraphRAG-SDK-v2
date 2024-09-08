@@ -5,7 +5,7 @@ license = "MIT"
 description = ""
 authors = ["FalkorDB <info@falkordb.com>"]
 readme = "README.md"
-repository = "https://github.com/FalkorDB/falkordb-gemini-kg"
+repository = "https://github.com/FalkorDB/GraphRAG-SDK-v2"
 homepage = "http://RAG-SDK.readthedocs.io"
 keywords = ['RAG', 'Graph-RAG', 'KnowledgeGraph']
 

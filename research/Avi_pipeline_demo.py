@@ -13,7 +13,6 @@ from llama_index.extractors.relik.base import RelikPathExtractor
 from llama_index.graph_stores.falkordb import FalkorDBPropertyGraphStore
 from bs4 import BeautifulSoup
 import os
-os.environ['OPENAI_API_KEY'] = 'sk-proj-5lxkQXgxTkiQDBnQNTFhT3BlbkFJn9wCDMrokYKcLDqsGUSx'
 
 class CustomSimpleDirectoryReader(SimpleDirectoryReader):
     def load_data(self):
