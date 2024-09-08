@@ -24,10 +24,10 @@ class TextLoader():
             Iterator[Document]: document iterator
         """
 
-        yield Document(
-                self.path
-            )
-        # with open(self.path, 'r') as f:
-        #     yield Document(
-        #         f.read()
+        # yield Document(
+        #         self.path
         #     )
+        with open(self.path, 'r') as f:
+            yield Document(
+                f.read()
+            )
