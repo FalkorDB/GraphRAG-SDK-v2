@@ -29,7 +29,6 @@ pip install git+https://github.com/FalkorDB/GraphRAG-SDK-v2.git
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/FalkorDB/GraphRAG-SDK-v2/blob/master/examples/movies/demo-movies.ipynb)
 
-
 ### Prerequisites
 GraphRAG-SDK-v2 relies on [FalkorDB](http://falkordb.com) as its graph engine and works with OpenAI/Gemini.
 
@@ -179,6 +178,8 @@ Lana Wachowski and Lilly Wachowski directed the movie The Matrix.
 Lana Wachowski and Lilly Wachowski directed the movie The Matrix, in which Keanu Reeves acted. 
 
 ## Multi Agent
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/FalkorDB/GraphRAG-SDK-v2/blob/master/examples/trup/demo_orchestrator_trip.ipynb)
+
 
 The following example demonstrates how to use the FalkorDB GraphRAG SDK to create a multi-agent query system.
 
@@ -200,17 +201,17 @@ load_dotenv()
 # Initialize the Vertex AI client
 vertexai.init(project=os.getenv("PROJECT_ID"), location=os.getenv("REGION"))
 ```
-
+### Reads data from JSON files into two Knowledge Graphs, representing multi-agent entities and their relationships.
 ```python
 def import_data():
-    # Import data from JSON files and populate Knowledge Graphs
-    with open("data/cities.json") as f:
-        cities = loads(f.read())
-    with open("data/restaurants.json") as f:
-        restaurants = loads(f.read())
-    with open("data/attractions.json") as f:
-        attractions = loads(f.read())
-    for city in cities:
+        with open("data/cities.json") as f:
+            cities = loads(f.read())
+        with open("data/restaurants.json") as f:
+            restaurants = loads(f.read())
+        with open("data/attractions.json") as f:
+            attractions = loads(f.read())
+
+        for city in cities:
             restaurants_kg.add_node(
                 "City",
                 {
@@ -280,11 +281,176 @@ def import_data():
                 {"name": attraction["city"]},
             )
 ```
-
+### Add Ontology
 ```python
+
 restaurants_ontology = Ontology()
 attractions_ontology = Ontology()
+restaurants_ontology.add_entity(
+    Entity(
+        label="Country",
+        attributes=[
+            Attribute(
+                name="name",
+                attr_type=AttributeType.STRING,
+                required=True,
+                unique=True,
+            ),
+        ],
+    )
+)
+restaurants_ontology.add_entity(
+    Entity(
+        label="City",
+        attributes=[
+            Attribute(
+                name="name",
+                attr_type=AttributeType.STRING,
+                required=True,
+                unique=True,
+            ),
+            Attribute(
+                name="weather",
+                attr_type=AttributeType.STRING,
+                required=False,
+                unique=False,
+            ),
+            Attribute(
+                name="population",
+                attr_type=AttributeType.NUMBER,
+                required=False,
+                unique=False,
+            ),
+        ],
+    )
+)
+restaurants_ontology.add_entity(
+    Entity(
+        label="Restaurant",
+        attributes=[
+            Attribute(
+                name="name",
+                attr_type=AttributeType.STRING,
+                required=True,
+                unique=True,
+            ),
+            Attribute(
+                name="description",
+                attr_type=AttributeType.STRING,
+                required=False,
+                unique=False,
+            ),
+            Attribute(
+                name="rating",
+                attr_type=AttributeType.NUMBER,
+                required=False,
+                unique=False,
+            ),
+            Attribute(
+                name="food_type",
+                attr_type=AttributeType.STRING,
+                required=False,
+                unique=False,
+            ),
+        ],
+    )
+)
+restaurants_ontology.add_relation(
+    Relation(
+        label="IN_COUNTRY",
+        source="City",
+        target="Country",
+    )
+)
+restaurants_ontology.add_relation(
+    Relation(
+        label="IN_CITY",
+        source="Restaurant",
+        target="City",
+    )
+)
 
+attractions_ontology.add_entity(
+    Entity(
+        label="Country",
+        attributes=[
+            Attribute(
+                name="name",
+                attr_type=AttributeType.STRING,
+                required=True,
+                unique=True,
+            ),
+        ],
+    )
+)
+attractions_ontology.add_entity(
+    Entity(
+        label="City",
+        attributes=[
+            Attribute(
+                name="name",
+                attr_type=AttributeType.STRING,
+                required=True,
+                unique=True,
+            ),
+            Attribute(
+                name="weather",
+                attr_type=AttributeType.STRING,
+                required=False,
+                unique=False,
+            ),
+            Attribute(
+                name="population",
+                attr_type=AttributeType.NUMBER,
+                required=False,
+                unique=False,
+            ),
+        ],
+    )
+)
+attractions_ontology.add_entity(
+    Entity(
+        label="Attraction",
+        attributes=[
+            Attribute(
+                name="name",
+                attr_type=AttributeType.STRING,
+                required=True,
+                unique=True,
+            ),
+            Attribute(
+                name="description",
+                attr_type=AttributeType.STRING,
+                required=False,
+                unique=False,
+            ),
+            Attribute(
+                name="type",
+                attr_type=AttributeType.STRING,
+                required=False,
+                unique=False,
+            ),
+        ],
+    )
+)
+attractions_ontology.add_relation(
+    Relation(
+        label="IN_COUNTRY",
+        source="City",
+        target="Country",
+    )
+)
+attractions_ontology.add_relation(
+    Relation(
+        label="IN_CITY",
+        source="Attraction",
+        target="City",
+    )
+)
+```
+### Multi-agent objects.
+
+```python
 # Create Knowledge Graphs
 model = OpenAiGenerativeModel("gpt-4o")
 restaurants_kg = KnowledgeGraph(
@@ -314,7 +480,7 @@ attractions_agent = KGAgent(
     introduction="I'm an attractions agent, specialized in finding the best attractions for you.",
 )
 ```
-
+### Orchestrator and multi-agent questioning
 ```python
 # Initialize the orchestrator and register agents
 orchestrator = Orchestrator(
