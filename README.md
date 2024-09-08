@@ -29,6 +29,7 @@ pip install git+https://github.com/FalkorDB/GraphRAG-SDK-v2.git
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/FalkorDB/GraphRAG-SDK-v2/blob/master/examples/movies/demo-movies.ipynb)
 
+
 ### Prerequisites
 GraphRAG-SDK-v2 relies on [FalkorDB](http://falkordb.com) as its graph engine and works with OpenAI/Gemini.
 
