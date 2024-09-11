@@ -11,171 +11,113 @@
 # GraphRAG-SDK-V2
 [![Try Free](https://img.shields.io/badge/Try%20Free-FalkorDB%20Cloud-FF8101?labelColor=FDE900&style=for-the-badge&link=https://app.falkordb.cloud)](https://app.falkordb.cloud)
 
-GraphRAG-SDK-v2 is designed to facilitate the creation of a Graph Retrieval-Augmented Generation (GraphRAG) solutions. Built on top of FalkorDB, it offers seamless integration with different LLMs (OpenAI, Gemini...) to enable advanced multi agent data querying and Multi knowledge graph construction.
+GraphRAG-SDK is a comprehensive solution for building Graph Retrieval-Augmented Generation (GraphRAG) applications, leveraging [FalkorDB](https://www.falkordb.com/) for optimal performance. It offers powerful features including Ontology Management to define and manage data schemas from both structured and unstructured sources. Users can construct and query Knowledge Graphs (KG) for efficient data retrieval. The SDK also integrates with various LLMs, such as OpenAI and Gemini, and includes a Multi-Agent System to support the creation and management of multi-agent orchestrators with KG-based agents for smooth and effective collaboration.
 
 ## Features
 
-* Schema Management: Define and manage data schemas either manually or automatically from unstructured data.
-* Knowledge Graph: Construct and query knowledge graphs for efficient data retrieval.
+* Ontology Management: Define and manage ontology (data schemas) either manually or automatically from unstructured data.
+* Knowledge Graph (KG): Construct and query knowledge graphs for efficient data retrieval.
 * LLMs Integration: Enhance your RAG solutions with AI-driven insights.
+* Multi-Agent System: Implement and manage multi-agent orchestrators with KG-based agents and RAG integration for seamless collaboration.
 
-## Install
+## Get Started
+
+
+### Install
 
 ```sh
-pip install git+https://github.com/FalkorDB/GraphRAG-SDK-v2.git
+pip install graphrag_sdk
 ```
 
-## Example
-
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/FalkorDB/GraphRAG-SDK-v2/blob/master/examples/movies/demo-movies.ipynb)
-
-
 ### Prerequisites
-GraphRAG-SDK-v2 relies on [FalkorDB](http://falkordb.com) as its graph engine and works with OpenAI/Gemini.
 
-Start FalkorDB locally:
+#### Graph Database
+GraphRAG-SDK relies on [FalkorDB](http://falkordb.com) as its graph engine and works with OpenAI/Gemini.
+
+Use [FalkorDB Cloud](https://app.falkordb.cloud/) to get credentials or start FalkorDB locally:
 
 ```sh
 docker run -p 6379:6379 -it --rm -v ./data:/data falkordb/falkordb
 ```
+#### LLM Models
+Currently, this SDK support the following LLMs API:
 
-Export your OpenAI API KEY:
+- [OpenAI](https://openai.com/index/openai-api) Recommended model:`gpt-4o`
+- [google](https://makersuite.google.com/app/apikey) Recommended model:`gemini-1.5-flash-001`
 
-```sh
-export OPENAI_API_KEY=<YOUR_OPENAI_KEY>
-```
+Make sure that a `.env` file is present and contains all required credentials.
 
-```python
-from graphrag_sdk.schema import Schema
-from graphrag_sdk import KnowledgeGraph, Source
+   <details>
+     <summary>.env</summary>
+  
+   ```
+   OPENAI_API_KEY="OPENAI_API_KEY"
+   GOOGLE_API_KEY="GOOGLE_API_KEY"
 
-# Auto generate graph schema from unstructured data
-sources = [Source("./data/the_matrix.txt")]
-s = Schema.auto_detect(sources)
+   ```
+  
+   </details>
 
-# Create a knowledge graph based on schema
-g = KnowledgeGraph("IMDB", schema=s)
-g.process_sources(sources)
+## Basic Usage
 
-# Query your data
-question = "Name a few actors who've played in 'The Matrix'"
-answer, messages = g.ask(question)
-print(f"Answer: {answer}")
-
-# Output:
-# Answer: A few actors who've played in 'The Matrix' are:
-# - Keanu Reeves
-# - Laurence Fishburne
-# - Carrie-Anne Moss
-# - Hugo Weaving
-```
-
-## Introduction
-
-GraphRAG-SDK provides easy-to-use tooling to get you up and running with your own
-Graph-RAG solution.
-
-There are two main components:
-
-### Schema
-
-A `schema` represents the types of entities and relationships within your data.
-For example, the main entities in your data are:  Movies, Actors, and Directors.
-These are interconnected via `ACT` and `DIRECTED` edges.
-
-
-```python
-from dotenv import load_dotenv
-
-load_dotenv()
-from graphrag_sdk.classes.model_config import KnowledgeGraphModelConfig
-from graphrag_sdk.models.openai import OpenAiGenerativeModel
-from graphrag_sdk import KnowledgeGraph, Ontology
-from graphrag_sdk.classes.source import URL
-import vertexai
-import os
-from random import shuffle
-import json
-from falkordb import FalkorDB
-
-# Initialize the Vertex AI client
-vertexai.init(project=os.getenv("PROJECT_ID"), location=os.getenv("REGION"))
-```
+Here are instructions on how to utilize the powerful tools available in the GraphRAG SDK.
 
 ### Import source data
+This SDK support the following file formats:
 
-```
-src_file="../data/movies/rottentomatoes.txt"
-
-source_urls = []
-with open(src_file, "r", encoding="utf-8") as file:
-    source_urls = file.readlines()
-
-shuffle(source_urls)
-
-sources = [URL(url) for url in source_urls]
-
-model = OpenAiGenerativeModel(model_name="gpt-4o")
-```
-
-### Automatically create the ontology from 20% of the sources
+- PDF
+- txt
+- json
+- URL
+- HTML
+- CSV
 
 ```python
-boundaries = "Extract all information related to the movies. The graph does not need to contain data about the plot of the movie, but everything else related to it."
+import os
+from graphrag_sdk.classes.source import Source
 
+src_files = "Your data folder"
+sources = []
+
+# For each file in the source directory, create a new Source object
+for file in os.listdir(src_files):
+    sources.append(Source(os.path.join(src_files, file)))
+```
+### Ontology
+You can choose either the Ontology is outdetect from your data or to preset it.
+In addition you can set 'Boundaries' to the Ontolegy outodetection.
+
+
+```python
+
+from falkordb import FalkorDB
+from graphrag_sdk import KnowledgeGraph, Ontology
+from graphrag_sdk.models.openai import OpenAiGenerativeModel
+
+AUTODETECTION_PRECENTAGE = 0.1
+boundaries = """
+    Extract only the most information about the fighters, fights, and events in the UFC.
+    Do not create entities for what can be expressed as attributes.
+"""
+
+# use GeminiGenerativeModel for google models.
+model = OpenAiGenerativeModel(model_name="gpt-4o")
+
+# use only 10% from the files to auto detect the ontology.
 ontology = Ontology.from_sources(
-    sources=sources[: round(len(sources) * 0.2)],
+    sources=sources[: round(len(sources) * AUTODETECTION_PRECENTAGE)],
     boundaries=boundaries,
     model=model,
 )
 
 
+# TODO change is to repo kg
 db = FalkorDB()
-graph = db.select_graph("movies_ontology")
+graph = db.select_graph("ufc_ontology")
 ontology.save_to_graph(graph)
 
 # Save ontology to json file
-with open("ontology_n.json", "w", encoding="utf-8") as file:
+with open("YOUR_PROJECT_ontology.json", "w", encoding="utf-8") as file:
     file.write(json.dumps(ontology.to_json(), indent=2))
 ```
-
-### Read ontology from json file
-
-```python
-ontology_file = "ontology.json"
-with open(ontology_file, "r", encoding="utf-8") as file:
-    ontology = Ontology.from_json(json.loads(file.read()))
-
-kg = KnowledgeGraph(
-    name="movies",
-    model_config=KnowledgeGraphModelConfig.with_model(model),
-    ontology=ontology,
-)
-```
-
-### Process the sources raw data into the knowledge graph
-
-```python
-kg.process_sources(sources)
-
-Relation with label MENTIONED not found in ontology
-
-Ask a single question to the model
-
-kg.ask("How are Keanu Reeves and Carrie-Anne Moss related?")
-
-'Keanu Reeves and Carrie-Anne Moss have acted in the same movies, "The Matrix" and "The Matrix Reloaded." \n'
-
-Start a chat session with the model
-
-chat = kg.chat_session()
-
-print(chat.send_message("Who is the director of the movie The Matrix?"))
-print(chat.send_message("And how are they related with Keanu Reeves?"))
-```
-
-Lana Wachowski and Lilly Wachowski directed the movie The Matrix. 
-
-Lana Wachowski and Lilly Wachowski directed the movie The Matrix, in which Keanu Reeves acted. 
-
-
+Now you can review your Ontology and update it whenever you see its right.

@@ -1,8 +1,6 @@
-import re
 from graphrag_sdk.classes.ontology import Ontology
 from graphrag_sdk.classes.entity import Entity
 from graphrag_sdk.classes.relation import Relation
-import json
 from graphrag_sdk.helpers import (
     validate_cypher,
     validate_cypher_entities_exist,
