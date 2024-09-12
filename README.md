@@ -4,17 +4,16 @@
 [![Discord](https://img.shields.io/discord/1146782921294884966?style=flat-square)](https://discord.gg/6M4QwDXn2w)
 
 
-GraphRAG-SDK is a comprehensive solution for building Graph Retrieval-Augmented Generation (GraphRAG) applications, leveraging [FalkorDB](https://www.falkordb.com/) for optimal performance. It offers powerful features including Ontology Management to define and manage data schemas from both structured and unstructured sources. Users can construct and query Knowledge Graphs (KG) for efficient data retrieval. The SDK also integrates with various LLMs, such as OpenAI and Gemini, and includes a Multi-Agent System to support the creation and management of multi-agent orchestrators with KG-based agents for smooth and effective collaboration.
+GraphRAG-SDK is a comprehensive solution for building Graph Retrieval-Augmented Generation (GraphRAG) applications, leveraging [FalkorDB](https://www.falkordb.com/) for optimal performance. It offers powerful features including Ontology Management, Knowledge Graphs (KG) construction and Multi-Agent System.
 
 ## Features
 
-* Ontology Management: Define and manage ontology (data schemas) either manually or automatically from unstructured data.
+* Ontology Management: Manage ontologies either manually or automatically from unstructured data.
 * Knowledge Graph (KG): Construct and query knowledge graphs for efficient data retrieval.
-* LLMs Integration: Enhance your RAG solutions with AI-driven insights.
-* Multi-Agent System: Implement and manage multi-agent orchestrators with KG-based agents and RAG integration for seamless collaboration.
+* LLMs Integration: Support for OpenAI and Google Gemini models.
+* Multi-Agent System: Multi-agent orchestrators using KG-based agents.
 
 ## Get Started
-
 
 ### Install
 
@@ -30,7 +29,7 @@ GraphRAG-SDK relies on [FalkorDB](http://falkordb.com) as its graph engine and w
 Use [FalkorDB Cloud](https://app.falkordb.cloud/) to get credentials or start FalkorDB locally:
 
 ```sh
-docker run -p 6379:6379 -it --rm -v ./data:/data falkordb/falkordb
+docker run -p 6379:6379 -p 3000:3000 -it --rm falkordb/falkordb:latest
 ```
 #### LLM Models
 Currently, this SDK support the following LLMs API:
@@ -58,8 +57,8 @@ Make sure that a `.env` file is present with all required credentials.
 The SDK supports the following file formats:
 
 - PDF
-- txt
-- json
+- TEXT
+- JSON
 - URL
 - HTML
 - CSV
@@ -71,7 +70,7 @@ from graphrag_sdk.classes.source import Source
 src_files = "your_data_folder"
 sources = []
 
-# Create a Source object for each file in the source directory
+# Create a Source object for each file in the source directory.
 for file in os.listdir(src_files):
     sources.append(Source(os.path.join(src_files, file)))
 ```
@@ -81,38 +80,36 @@ You can either auto-detect the ontology from your data or define it manually. Ad
 Once the ontology is created, you can review, modify, and update it as needed before using it to build the Knowledge Graph (KG).
 
 ```python
-
+import random
 from falkordb import FalkorDB
 from graphrag_sdk import KnowledgeGraph, Ontology
 from graphrag_sdk.models.openai import OpenAiGenerativeModel
 
-AUTODETECTION_PERCENTAGE = 0.1
+# Define the percentage of files that will be used to auto-create the ontology.
+percent = 0.1  # This represents 10%. You can adjust this value (e.g., 0.2 for 20%).
+
 boundaries = """
     Extract only the most information about ---------.
     Do not create entities for what can be expressed as attributes.
 """
 
-# use GeminiGenerativeModel for google models.
+# Define the model.
 model = OpenAiGenerativeModel(model_name="gpt-4o")
 
-# use only 10% from the files to auto detect the ontology.
+# Randomly select a percentage of files from sources.
+sampled_sources = random.sample(sources, round(len(sources) * percent))
+
 ontology = Ontology.from_sources(
-    sources=sources[: round(len(sources) * AUTODETECTION_PERCENTAGE)],
+    sources=sampled_sources,
     boundaries=boundaries,
     model=model,
 )
 
-
-# TODO change is to repo kg
-db = FalkorDB()
-graph = db.select_graph("your_project_ontology")
-ontology.save_to_graph(graph)
-
-# Save ontology to json file
-with open("your_project_ontology.json", "w", encoding="utf-8") as file:
+# Save the ontology to the disk as a json file.
+with open("ontology.json", "w", encoding="utf-8") as file:
     file.write(json.dumps(ontology.to_json(), indent=2))
 ```
-YAfter generating the initial ontology, you can review it and make any necessary modifications to better fit your data and requirements. This might include refining entity types or adjusting relationships.
+After generating the initial ontology, you can review it and make any necessary modifications to better fit your data and requirements. This might include refining entity types or adjusting relationships.
 
 Once you are satisfied with the ontology, you can proceed to use it for creating and managing your Knowledge Graph (KG).
 
@@ -120,12 +117,13 @@ Once you are satisfied with the ontology, you can proceed to use it for creating
 Now, you can use the SDK to create a Knowledge Graph (KG) from your sources and ontology.
 
 ```python
-ontology_file = "your_project_ontology.json"
+# After approving the ontology, load it from disk.
+ontology_file = "ontology.json"
 with open(ontology_file, "r", encoding="utf-8") as file:
     ontology = Ontology.from_json(json.loads(file.read()))
 
 kg = KnowledgeGraph(
-    name="your_project_name",
+    name="kg_name",
     model_config=KnowledgeGraphModelConfig.with_model(model),
     ontology=ontology,
 )
@@ -138,11 +136,16 @@ You can update the KG at any time by processing more sources with the `process_s
 At this point, you have a Knowledge Graph that can be queried using this SDK. You can use the `ask` method for single questions or `chat_session` for conversations.
 
 ```python
-response = kg.ask("How are Keanu Reeves and Carrie-Anne Moss related?")
+# Single question.
+response = kg.ask("What were the last 5 fights? When were they? How many rounds did they have?")
+print(response)
 
+# Conversation.
 chat = kg.chat_session()
-response = chat.send_message("Who is the director of the movie The Matrix?")
-response = chat.send_message("And how are they related with Keanu Reeves?")
+response = chat.send_message("Who is Salsa Boy?")
+print(response)
+response = chat.send_message("How many fights did he win in his career?")
+print(response)
 ```
 
 ## Multi Agent - Orchestrator
@@ -151,11 +154,14 @@ The GraphRAG-SDK supports KG agents. Each agent uses GraphRAG based on your know
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/FalkorDB/GraphRAG-SDK-v2/blob/master/examples/trip/demo_orchestrator_trip.ipynb)
 
 ### Agents
-See the [Basic Usage](#Basic-Usage) section to create a KG object and use it as follows to create the agents.
+See the [Basic Usage](#Basic-Usage) section to understand how to create KG objects for the agents.
 
 ```python
-# Create Knowledge Graphs
+# Define the model
 model = OpenAiGenerativeModel("gpt-4o")
+
+# Create the KG from the predefined ontology.
+# In this example, we will use the restaurants agent and the attractions agent.
 restaurants_kg = KnowledgeGraph(
     name="restaurants",
     ontology=restaurants_ontology,
@@ -168,17 +174,18 @@ attractions_kg = KnowledgeGraph(
 )
 
 
-# Setup agents
+# The following agent is specialized in finding restaurants based on the sources it has built.
 restaurants_agent = KGAgent(
     agent_id="restaurants_agent",
     kg=restaurants_kg,
     introduction="I'm a restaurant agent, specialized in finding the best restaurants for you.",
 )
 
+# The following agent is specialized in finding tourist attractions based on the sources it has built.
 attractions_agent = KGAgent(
     agent_id="attractions_agent",
     kg=attractions_kg,
-    introduction="I'm an attractions agent, specialized in finding the best attractions for you.",
+    introduction="I'm an attractions agent, specialized in finding the best tourist attractions for you.",
 )
 
 ```
@@ -187,22 +194,25 @@ attractions_agent = KGAgent(
 The orchestrator manages the usage of agents and handles questioning.
 
 ```python
-# Initialize the orchestrator and register agents
+# Initialize the orchestrator while giving it the backstory.
 orchestrator = Orchestrator(
     model,
     backstory="You are a trip planner, and you want to provide the best possible itinerary for your clients.",
 )
+
+# Register the agents that we created above.
 orchestrator.register_agent(restaurants_agent)
 orchestrator.register_agent(attractions_agent)
 
-# Query the orchestrator
-runner = orchestrator.ask("Write me a 2 day itinerary for a trip to Italy. Do not ask any questions to me, just provide your best itinerary.")
-
+# Query the orchestrator.
+runner = orchestrator.ask("Create a two-day itinerary for a trip to Italy. Please don't ask me any questions; just provide the best itinerary you can.")
+print(runner.output)
 ```
 
 ## Support
 Connect with our community for support and discussions. If you have any questions, don’t hesitate to contact us through one of the methods below:
 
-- [Discord]()
-- [Email](gal@falkordb.com)
+- [Discord](https://discord.com/invite/6M4QwDXn2w)
+- [Email](support@falkordb.com)
+- [Discussions](https://github.com/orgs/FalkorDB/discussions)
 
