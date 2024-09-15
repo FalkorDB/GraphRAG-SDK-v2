@@ -4,7 +4,7 @@
 [![Discord](https://img.shields.io/discord/1146782921294884966?style=flat-square)](https://discord.gg/6M4QwDXn2w)
 
 
-GraphRAG-SDK is a comprehensive solution for building Graph Retrieval-Augmented Generation (GraphRAG) applications, leveraging [FalkorDB](https://www.falkordb.com/) for optimal performance. It offers powerful features including Ontology Management, Knowledge Graphs (KG) construction and Multi-Agent System.
+GraphRAG-SDK is a comprehensive solution for building Graph Retrieval-Augmented Generation (GraphRAG) applications, leveraging [FalkorDB](https://www.falkordb.com/) for optimal performance.
 
 ## Features
 
@@ -58,7 +58,7 @@ The SDK supports the following file formats:
 
 - PDF
 - TEXT
-- JSON
+- JSONL
 - URL
 - HTML
 - CSV
@@ -67,7 +67,7 @@ The SDK supports the following file formats:
 import os
 from graphrag_sdk.classes.source import Source
 
-src_files = "your_data_folder"
+src_files = "data_folder"
 sources = []
 
 # Create a Source object for each file in the source directory.
@@ -89,11 +89,11 @@ from graphrag_sdk.models.openai import OpenAiGenerativeModel
 percent = 0.1  # This represents 10%. You can adjust this value (e.g., 0.2 for 20%).
 
 boundaries = """
-    Extract only the most information about ---------.
-    Do not create entities for what can be expressed as attributes.
+    Extract only the most relevant information about UFC fighters, fights, and events.
+    Avoid creating entities for details that can be expressed as attributes.
 """
 
-# Define the model.
+# Define the model to be used for the ontology
 model = OpenAiGenerativeModel(model_name="gpt-4o")
 
 # Randomly select a percentage of files from sources.
