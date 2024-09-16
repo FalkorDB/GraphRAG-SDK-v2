@@ -22,6 +22,7 @@ from graphrag_sdk.models import (
     FinishReason,
 )
 import json
+from typing import Optional
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -51,7 +52,7 @@ class CreateOntologyStep(Step):
     def _create_chat(self):
         return self.model.start_chat({"response_validation": False})
 
-    def run(self, boundaries: str = None):
+    def run(self, boundaries: Optional[str] = None):
         tasks: list[Future[Ontology]] = []
         with ThreadPoolExecutor(max_workers=self.config["max_workers"]) as executor:
             # extract entities and relationships from each page
@@ -87,13 +88,13 @@ class CreateOntologyStep(Step):
         chat_session: GenerativeModelChatSession,
         document: Document,
         o: Ontology,
-        boundaries: str = None,
+        boundaries: Optional[str] = None,
     ):
         text = document.content[: self.config["max_input_tokens"]]
 
         user_message = CREATE_ONTOLOGY_PROMPT.format(
-            text=text,
-            boundaries=BOUNDARIES_PREFIX.format(user_boundaries=boundaries) if boundaries is not None else "", 
+            text = text,
+            boundaries = BOUNDARIES_PREFIX.format(user_boundaries=boundaries) if boundaries is not None else "", 
         )
 
         responses: list[GenerationResponse] = []

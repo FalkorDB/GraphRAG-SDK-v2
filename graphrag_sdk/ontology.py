@@ -6,6 +6,7 @@ import graphrag_sdk
 import logging
 from .relation import Relation
 from .entity import Entity
+from typing import Optional
 
 
 logger = logging.getLogger(__name__)
@@ -35,7 +36,7 @@ class Ontology(object):
     def from_sources(
         sources: list[AbstractSource],
         model: GenerativeModel,
-        boundaries: str = None,
+        boundaries: Optional[str] = None,
     ) -> "Ontology":
         """
         Create an Ontology object from a list of sources.
