@@ -8,8 +8,8 @@ from .model import (
 )
 
 from google.generativeai import (
-    GenerativeModel as GeminiGenerativeModel,
-    GenerationConfig as GeminiGenerationConfig,
+    GenerativeModel as GoogleGenerativeModel,
+    GenerationConfig as GoogleGenerationConfig,
     configure,
     protos,
     types,)
@@ -17,12 +17,12 @@ from google.generativeai import (
 
 class GeminiGenerativeModel(GenerativeModel):
 
-    _model: GeminiGenerativeModel = None
+    _model: GoogleGenerativeModel = None
 
     def __init__(
         self,
         model_name: str,
-        generation_config: GenerativeModelConfig | None = None,
+        generation_config: GoogleGenerationConfig | None = None,
         system_instruction: str | None = None,
     ):
         self._model_name = model_name
@@ -31,12 +31,12 @@ class GeminiGenerativeModel(GenerativeModel):
         configure(api_key=os.environ["GOOGLE_API_KEY"])
 
 
-    def _get_model(self) -> GeminiGenerativeModel:
+    def _get_model(self) -> GoogleGenerativeModel:
         if self._model is None:
-            self._model = GeminiGenerativeModel(
+            self._model = GoogleGenerativeModel(
                 self._model_name,
                 generation_config=(
-                    GeminiGenerationConfig(
+                    GoogleGenerationConfig(
                         temperature=self._generation_config.temperature,
                         top_p=self._generation_config.top_p,
                         top_k=self._generation_config.top_k,
