@@ -32,10 +32,10 @@ Use [FalkorDB Cloud](https://app.falkordb.cloud/) to get credentials or start Fa
 docker run -p 6379:6379 -p 3000:3000 -it --rm  -v ./data:/data falkordb/falkordb:latest
 ```
 #### LLM Models
-Currently, this SDK support the following LLMs API:
+Currently, this SDK supports the following LLMs API:
 
-- [OpenAI](https://openai.com/index/openai-api) Recommended model:`gpt-4o`
-- [google](https://makersuite.google.com/app/apikey) Recommended model:`gemini-1.5-flash-001`
+* [OpenAI](https://openai.com/index/openai-api) Recommended model:`gpt-4o`
+* [google](https://makersuite.google.com/app/apikey) Recommended model:`gemini-1.5-flash-001`
 
 Make sure that a `.env` file is present with all required credentials.
 
@@ -106,12 +106,12 @@ print(chat.send_message("And how are they related with Keanu Reeves?"))
 ### Import source data
 The SDK supports the following file formats:
 
-- PDF
-- TEXT
-- JSONL
-- URL
-- HTML
-- CSV
+* PDF
+* TEXT
+* JSONL
+* URL
+* HTML
+* CSV
 
 ```python
 import os
@@ -203,7 +203,7 @@ print(response)
 
 The GraphRAG-SDK supports KG agents. Each agent is an expert in the data it has learned, and the orchestrator manages the use of the agents.
 ### Agents
-See the [Basic Usage](#Basic-Usage) section to understand how to create KG objects for the agents.
+See the [Basic Usage](#basic-usage) section to understand how to create KG objects for the agents.
 
 ```python
 # Define the model
@@ -261,7 +261,7 @@ print(runner.output)
 ## Support
 Connect with our community for support and discussions. If you have any questions, don’t hesitate to contact us through one of the methods below:
 
-- [Discord](https://discord.com/invite/6M4QwDXn2w)
-- [Email](support@falkordb.com)
-- [Discussions](https://github.com/orgs/FalkorDB/discussions)
+* [Discord](https://discord.com/invite/6M4QwDXn2w)
+* [Email](support@falkordb.com)
+* [Discussions](https://github.com/orgs/FalkorDB/discussions)
 
