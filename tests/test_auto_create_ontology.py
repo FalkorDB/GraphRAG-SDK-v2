@@ -27,8 +27,8 @@ class TestAutoDetectOntology(unittest.TestCase):
         model = GeminiGenerativeModel(model_name="gemini-1.5-flash-001")
 
         boundaries = """
-  Extract entities and relationships from each page
-"""
+          Extract entities and relationships from each page
+        """
         ontology = Ontology.from_sources(sources, boundaries=boundaries, model=model)
 
         logging.info(f"Ontology: {ontology.to_json()}")

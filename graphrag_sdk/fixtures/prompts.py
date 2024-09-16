@@ -181,11 +181,15 @@ Do not allow duplicated inverse relationships, for example, if you have a relati
 Do not use the example Movie context to assume the ontology. The ontology should be created based on the provided text only.
 Do not create an entity without an unique attribute. Each entity should have at least one unique attribute.
 
-Use the following instructions as boundaries for the ontology extraction process. 
 {boundaries}
 
 Raw text:
 {text}
+"""
+
+BOUNDARIES_PREFIX = """
+Use the following instructions as boundaries for the ontology extraction process.
+{user_input}
 """
 
 UPDATE_ONTOLOGY_PROMPT = """

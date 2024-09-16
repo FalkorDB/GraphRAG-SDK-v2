@@ -77,10 +77,8 @@ sources = [URL(url) for url in urls]
 model = OpenAiGenerativeModel(model_name="gpt-4o")
 
 # Ontology Auto-Detection
-boundaries = "Extract all information related to the movies."
 ontology = Ontology.from_sources(
     sources=sources,
-    boundaries=boundaries,
     model=model,
 )
 
@@ -97,7 +95,7 @@ kg.process_sources(sources)
 chat = kg.chat_session()
 
 print(chat.send_message("Who is the director of the movie The Matrix?"))
-print(chat.send_message("And how are they related with Keanu Reeves?"))
+print(chat.send_message("What is the relationship of your answer with Keanu Reeves?"))
 
 ```
 ## Tools
@@ -194,14 +192,14 @@ print(response)
 chat = kg.chat_session()
 response = chat.send_message("Who is Salsa Boy?")
 print(response)
-response = chat.send_message("How many fights has he participated?")
+response = chat.send_message("Tell me about one of his fights?")
 print(response)
 ```
 
 ## Multi Agent - Orchestrator
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/FalkorDB/GraphRAG-SDK-v2/blob/master/examples/trip/demo_orchestrator_trip.ipynb)
 
-The GraphRAG-SDK supports KG agents. Each agent is an expert in the data it has learned, and the orchestrator manages the use of the agents.
+The GraphRAG-SDK supports KG agents. Each agent is an expert in the data it has learned, and the orchestrator orchestrates the agents.
 ### Agents
 See the [Basic Usage](#basic-usage) section to understand how to create KG objects for the agents.
 

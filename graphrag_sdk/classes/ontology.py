@@ -6,6 +6,11 @@ import graphrag_sdk
 import logging
 from .relation import Relation
 from .entity import Entity
+from typing import Optional
+from graphrag_sdk.fixtures.prompts import (
+    BOUNDARIES_PREFIX,
+)
+
 
 logger = logging.getLogger(__name__)
 
@@ -33,15 +38,15 @@ class Ontology(object):
     @staticmethod
     def from_sources(
         sources: list[AbstractSource],
-        boundaries: str,
         model: GenerativeModel,
+        boundaries: Optional[str] = None,
     ) -> "Ontology":
         """
         Create an Ontology object from a list of sources.
 
         Args:
             sources (list[AbstractSource]): A list of AbstractSource objects representing the sources.
-            boundaries (str): The boundaries for the ontology.
+            boundaries (Optinal[str]): The boundaries for the ontology.
             model (GenerativeModel): The generative model to use.
 
         Returns:
@@ -52,7 +57,11 @@ class Ontology(object):
             ontology=Ontology(),
             model=model,
         )
-
+        if boundaries:
+            boundaries = BOUNDARIES_PREFIX.format(user_input=boundaries)
+        else:
+            boundaries = ''
+            
         return step.run(boundaries=boundaries)
 
     @staticmethod

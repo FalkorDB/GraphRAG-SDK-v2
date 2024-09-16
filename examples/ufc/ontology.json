@@ -1,7 +1,7 @@
 {
   "entities": [
     {
-      "label": "Person",
+      "label": "Fighter",
       "attributes": [
         {
           "name": "name",
@@ -14,21 +14,15 @@
           "type": "string",
           "unique": false,
           "required": false
-        },
-        {
-          "name": "result",
-          "type": "string",
-          "unique": false,
-          "required": false
         }
       ],
       "description": ""
     },
     {
-      "label": "Event",
+      "label": "Fight",
       "attributes": [
         {
-          "name": "title",
+          "name": "event",
           "type": "string",
           "unique": true,
           "required": true
@@ -44,31 +38,37 @@
           "type": "string",
           "unique": false,
           "required": true
-        }
-      ],
-      "description": ""
-    },
-    {
-      "label": "Referee",
-      "attributes": [
+        },
         {
-          "name": "name",
+          "name": "method",
           "type": "string",
-          "unique": true,
-          "required": true
-        }
-      ],
-      "description": ""
-    },
-    {
-      "label": "FightStat",
-      "attributes": [
-        {
-          "name": "fighter_name",
-          "type": "string",
-          "unique": true,
+          "unique": false,
           "required": true
         },
+        {
+          "name": "rounds",
+          "type": "number",
+          "unique": false,
+          "required": true
+        },
+        {
+          "name": "time_format",
+          "type": "string",
+          "unique": false,
+          "required": true
+        },
+        {
+          "name": "referee",
+          "type": "string",
+          "unique": false,
+          "required": true
+        }
+      ],
+      "description": ""
+    },
+    {
+      "label": "Statistics",
+      "attributes": [
         {
           "name": "knockdowns",
           "type": "number",
@@ -82,7 +82,25 @@
           "required": true
         },
         {
+          "name": "significant_strikes_attempted",
+          "type": "number",
+          "unique": false,
+          "required": true
+        },
+        {
+          "name": "significant_strikes_percentage",
+          "type": "number",
+          "unique": false,
+          "required": true
+        },
+        {
           "name": "total_strikes",
+          "type": "number",
+          "unique": false,
+          "required": true
+        },
+        {
+          "name": "total_strikes_attempted",
           "type": "number",
           "unique": false,
           "required": true
@@ -94,7 +112,13 @@
           "required": true
         },
         {
-          "name": "takedown_attempts",
+          "name": "takedowns_attempted",
+          "type": "number",
+          "unique": false,
+          "required": true
+        },
+        {
+          "name": "takedown_percentage",
           "type": "number",
           "unique": false,
           "required": true
@@ -119,102 +143,26 @@
         }
       ],
       "description": ""
-    },
-    {
-      "label": "FightMethod",
-      "attributes": [
-        {
-          "name": "method",
-          "type": "string",
-          "unique": true,
-          "required": true
-        },
-        {
-          "name": "round",
-          "type": "number",
-          "unique": false,
-          "required": true
-        },
-        {
-          "name": "time",
-          "type": "string",
-          "unique": false,
-          "required": true
-        },
-        {
-          "name": "time_format",
-          "type": "string",
-          "unique": false,
-          "required": true
-        },
-        {
-          "name": "details",
-          "type": "string",
-          "unique": false,
-          "required": true
-        }
-      ],
-      "description": ""
     }
   ],
   "relations": [
     {
       "label": "PARTICIPATED_IN",
       "source": {
-        "label": "Person"
+        "label": "Fighter"
       },
       "target": {
-        "label": "Event"
+        "label": "Fight"
       },
       "attributes": []
     },
     {
-      "label": "FOUGHT_AGAINST",
+      "label": "HAS",
       "source": {
-        "label": "Person"
+        "label": "Fight"
       },
       "target": {
-        "label": "Person"
-      },
-      "attributes": []
-    },
-    {
-      "label": "REFEREED_BY",
-      "source": {
-        "label": "Event"
-      },
-      "target": {
-        "label": "Referee"
-      },
-      "attributes": []
-    },
-    {
-      "label": "HAS_STATISTICS",
-      "source": {
-        "label": "Person"
-      },
-      "target": {
-        "label": "FightStat"
-      },
-      "attributes": []
-    },
-    {
-      "label": "HAS_METHOD",
-      "source": {
-        "label": "Event"
-      },
-      "target": {
-        "label": "FightMethod"
-      },
-      "attributes": []
-    },
-    {
-      "label": "INVOLVES_STATISTICS",
-      "source": {
-        "label": "Event"
-      },
-      "target": {
-        "label": "FightStat"
+        "label": "Statistics"
       },
       "attributes": []
     }
