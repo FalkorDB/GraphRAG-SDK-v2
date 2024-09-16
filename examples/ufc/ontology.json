@@ -1,28 +1,10 @@
 {
   "entities": [
     {
-      "label": "Fighter",
+      "label": "Event",
       "attributes": [
         {
-          "name": "name",
-          "type": "string",
-          "unique": true,
-          "required": true
-        },
-        {
-          "name": "nickname",
-          "type": "string",
-          "unique": false,
-          "required": false
-        }
-      ],
-      "description": ""
-    },
-    {
-      "label": "Fight",
-      "attributes": [
-        {
-          "name": "event",
+          "name": "title",
           "type": "string",
           "unique": true,
           "required": true
@@ -38,6 +20,18 @@
           "type": "string",
           "unique": false,
           "required": true
+        }
+      ],
+      "description": ""
+    },
+    {
+      "label": "Fight",
+      "attributes": [
+        {
+          "name": "title",
+          "type": "string",
+          "unique": true,
+          "required": true
         },
         {
           "name": "method",
@@ -52,13 +46,13 @@
           "required": true
         },
         {
-          "name": "time_format",
+          "name": "referee",
           "type": "string",
           "unique": false,
           "required": true
         },
         {
-          "name": "referee",
+          "name": "result_details",
           "type": "string",
           "unique": false,
           "required": true
@@ -67,8 +61,38 @@
       "description": ""
     },
     {
-      "label": "Statistics",
+      "label": "Fighter",
       "attributes": [
+        {
+          "name": "name",
+          "type": "string",
+          "unique": true,
+          "required": true
+        },
+        {
+          "name": "nickname",
+          "type": "string",
+          "unique": false,
+          "required": false
+        },
+        {
+          "name": "outcome",
+          "type": "string",
+          "unique": false,
+          "required": true
+        }
+      ],
+      "description": ""
+    },
+    {
+      "label": "FightStatistics",
+      "attributes": [
+        {
+          "name": "fighter_name",
+          "type": "string",
+          "unique": true,
+          "required": true
+        },
         {
           "name": "knockdowns",
           "type": "number",
@@ -147,6 +171,16 @@
   ],
   "relations": [
     {
+      "label": "PART_OF",
+      "source": {
+        "label": "Fight"
+      },
+      "target": {
+        "label": "Event"
+      },
+      "attributes": []
+    },
+    {
       "label": "PARTICIPATED_IN",
       "source": {
         "label": "Fighter"
@@ -157,12 +191,22 @@
       "attributes": []
     },
     {
-      "label": "HAS",
+      "label": "RELATED_STATS",
+      "source": {
+        "label": "FightStatistics"
+      },
+      "target": {
+        "label": "Fighter"
+      },
+      "attributes": []
+    },
+    {
+      "label": "HAS_STATS",
       "source": {
         "label": "Fight"
       },
       "target": {
-        "label": "Statistics"
+        "label": "FightStatistics"
       },
       "attributes": []
     }

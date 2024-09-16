@@ -1,7 +1,7 @@
 from graphrag_sdk.steps.Step import Step
-from graphrag_sdk.classes.source import AbstractSource
+from graphrag_sdk.source import AbstractSource
 from concurrent.futures import Future, ThreadPoolExecutor, wait
-from graphrag_sdk.classes.ontology import Ontology
+from graphrag_sdk.ontology import Ontology
 from graphrag_sdk.models import (
     GenerativeModel,
     GenerativeModelChatSession,
@@ -18,7 +18,7 @@ import logging
 from graphrag_sdk.helpers import extract_json, map_dict_to_cypher_properties
 import json
 from falkordb import Graph
-from graphrag_sdk.classes.document import Document
+from graphrag_sdk.document import Document
 from uuid import uuid4
 import os
 import time

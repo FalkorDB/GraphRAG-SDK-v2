@@ -1,18 +1,20 @@
 from dotenv import load_dotenv
 
 load_dotenv()
-from graphrag_sdk.classes.ontology import Ontology
-from graphrag_sdk.classes.entity import Entity
-from graphrag_sdk.classes.relation import Relation
-from graphrag_sdk.classes.attribute import Attribute, AttributeType
+from graphrag_sdk.ontology import Ontology
+from graphrag_sdk.entity import Entity
+from graphrag_sdk.relation import Relation
+from graphrag_sdk.attribute import Attribute, AttributeType
 import unittest
-from graphrag_sdk.classes.source import Source
+from graphrag_sdk.source import Source
 from graphrag_sdk.models.gemini import GeminiGenerativeModel
 from graphrag_sdk import KnowledgeGraph, KnowledgeGraphModelConfig
 import vertexai
 import os
 import logging
 from falkordb import FalkorDB
+import pytest
+
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -81,8 +83,8 @@ class TestKGGemini(unittest.TestCase):
             model_config=KnowledgeGraphModelConfig.with_model(model),
         )
 
+    @pytest.mark.skipif(condition=True, reason="Not ready for testing")
     def test_kg_creation(self):
-        raise unittest.SkipTest("not ready for testing")
         file_path = "tests/data/madoff.txt"
 
         sources = [Source(file_path)]
@@ -95,8 +97,8 @@ class TestKGGemini(unittest.TestCase):
 
         assert "Joseph Scotto" in answer[0], "Joseph Scotto not found in answer"
 
+    @pytest.mark.skipif(condition=True, reason="Not ready for testing")
     def test_kg_delete(self):
-        raise unittest.SkipTest("not ready for testing")
         self.kg.delete()
 
         db = FalkorDB()

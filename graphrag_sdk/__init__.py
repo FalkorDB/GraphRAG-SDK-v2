@@ -1,7 +1,7 @@
-from .classes.source import Source
-from .classes.ontology import Ontology
+from .source import Source
+from .ontology import Ontology
 from .kg import KnowledgeGraph
-from .classes.model_config import KnowledgeGraphModelConfig
+from .model_config import KnowledgeGraphModelConfig
 from .steps.create_ontology_step import CreateOntologyStep
 from .models.model import (
     GenerativeModel,
@@ -10,9 +10,9 @@ from .models.model import (
     GenerativeModelConfig,
     FinishReason,
 )
-from .classes.entity import Entity
-from .classes.relation import Relation
-from .classes.attribute import Attribute, AttributeType
+from .entity import Entity
+from .relation import Relation
+from .attribute import Attribute, AttributeType
 
 # Setup Null handler
 import logging

@@ -1,5 +1,5 @@
 from graphrag_sdk.steps.Step import Step
-from graphrag_sdk.classes.ontology import Ontology
+from graphrag_sdk.ontology import Ontology
 from graphrag_sdk.models import (
     GenerativeModelChatSession,
 )

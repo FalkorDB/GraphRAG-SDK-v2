@@ -1,5 +1,5 @@
-from graphrag_sdk.classes.ontology import Ontology
-from graphrag_sdk.classes.model_config import KnowledgeGraphModelConfig
+from graphrag_sdk.ontology import Ontology
+from graphrag_sdk.model_config import KnowledgeGraphModelConfig
 from graphrag_sdk.steps.graph_query_step import GraphQueryGenerationStep
 from graphrag_sdk.steps.qa_step import QAStep
 from graphrag_sdk.fixtures.prompts import GRAPH_QA_SYSTEM, CYPHER_GEN_SYSTEM
@@ -17,8 +17,8 @@ class ChatSession:
 
     Examples:
         >>> from graphrag_sdk import KnowledgeGraph, Orchestrator
-        >>> from graphrag_sdk.classes.ontology import Ontology
-        >>> from graphrag_sdk.classes.model_config import KnowledgeGraphModelConfig
+        >>> from graphrag_sdk.ontology import Ontology
+        >>> from graphrag_sdk.model_config import KnowledgeGraphModelConfig
         >>> model_config = KnowledgeGraphModelConfig.with_model(model)
         >>> kg = KnowledgeGraph("test_kg", model_config, ontology)
         >>> chat_session = kg.start_chat()

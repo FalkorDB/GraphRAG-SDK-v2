@@ -1,12 +1,12 @@
 from dotenv import load_dotenv
 
 load_dotenv()
-from graphrag_sdk.classes.ontology import Ontology
-from graphrag_sdk.classes.entity import Entity
-from graphrag_sdk.classes.relation import Relation
-from graphrag_sdk.classes.attribute import Attribute, AttributeType
+from graphrag_sdk.ontology import Ontology
+from graphrag_sdk.entity import Entity
+from graphrag_sdk.relation import Relation
+from graphrag_sdk.attribute import Attribute, AttributeType
 import unittest
-from graphrag_sdk.classes.source import Source
+from graphrag_sdk.source import Source
 from graphrag_sdk.models.openai import OpenAiGenerativeModel
 from graphrag_sdk import KnowledgeGraph, KnowledgeGraphModelConfig
 import logging

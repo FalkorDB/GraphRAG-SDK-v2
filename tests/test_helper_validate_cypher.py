@@ -1,6 +1,6 @@
-from graphrag_sdk.classes.ontology import Ontology
-from graphrag_sdk.classes.entity import Entity
-from graphrag_sdk.classes.relation import Relation
+from graphrag_sdk.ontology import Ontology
+from graphrag_sdk.entity import Entity
+from graphrag_sdk.relation import Relation
 from graphrag_sdk.helpers import (
     validate_cypher,
     validate_cypher_entities_exist,

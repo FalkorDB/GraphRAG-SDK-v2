@@ -1,15 +1,15 @@
 import logging
-from graphrag_sdk.classes.ontology import Ontology
+from graphrag_sdk.ontology import Ontology
 from falkordb import FalkorDB
-from graphrag_sdk.classes.source import AbstractSource
-from graphrag_sdk.classes.model_config import KnowledgeGraphModelConfig
+from graphrag_sdk.source import AbstractSource
+from graphrag_sdk.model_config import KnowledgeGraphModelConfig
 from graphrag_sdk.steps.extract_data_step import ExtractDataStep
 from graphrag_sdk.steps.graph_query_step import GraphQueryGenerationStep
 from graphrag_sdk.fixtures.prompts import GRAPH_QA_SYSTEM, CYPHER_GEN_SYSTEM
 from graphrag_sdk.steps.qa_step import QAStep
-from graphrag_sdk.classes.chat_session import ChatSession
+from graphrag_sdk.chat_session import ChatSession
 from graphrag_sdk.helpers import map_dict_to_cypher_properties
-from graphrag_sdk.classes.attribute import AttributeType, Attribute
+from graphrag_sdk.attribute import AttributeType, Attribute
 from graphrag_sdk.models import GenerativeModelChatSession
 
 logger = logging.getLogger(__name__)

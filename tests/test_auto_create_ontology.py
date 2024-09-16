@@ -1,8 +1,8 @@
 from dotenv import load_dotenv
 load_dotenv()
-from graphrag_sdk.classes.ontology import Ontology
+from graphrag_sdk.ontology import Ontology
 import unittest
-from graphrag_sdk.classes.source import Source
+from graphrag_sdk.source import Source
 from graphrag_sdk.models.gemini import GeminiGenerativeModel
 import vertexai
 import os

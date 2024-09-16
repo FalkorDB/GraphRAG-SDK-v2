@@ -95,7 +95,7 @@ kg.process_sources(sources)
 chat = kg.chat_session()
 
 print(chat.send_message("Who is the director of the movie The Matrix?"))
-print(chat.send_message("What is the relationship of your answer with Keanu Reeves?"))
+print(chat.send_message("How this director connected to Keanu Reeves?"))
 
 ```
 ## Tools
@@ -252,7 +252,7 @@ orchestrator.register_agent(restaurants_agent)
 orchestrator.register_agent(attractions_agent)
 
 # Query the orchestrator.
-runner = orchestrator.ask("Create a two-day itinerary for a trip to Italy. Please don't ask me any questions; just provide the best itinerary you can.")
+runner = orchestrator.ask("Create a two-day itinerary for a trip to Rome. Please don't ask me any questions; just provide the best itinerary you can.")
 print(runner.output)
 ```
 

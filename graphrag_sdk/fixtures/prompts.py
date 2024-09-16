@@ -189,7 +189,7 @@ Raw text:
 
 BOUNDARIES_PREFIX = """
 Use the following instructions as boundaries for the ontology extraction process.
-{user_input}
+{user_boundaries}
 """
 
 UPDATE_ONTOLOGY_PROMPT = """
