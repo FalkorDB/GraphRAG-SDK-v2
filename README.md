@@ -29,7 +29,7 @@ GraphRAG-SDK relies on [FalkorDB](http://falkordb.com) as its graph engine and w
 Use [FalkorDB Cloud](https://app.falkordb.cloud/) to get credentials or start FalkorDB locally:
 
 ```sh
-docker run -p 6379:6379 -p 3000:3000 -it --rm falkordb/falkordb:latest
+docker run -p 6379:6379 -p 3000:3000 -it --rm  -v ./data:/data falkordb/falkordb:latest
 ```
 #### LLM Models
 Currently, this SDK support the following LLMs API:
@@ -51,6 +51,56 @@ Make sure that a `.env` file is present with all required credentials.
    </details>
 
 ## Basic Usage
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/FalkorDB/GraphRAG-SDK-v2/blob/master/examples/movies/demo-movies.ipynb)
+
+The following example demonstrates the basic usage of this SDK to create a GraphRAG using URLs with auto-detected ontology.
+```python
+from dotenv import load_dotenv
+
+from graphrag_sdk.classes.source import URL
+from graphrag_sdk import KnowledgeGraph, Ontology
+from graphrag_sdk.models.openai import OpenAiGenerativeModel
+from graphrag_sdk.classes.model_config import KnowledgeGraphModelConfig
+load_dotenv()
+
+# Import Data
+urls = ["https://www.rottentomatoes.com/m/side_by_side_2012",
+"https://www.rottentomatoes.com/m/matrix",
+"https://www.rottentomatoes.com/m/matrix_revolutions",
+"https://www.rottentomatoes.com/m/matrix_reloaded",
+"https://www.rottentomatoes.com/m/speed_1994",
+"https://www.rottentomatoes.com/m/john_wick_chapter_4"]
+
+sources = [URL(url) for url in urls]
+
+# Model
+model = OpenAiGenerativeModel(model_name="gpt-4o")
+
+# Ontology Auto-Detection
+boundaries = "Extract all information related to the movies."
+ontology = Ontology.from_sources(
+    sources=sources,
+    boundaries=boundaries,
+    model=model,
+)
+
+# Knowledge Graph
+kg = KnowledgeGraph(
+    name="movies",
+    model_config=KnowledgeGraphModelConfig.with_model(model),
+    ontology=ontology,
+)
+
+# GraphRAG System and Questioning
+kg.process_sources(sources)
+
+chat = kg.chat_session()
+
+print(chat.send_message("Who is the director of the movie The Matrix?"))
+print(chat.send_message("And how are they related with Keanu Reeves?"))
+
+```
+## Tools
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/FalkorDB/GraphRAG-SDK-v2/blob/master/examples/ufc/demo-ufc.ipynb)
 
 ### Import source data
@@ -70,7 +120,7 @@ from graphrag_sdk.classes.source import Source
 src_files = "data_folder"
 sources = []
 
-# Create a Source object for each file in the source directory.
+# Create a Source object.
 for file in os.listdir(src_files):
     sources.append(Source(os.path.join(src_files, file)))
 ```
@@ -137,22 +187,21 @@ At this point, you have a Knowledge Graph that can be queried using this SDK. Yo
 
 ```python
 # Single question.
-response = kg.ask("What were the last 5 fights? When were they? How many rounds did they have?")
+response = kg.ask("What were the last five fights? When were they? How many rounds did they have?")
 print(response)
 
 # Conversation.
 chat = kg.chat_session()
 response = chat.send_message("Who is Salsa Boy?")
 print(response)
-response = chat.send_message("How many fights did he win in his career?")
+response = chat.send_message("How many fights has he participated?")
 print(response)
 ```
 
 ## Multi Agent - Orchestrator
-The GraphRAG-SDK supports KG agents. Each agent uses GraphRAG based on your knowledge.
-
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/FalkorDB/GraphRAG-SDK-v2/blob/master/examples/trip/demo_orchestrator_trip.ipynb)
 
+The GraphRAG-SDK supports KG agents. Each agent is an expert in the data it has learned, and the orchestrator manages the use of the agents.
 ### Agents
 See the [Basic Usage](#Basic-Usage) section to understand how to create KG objects for the agents.
 
@@ -174,14 +223,14 @@ attractions_kg = KnowledgeGraph(
 )
 
 
-# The following agent is specialized in finding restaurants based on the sources it has built.
+# The following agent is specialized in finding restaurants.
 restaurants_agent = KGAgent(
     agent_id="restaurants_agent",
     kg=restaurants_kg,
     introduction="I'm a restaurant agent, specialized in finding the best restaurants for you.",
 )
 
-# The following agent is specialized in finding tourist attractions based on the sources it has built.
+# The following agent is specialized in finding tourist attractions.
 attractions_agent = KGAgent(
     agent_id="attractions_agent",
     kg=attractions_kg,
