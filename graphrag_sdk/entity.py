@@ -1,6 +1,6 @@
 import json
 import logging
-from .attribute import Attribute, AttributeType
+from .attribute import Attribute
 from falkordb import Node as GraphNode
 import re
 

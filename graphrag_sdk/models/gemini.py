@@ -1,3 +1,4 @@
+import os
 from .model import (
     GenerativeModel,
     GenerativeModelConfig,
@@ -5,34 +6,37 @@ from .model import (
     FinishReason,
     GenerativeModelChatSession,
 )
-from vertexai.generative_models import (
-    GenerativeModel as VertexAiGenerativeModel,
-    GenerationConfig as VertexAiGenerationConfig,
-    GenerationResponse as VertexAiGenerationResponse,
-    FinishReason as VertexAiFinishReason,
-)
+
+from google.generativeai import (
+    GenerativeModel as GoogleGenerativeModel,
+    GenerationConfig as GoogleGenerationConfig,
+    configure,
+    protos,
+    types,)
 
 
 class GeminiGenerativeModel(GenerativeModel):
 
-    _model: VertexAiGenerativeModel = None
+    _model: GoogleGenerativeModel = None
 
     def __init__(
         self,
         model_name: str,
-        generation_config: GenerativeModelConfig | None = None,
+        generation_config: GoogleGenerationConfig | None = None,
         system_instruction: str | None = None,
     ):
         self._model_name = model_name
         self._generation_config = generation_config
         self._system_instruction = system_instruction
+        configure(api_key=os.environ["GOOGLE_API_KEY"])
 
-    def _get_model(self) -> VertexAiGenerativeModel:
+
+    def _get_model(self) -> GoogleGenerativeModel:
         if self._model is None:
-            self._model = VertexAiGenerativeModel(
+            self._model = GoogleGenerativeModel(
                 self._model_name,
                 generation_config=(
-                    VertexAiGenerationConfig(
+                    GoogleGenerationConfig(
                         temperature=self._generation_config.temperature,
                         top_p=self._generation_config.top_p,
                         top_k=self._generation_config.top_k,
@@ -62,17 +66,17 @@ class GeminiGenerativeModel(GenerativeModel):
         return self.parse_generate_content_response(response)
 
     def parse_generate_content_response(
-        self, response: VertexAiGenerationResponse
+        self, response: types.generation_types.GenerateContentResponse
     ) -> GenerationResponse:
         return GenerationResponse(
             text=response.text,
             finish_reason=(
                 FinishReason.MAX_TOKENS
                 if response.candidates[0].finish_reason
-                == VertexAiFinishReason.MAX_TOKENS
+                == protos.Candidate.FinishReason.MAX_TOKENS
                 else (
                     FinishReason.STOP
-                    if response.candidates[0].finish_reason == VertexAiFinishReason.STOP
+                    if response.candidates[0].finish_reason == protos.Candidate.FinishReason.STOP
                     else FinishReason.OTHER
                 )
             ),
@@ -102,9 +106,6 @@ class GeminiChatSession(GenerativeModelChatSession):
         self._model = model
         self._chat_session = self._model._model.start_chat(
             history=args.get("history", []) if args is not None else [],
-            response_validation=(
-                args.get("response_validation", False) if args is not None else True
-            ),
         )
 
     def send_message(self, message: str) -> GenerationResponse:

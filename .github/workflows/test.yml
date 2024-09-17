@@ -65,4 +65,5 @@ jobs:
           PROJECT_ID: ${{ secrets.PROJECT_ID }}
           REGION: ${{ vars.REGION }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
         run: poetry run pytest

@@ -1,6 +1,6 @@
 import csv
 from typing import Iterator
-from graphrag_sdk.classes.document import Document
+from graphrag_sdk.document import Document
 
 
 class CSVLoader:
